@@ -1,0 +1,39 @@
+
+root = true
+
+[*]
+indent_style = space
+indent_size = 4
+end_of_line = lf
+charset = utf-8
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+# xml comment analysis disabled
+dotnet_diagnostic.SA0001.severity = none
+# SA1623: Property summary documentation should match accessors
+dotnet_diagnostic.SA1623.severity = none
+# SA1401: Fields should be private
+dotnet_diagnostic.SA1401.severity = none
+# IDE0044: Add readonly modifier
+dotnet_diagnostic.IDE0044.severity = none
+
+# SA1615: Element return value should be documented
+dotnet_diagnostic.SA1615.severity = none
+# SA1629: Documentation text should end with a period
+dotnet_diagnostic.SA1629.severity = none
+# SA1611: Element parameters should be documented
+dotnet_diagnostic.SA1611.severity = none
+# SA1600: Elements should be documented
+dotnet_diagnostic.SA1600.severity = none
+# SA1604: Element documentation should have summary
+dotnet_diagnostic.SA1604.severity = none
+
+# SA1601: Partial elements should be documented
+dotnet_diagnostic.SA1601.severity = none
+
+# SA1121: Use built-in type alias
+dotnet_diagnostic.SA1121.severity = none
+
+[*.csproj]
+indent_size = 2

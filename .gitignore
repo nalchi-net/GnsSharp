@@ -1,0 +1,8 @@
+
+# editor settings
+.vs/
+.vscode/
+
+# build output
+[Bb]in/
+[Oo]bj/

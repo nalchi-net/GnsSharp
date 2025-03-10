@@ -1,0 +1,9 @@
+{
+    "$schema": "https://raw.githubusercontent.com/DotNetAnalyzers/StyleCopAnalyzers/master/StyleCop.Analyzers/StyleCop.Analyzers/Settings/stylecop.schema.json",
+    "settings": {
+        "documentationRules": {
+            "copyrightText": "SPDX-FileCopyrightText: Copyright 2025 Guyeon Yu <copyrat90@gmail.com>\nSPDX-License-Identifier: MIT",
+            "xmlHeader": false
+        }
+    }
+}
