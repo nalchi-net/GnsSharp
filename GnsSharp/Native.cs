@@ -30,7 +30,11 @@ internal static partial class Native
     /// </summary>
 #if GNS_SHARP_OPENSOURCE_GNS // Open-source version of GameNetworkingSockets
 
+#if GNS_SHARP_PLATFORM_WIN64 || GNS_SHARP_PLATFORM_WIN32
     public const string GnsLibraryName = "GameNetworkingSockets";
+#elif GNS_SHARP_PLATFORM_POSIX
+    public const string GnsLibraryName = "libGameNetworkingSockets";
+#endif
 
 #elif GNS_SHARP_STEAMWORKS_SDK // Steamworks SDK
 
