@@ -9,7 +9,7 @@ namespace GnsSharp;
 public enum ESteamNetworkingIdentityType : int
 {
     /// <summary>
-    /// Dummy/empty/invalid.
+    /// Dummy/empty/invalid.<br/>
     /// Please note that if we parse a string that we don't recognize
     /// but that appears reasonable, we will NOT use this type.  Instead
     /// we'll use ESteamNetworkingIdentityType.UnknownType.
@@ -36,31 +36,35 @@ public enum ESteamNetworkingIdentityType : int
     // Special identifiers.
 
     /// <summary>
-    /// Use their IP address (and port) as their "identity".
-    /// These types of identities are always unauthenticated.
+    /// <para>
+    /// Use their IP address (and port) as their "identity".<br/>
+    /// These types of identities are always unauthenticated.<br/>
     /// They are useful for porting plain sockets code, and other
     /// situations where you don't care about authentication.  In this
     /// case, the local identity will be "localhost",
     /// and the remote address will be their network address.
+    /// </para>
     ///
+    /// <para>
     /// We use the same type for either IPv4 or IPv6, and
     /// the address is always store as IPv6.  We use IPv4
     /// mapped addresses to handle IPv4.
+    /// </para>
     /// </summary>
     IPAddress = 1,
 
     /// <summary>
-    /// Generic string blobs.  It's up to your app to interpret this.
+    /// Generic string blobs.  It's up to your app to interpret this.<br/>
     /// This library can tell you if the remote host presented a certificate
-    /// signed by somebody you have chosen to trust, with this identity on it.
+    /// signed by somebody you have chosen to trust, with this identity on it.<br/>
     /// It's up to you to ultimately decide what this identity means.
     /// </summary>
     GenericString = 2,
 
     /// <summary>
-    /// Generic binary blobs.  It's up to your app to interpret this.
+    /// Generic binary blobs.  It's up to your app to interpret this.<br/>
     /// This library can tell you if the remote host presented a certificate
-    /// signed by somebody you have chosen to trust, with this identity on it.
+    /// signed by somebody you have chosen to trust, with this identity on it.<br/>
     /// It's up to you to ultimately decide what this identity means.
     /// </summary>
     GenericBytes = 3,

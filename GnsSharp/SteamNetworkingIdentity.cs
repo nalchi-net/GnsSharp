@@ -26,11 +26,15 @@ public struct SteamNetworkingIdentity : IEquatable<SteamNetworkingIdentity>
     public ESteamNetworkingIdentityType Type;
 
     /// <summary>
+    /// <para>
     /// Internal representation.  Don't access this directly, use the accessors!
+    /// </para>
     ///
+    /// <para>
     /// Number of bytes that are relevant below.  This MUST ALWAYS be
     /// set.  (Use the accessors!)  This is important to enable old code to work
     /// with new identity types.
+    /// </para>
     /// </summary>
     public int Size;
 
@@ -220,7 +224,7 @@ public struct SteamNetworkingIdentity : IEquatable<SteamNetworkingIdentity>
 
     /// <summary>
     /// "localhost" is equivalent for many purposes to "anonymous."  Our remote
-    /// will identify us by the network address we use.
+    /// will identify us by the network address we use.<br/>
     /// Set to localhost.  (We always use IPv6 ::1 for this, not 127.0.0.1)
     /// </summary>
     public void SetLocalHost()
@@ -278,12 +282,16 @@ public struct SteamNetworkingIdentity : IEquatable<SteamNetworkingIdentity>
     }
 
     /// <summary>
+    /// <para>
     /// Print to a human-readable string.  This is suitable for debug messages
     /// or any other time you need to encode the identity as a string.  It has a
     /// URL-like format (type:<type-data>).  Your buffer should be at least
     /// k_cchMaxString bytes big to avoid truncation.
+    /// </para>
     ///
+    /// <para>
     /// See also SteamNetworkingIPAddrRender
+    /// </para>
     /// </summary>
     public override string ToString()
     {

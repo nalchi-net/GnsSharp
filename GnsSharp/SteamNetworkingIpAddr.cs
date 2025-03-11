@@ -114,13 +114,17 @@ public struct SteamNetworkingIPAddr : IEquatable<SteamNetworkingIPAddr>
     }
 
     /// <summary>
+    /// <para>
     /// Print to a string, with or without the port.  Mapped IPv4 addresses are printed
     /// as dotted decimal (12.34.56.78), otherwise this will print the canonical
     /// form according to RFC5952.  If you include the port, IPv6 will be surrounded by
     /// brackets, e.g. [::1:2]:80.  Your buffer should be at least k_cchMaxString bytes
     /// to avoid truncation
+    /// </para>
     ///
+    /// <para>
     /// See also SteamNetworkingIdentityRender
+    /// </para>
     /// </summary>
     public string ToString(bool withPort)
     {
@@ -138,13 +142,17 @@ public struct SteamNetworkingIPAddr : IEquatable<SteamNetworkingIPAddr>
     }
 
     /// <summary>
+    /// <para>
     /// Print to a string, with the port.  Mapped IPv4 addresses are printed
     /// as dotted decimal (12.34.56.78), otherwise this will print the canonical
     /// form according to RFC5952.  If you include the port, IPv6 will be surrounded by
     /// brackets, e.g. [::1:2]:80.  Your buffer should be at least k_cchMaxString bytes
     /// to avoid truncation
+    /// </para>
     ///
+    /// <para>
     /// See also SteamNetworkingIdentityRender
+    /// </para>
     /// </summary>
     public override string ToString()
     {

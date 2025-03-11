@@ -20,36 +20,44 @@ public struct SteamNetworkingMessage_t
     public int Size;
 
     /// <summary>
-    /// For messages received on connections: what connection did this come from?
-    /// For outgoing messages: what connection to send it to?
+    /// For messages received on connections: what connection did this come from?<br/>
+    /// For outgoing messages: what connection to send it to?<br/>
     /// Not used when using the ISteamNetworkingMessages interface
     /// </summary>
     public HSteamNetConnection Connection;
 
     /// <summary>
-    /// For inbound messages: Who sent this to us?
-    /// For outbound messages on connections: not used.
+    /// For inbound messages: Who sent this to us?<br/>
+    /// For outbound messages on connections: not used.<br/>
     /// For outbound messages on the ad-hoc ISteamNetworkingMessages interface: who should we send this to?
     /// </summary>
     public SteamNetworkingIdentity IdentityPeer;
 
     /// <summary>
+    /// <para>
     /// For messages received on connections, this is the user data
     /// associated with the connection.
+    /// </para>
     ///
+    /// <para>
     /// This is *usually* the same as calling GetConnection() and then
     /// fetching the user data associated with that connection, but for
     /// the following subtle differences:
+    /// </para>
     ///
+    /// <para>
     /// - This user data will match the connection's user data at the time
     ///   is captured at the time the message is returned by the API.
     ///   If you subsequently change the userdata on the connection,
-    ///   this won't be updated.
-    /// - This is an inline call, so it's *much* faster.
+    ///   this won't be updated.<br/>
+    /// - This is an inline call, so it's *much* faster.<br/>
     /// - You might have closed the connection, so fetching the user data
     ///   would not be possible.
+    /// </para>
     ///
+    /// <para>
     /// Not used when sending messages.
+    /// </para>
     /// </summary>
     public long ConnectionUserData;
 
@@ -68,12 +76,16 @@ public struct SteamNetworkingMessage_t
     public long MessageNumber;
 
     /// <summary>
+    /// <para>
     /// Function used to free up m_pData.  This mechanism exists so that
     /// apps can create messages with buffers allocated from their own
     /// heap, and pass them into the library.  This function will
     /// usually be something like:
+    /// </para>
     ///
+    /// <para>
     /// free( pMsg->m_pData );
+    /// </para>
     /// </summary>
     public IntPtr FreeDataFuncPtr;
 
@@ -91,23 +103,27 @@ public struct SteamNetworkingMessage_t
     public int Channel;
 
     /// <summary>
-    /// Bitmask of k_nSteamNetworkingSend_xxx flags.
-    /// For received messages, only the k_nSteamNetworkingSend_Reliable bit is valid.
+    /// Bitmask of k_nSteamNetworkingSend_xxx flags.<br/>
+    /// For received messages, only the k_nSteamNetworkingSend_Reliable bit is valid.<br/>
     /// For outbound messages, all bits are relevant
     /// </summary>
     public ESteamNetworkingSendType Flags;
 
     /// <summary>
+    /// <para>
     /// Arbitrary user data that you can use when sending messages using
-    /// ISteamNetworkingUtils::AllocateMessage and ISteamNetworkingSockets::SendMessage.
+    /// ISteamNetworkingUtils::AllocateMessage and ISteamNetworkingSockets::SendMessage.<br/>
     /// (The callback you set in m_pfnFreeData might use this field.)
+    /// </para>
     ///
+    /// <para>
     /// Not used for received messages.
+    /// </para>
     /// </summary>
     public long UserData;
 
     /// <summary>
-    /// For outbound messages, which lane to use?  See ISteamNetworkingSockets::ConfigureConnectionLanes.
+    /// For outbound messages, which lane to use?  See ISteamNetworkingSockets::ConfigureConnectionLanes.<br/>
     /// For inbound messages, what lane was the message received on?
     /// </summary>
     public ushort IdxLane;
