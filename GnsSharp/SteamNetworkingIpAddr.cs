@@ -42,10 +42,7 @@ public struct SteamNetworkingIPAddr : IEquatable<SteamNetworkingIPAddr>
     /// <summary>
     /// See if two addresses are identical
     /// </summary>
-    public readonly bool Equals(SteamNetworkingIPAddr other)
-    {
-        return this == other;
-    }
+    public readonly bool Equals(SteamNetworkingIPAddr other) => this == other;
 
     /// <summary>
     /// See if two objects are identical

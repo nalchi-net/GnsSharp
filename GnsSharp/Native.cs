@@ -54,7 +54,7 @@ internal static partial class Native
 
 #endif
 
-#if GNS_SHARP_OPENSOURCE_GNS
+#if GNS_SHARP_OPENSOURCE_GNS // Open-source GNS exclusive API
 
     [LibraryImport(GnsLibraryName)]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
@@ -100,7 +100,7 @@ internal static partial class Native
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool SteamNetworkingIdentity_ParseString(ref SteamNetworkingIdentity pIdentity, SizeT sizeofIdentity, [MarshalAs(UnmanagedType.LPUTF8Str)] string pszStr);
 
-#elif GNS_SHARP_STEAMWORKS_SDK
+#elif GNS_SHARP_STEAMWORKS_SDK // Steamworks SDK exclusive API
 
     [LibraryImport(GnsLibraryName)]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
@@ -124,7 +124,7 @@ internal static partial class Native
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool SteamAPI_SteamNetworkingIPAddr_IsFakeIP(ref SteamNetworkingIPAddr self);
 
-#endif
+#endif // Common API
 
     [LibraryImport(GnsLibraryName)]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
@@ -244,4 +244,8 @@ internal static partial class Native
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool SteamAPI_SteamNetworkingIPAddr_IsEqualTo(in SteamNetworkingIPAddr self, in SteamNetworkingIPAddr x);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial void SteamAPI_SteamNetworkingMessage_t_Release(IntPtr msg);
 }
