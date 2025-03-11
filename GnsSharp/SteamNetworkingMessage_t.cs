@@ -35,23 +35,23 @@ public struct SteamNetworkingMessage_t
 
     /// <summary>
     /// <para>
-    /// For messages received on connections, this is the user data
+    /// For messages received on connections, this is the user data<br/>
     /// associated with the connection.
     /// </para>
     ///
     /// <para>
-    /// This is *usually* the same as calling GetConnection() and then
-    /// fetching the user data associated with that connection, but for
+    /// This is *usually* the same as calling GetConnection() and then<br/>
+    /// fetching the user data associated with that connection, but for<br/>
     /// the following subtle differences:
     /// </para>
     ///
     /// <para>
-    /// - This user data will match the connection's user data at the time
-    ///   is captured at the time the message is returned by the API.
-    ///   If you subsequently change the userdata on the connection,
+    /// - This user data will match the connection's user data at the time<br/>
+    ///   is captured at the time the message is returned by the API.<br/>
+    ///   If you subsequently change the userdata on the connection,<br/>
     ///   this won't be updated.<br/>
     /// - This is an inline call, so it's *much* faster.<br/>
-    /// - You might have closed the connection, so fetching the user data
+    /// - You might have closed the connection, so fetching the user data<br/>
     ///   would not be possible.
     /// </para>
     ///
@@ -62,24 +62,24 @@ public struct SteamNetworkingMessage_t
     public long ConnectionUserData;
 
     /// <summary>
-    /// Local timestamp when the message was received
+    /// Local timestamp when the message was received<br/>
     /// Not used for outbound messages.
     /// </summary>
-    public long UsecTimeReceived;
+    public SteamNetworkingMicroseconds TimeReceived;
 
     /// <summary>
-    /// Message number assigned by the sender.  This is not used for outbound
-    /// messages.  Note that if multiple lanes are used, each lane has its own
-    /// message numbers, which are assigned sequentially, so messages from
+    /// Message number assigned by the sender.  This is not used for outbound<br/>
+    /// messages.  Note that if multiple lanes are used, each lane has its own<br/>
+    /// message numbers, which are assigned sequentially, so messages from<br/>
     /// different lanes will share the same numbers.
     /// </summary>
     public long MessageNumber;
 
     /// <summary>
     /// <para>
-    /// Function used to free up m_pData.  This mechanism exists so that
-    /// apps can create messages with buffers allocated from their own
-    /// heap, and pass them into the library.  This function will
+    /// Function used to free up m_pData.  This mechanism exists so that<br/>
+    /// apps can create messages with buffers allocated from their own<br/>
+    /// heap, and pass them into the library.  This function will<br/>
     /// usually be something like:
     /// </para>
     ///
@@ -90,14 +90,14 @@ public struct SteamNetworkingMessage_t
     public IntPtr FreeDataFuncPtr;
 
     /// <summary>
-    /// Function to used to decrement the internal reference count and, if
-    /// it's zero, release the message.  You should not set this function pointer,
+    /// Function to used to decrement the internal reference count and, if<br/>
+    /// it's zero, release the message.  You should not set this function pointer,<br/>
     /// or need to access this directly!  Use the Release() function instead!
     /// </summary>
     public IntPtr ReleaseFuncPtr;
 
     /// <summary>
-    /// When using ISteamNetworkingMessages, the channel number the message was received on
+    /// When using ISteamNetworkingMessages, the channel number the message was received on<br/>
     /// (Not used for messages sent or received on "connections")
     /// </summary>
     public int Channel;
@@ -111,7 +111,7 @@ public struct SteamNetworkingMessage_t
 
     /// <summary>
     /// <para>
-    /// Arbitrary user data that you can use when sending messages using
+    /// Arbitrary user data that you can use when sending messages using<br/>
     /// ISteamNetworkingUtils::AllocateMessage and ISteamNetworkingSockets::SendMessage.<br/>
     /// (The callback you set in m_pfnFreeData might use this field.)
     /// </para>
@@ -131,7 +131,7 @@ public struct SteamNetworkingMessage_t
     private ushort pad1;
 
     /// <summary>
-    /// You MUST call this when you're done with the object,
+    /// You MUST call this when you're done with the object,<br/>
     /// to free up memory, etc.
     /// </summary>
     public static void Release(IntPtr ptr)

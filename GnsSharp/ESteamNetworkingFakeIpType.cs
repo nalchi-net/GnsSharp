@@ -4,7 +4,7 @@
 namespace GnsSharp;
 
 /// <summary>
-/// "Fake IPs" are assigned to hosts, to make it easier to interface with
+/// "Fake IPs" are assigned to hosts, to make it easier to interface with<br/>
 /// older code that assumed all hosts will have an IPv4 address
 /// </summary>
 public enum ESteamNetworkingFakeIPType : int

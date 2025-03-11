@@ -7,18 +7,18 @@ using System;
 using System.Runtime.InteropServices;
 
 [StructLayout(LayoutKind.Sequential)]
-public struct HSteamNetConnection : IEquatable<HSteamNetConnection>
+public struct HSteamNetConnection : IEquatable<HSteamNetConnection>, IComparable<HSteamNetConnection>
 {
-    public uint Id;
+    public uint Handle;
 
-    public HSteamNetConnection(uint id)
+    public HSteamNetConnection(uint handle)
     {
-        this.Id = id;
+        this.Handle = handle;
     }
 
-    public static bool operator ==(HSteamNetConnection conn1, HSteamNetConnection conn2) => conn1.Id == conn2.Id;
+    public static bool operator ==(HSteamNetConnection conn1, HSteamNetConnection conn2) => conn1.Handle == conn2.Handle;
 
-    public static bool operator !=(HSteamNetConnection conn1, HSteamNetConnection conn2) => conn1.Id != conn2.Id;
+    public static bool operator !=(HSteamNetConnection conn1, HSteamNetConnection conn2) => conn1.Handle != conn2.Handle;
 
     public readonly bool Equals(HSteamNetConnection other) => this == other;
 
@@ -27,7 +27,12 @@ public struct HSteamNetConnection : IEquatable<HSteamNetConnection>
         return obj is HSteamNetConnection conn && this == conn;
     }
 
-    public override readonly int GetHashCode() => this.Id.GetHashCode();
+    public int CompareTo(HSteamNetConnection other)
+    {
+        return this.Handle.CompareTo(other.Handle);
+    }
 
-    public override readonly string ToString() => this.Id.ToString();
+    public override readonly int GetHashCode() => this.Handle.GetHashCode();
+
+    public override readonly string ToString() => this.Handle.ToString();
 }

@@ -4,13 +4,12 @@
 namespace GnsSharp;
 
 using System;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 
 /// <summary>
-/// Store an IP and port.  IPv6 is always used; IPv4 is represented using
-/// "IPv4-mapped" addresses: IPv4 aa.bb.cc.dd => IPv6 ::ffff:aabb:ccdd
+/// Store an IP and port.  IPv6 is always used; IPv4 is represented using<br/>
+/// "IPv4-mapped" addresses: IPv4 aa.bb.cc.dd => IPv6 ::ffff:aabb:ccdd<br/>
 /// (RFC 4291 section 2.5.5.2.)
 /// </summary>
 [StructLayout(LayoutKind.Sequential, Pack = 1)]
@@ -21,7 +20,7 @@ public struct SteamNetworkingIPAddr : IEquatable<SteamNetworkingIPAddr>
     public ushort Port;
 
     /// <summary>
-    /// Max length of the buffer needed to hold IP formatted using ToString, including '\0'
+    /// Max length of the buffer needed to hold IP formatted using ToString, including '\0'<br/>
     /// ([0123:4567:89ab:cdef:0123:4567:89ab:cdef]:12345)
     /// </summary>
     private const int MaxString = 48;
@@ -115,10 +114,10 @@ public struct SteamNetworkingIPAddr : IEquatable<SteamNetworkingIPAddr>
 
     /// <summary>
     /// <para>
-    /// Print to a string, with or without the port.  Mapped IPv4 addresses are printed
-    /// as dotted decimal (12.34.56.78), otherwise this will print the canonical
-    /// form according to RFC5952.  If you include the port, IPv6 will be surrounded by
-    /// brackets, e.g. [::1:2]:80.  Your buffer should be at least k_cchMaxString bytes
+    /// Print to a string, with or without the port.  Mapped IPv4 addresses are printed<br/>
+    /// as dotted decimal (12.34.56.78), otherwise this will print the canonical<br/>
+    /// form according to RFC5952.  If you include the port, IPv6 will be surrounded by<br/>
+    /// brackets, e.g. [::1:2]:80.  Your buffer should be at least k_cchMaxString bytes<br/>
     /// to avoid truncation
     /// </para>
     ///
@@ -143,10 +142,10 @@ public struct SteamNetworkingIPAddr : IEquatable<SteamNetworkingIPAddr>
 
     /// <summary>
     /// <para>
-    /// Print to a string, with the port.  Mapped IPv4 addresses are printed
-    /// as dotted decimal (12.34.56.78), otherwise this will print the canonical
-    /// form according to RFC5952.  If you include the port, IPv6 will be surrounded by
-    /// brackets, e.g. [::1:2]:80.  Your buffer should be at least k_cchMaxString bytes
+    /// Print to a string, with the port.  Mapped IPv4 addresses are printed<br/>
+    /// as dotted decimal (12.34.56.78), otherwise this will print the canonical<br/>
+    /// form according to RFC5952.  If you include the port, IPv6 will be surrounded by<br/>
+    /// brackets, e.g. [::1:2]:80.  Your buffer should be at least k_cchMaxString bytes<br/>
     /// to avoid truncation
     /// </para>
     ///
@@ -160,7 +159,7 @@ public struct SteamNetworkingIPAddr : IEquatable<SteamNetworkingIPAddr>
     }
 
     /// <summary>
-    /// Parse an IP address and optional port.  If a port is not present, it is set to 0.
+    /// Parse an IP address and optional port.  If a port is not present, it is set to 0.<br/>
     /// (This means that you cannot tell if a zero port was explicitly specified.)
     /// </summary>
     public bool ParseString(string str)
@@ -169,7 +168,7 @@ public struct SteamNetworkingIPAddr : IEquatable<SteamNetworkingIPAddr>
     }
 
     /// <summary>
-    /// Classify address as FakeIP.  This function never returns
+    /// Classify address as FakeIP.  This function never returns<br/>
     /// k_ESteamNetworkingFakeIPType_Invalid.
     /// </summary>
     public ESteamNetworkingFakeIPType GetFakeIPType()
@@ -198,12 +197,6 @@ public struct SteamNetworkingIPAddr : IEquatable<SteamNetworkingIPAddr>
         /// NOTE: As bytes, i.e. network byte order
         /// </summary>
         public Array4<byte> Ip;
-
-        [InlineArray(4)]
-        public struct Array4<T>
-        {
-            private T elem;
-        }
     }
 
     [StructLayout(LayoutKind.Explicit, Pack = 1)]
@@ -218,12 +211,6 @@ public struct SteamNetworkingIPAddr : IEquatable<SteamNetworkingIPAddr>
         public override int GetHashCode()
         {
             return this.Ipv6.GetHashCode();
-        }
-
-        [InlineArray(16)]
-        public struct Array16<T>
-        {
-            private T elem;
         }
     }
 }

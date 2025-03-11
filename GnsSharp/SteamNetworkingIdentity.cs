@@ -4,17 +4,14 @@
 namespace GnsSharp;
 
 using System;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 
-using PsnIdType = System.UInt64;
-
 /// <summary>
-/// An abstract way to represent the identity of a network host.  All identities can
-/// be represented as simple string.  Furthermore, this string representation is actually
-/// used on the wire in several places, even though it is less efficient, in order to
-/// facilitate forward compatibility.  (Old client code can handle an identity type that
+/// An abstract way to represent the identity of a network host.  All identities can<br/>
+/// be represented as simple string.  Furthermore, this string representation is actually<br/>
+/// used on the wire in several places, even though it is less efficient, in order to<br/>
+/// facilitate forward compatibility.  (Old client code can handle an identity type that<br/>
 /// it doesn't understand.)
 /// </summary>
 [StructLayout(LayoutKind.Sequential, Pack = 1)]
@@ -31,8 +28,8 @@ public struct SteamNetworkingIdentity : IEquatable<SteamNetworkingIdentity>
     /// </para>
     ///
     /// <para>
-    /// Number of bytes that are relevant below.  This MUST ALWAYS be
-    /// set.  (Use the accessors!)  This is important to enable old code to work
+    /// Number of bytes that are relevant below.  This MUST ALWAYS be<br/>
+    /// set.  (Use the accessors!)  This is important to enable old code to work<br/>
     /// with new identity types.
     /// </para>
     /// </summary>
@@ -194,7 +191,6 @@ public struct SteamNetworkingIdentity : IEquatable<SteamNetworkingIdentity>
     /// </summary>
     public void SetIPv4Addr(uint ipv4, ushort port)
     {
-        // TODO
         this.Type = ESteamNetworkingIdentityType.IPAddress;
         unsafe
         {
@@ -207,14 +203,12 @@ public struct SteamNetworkingIdentity : IEquatable<SteamNetworkingIdentity>
     /// <returns>Returns 0 if we are not an IPv4 address.</returns>
     public uint GetIPv4()
     {
-        // TODO
-        return 0;
+        return this.Type == ESteamNetworkingIdentityType.IPAddress ? this.Identity.Ip.GetIPv4() : 0;
     }
 
     public ESteamNetworkingFakeIPType GetFakeIPType()
     {
-        // TODO
-        return ESteamNetworkingFakeIPType.Invalid;
+        return this.Type == ESteamNetworkingIdentityType.IPAddress ? this.Identity.Ip.GetFakeIPType() : ESteamNetworkingFakeIPType.Invalid;
     }
 
     public bool IsFakeIP()
@@ -223,7 +217,7 @@ public struct SteamNetworkingIdentity : IEquatable<SteamNetworkingIdentity>
     }
 
     /// <summary>
-    /// "localhost" is equivalent for many purposes to "anonymous."  Our remote
+    /// "localhost" is equivalent for many purposes to "anonymous."  Our remote<br/>
     /// will identify us by the network address we use.<br/>
     /// Set to localhost.  (We always use IPv6 ::1 for this, not 127.0.0.1)
     /// </summary>
@@ -283,9 +277,9 @@ public struct SteamNetworkingIdentity : IEquatable<SteamNetworkingIdentity>
 
     /// <summary>
     /// <para>
-    /// Print to a human-readable string.  This is suitable for debug messages
-    /// or any other time you need to encode the identity as a string.  It has a
-    /// URL-like format (type:<type-data>).  Your buffer should be at least
+    /// Print to a human-readable string.  This is suitable for debug messages<br/>
+    /// or any other time you need to encode the identity as a string.  It has a<br/>
+    /// URL-like format (type:<type-data>).  Your buffer should be at least<br/>
     /// k_cchMaxString bytes big to avoid truncation.
     /// </para>
     ///
@@ -309,10 +303,10 @@ public struct SteamNetworkingIdentity : IEquatable<SteamNetworkingIdentity>
     }
 
     /// <summary>
-    /// Parse back a string that was generated using ToString.  If we don't understand the
-    /// string, but it looks "reasonable" (it matches the pattern type:<type-data> and doesn't
-    /// have any funky characters, etc), then we will return true, and the type is set to
-    /// k_ESteamNetworkingIdentityType_UnknownType.  false will only be returned if the string
+    /// Parse back a string that was generated using ToString.  If we don't understand the<br/>
+    /// string, but it looks "reasonable" (it matches the pattern type:<type-data> and doesn't<br/>
+    /// have any funky characters, etc), then we will return true, and the type is set to<br/>
+    /// k_ESteamNetworkingIdentityType_UnknownType.  false will only be returned if the string<br/>
     /// looks invalid.
     /// </summary>
     public bool ParseString(string str)
@@ -363,27 +357,9 @@ public struct SteamNetworkingIdentity : IEquatable<SteamNetworkingIdentity>
         [FieldOffset(0)]
         private Array32<uint> reserved;
 
-        public override int GetHashCode()
+        public override readonly int GetHashCode()
         {
             return this.UnknownRawString.GetHashCode();
-        }
-
-        [InlineArray(32)]
-        public struct Array32<T>
-        {
-            private T elem;
-        }
-
-        [InlineArray(33)]
-        public struct Array33<T>
-        {
-            private T elem;
-        }
-
-        [InlineArray(128)]
-        public struct Array128<T>
-        {
-            private byte elem;
         }
     }
 }

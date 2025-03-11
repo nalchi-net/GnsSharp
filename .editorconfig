@@ -35,5 +35,8 @@ dotnet_diagnostic.SA1601.severity = none
 # SA1121: Use built-in type alias
 dotnet_diagnostic.SA1121.severity = none
 
+# SA1602: Enumeration items should be documented
+dotnet_diagnostic.SA1602.severity = none
+
 [*.csproj]
 indent_size = 2

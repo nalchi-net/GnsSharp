@@ -10,8 +10,8 @@ public enum ESteamNetworkingIdentityType : int
 {
     /// <summary>
     /// Dummy/empty/invalid.<br/>
-    /// Please note that if we parse a string that we don't recognize
-    /// but that appears reasonable, we will NOT use this type.  Instead
+    /// Please note that if we parse a string that we don't recognize<br/>
+    /// but that appears reasonable, we will NOT use this type.  Instead<br/>
     /// we'll use ESteamNetworkingIdentityType.UnknownType.
     /// </summary>
     Invalid = 0,
@@ -39,15 +39,15 @@ public enum ESteamNetworkingIdentityType : int
     /// <para>
     /// Use their IP address (and port) as their "identity".<br/>
     /// These types of identities are always unauthenticated.<br/>
-    /// They are useful for porting plain sockets code, and other
-    /// situations where you don't care about authentication.  In this
-    /// case, the local identity will be "localhost",
+    /// They are useful for porting plain sockets code, and other<br/>
+    /// situations where you don't care about authentication.  In this<br/>
+    /// case, the local identity will be "localhost",<br/>
     /// and the remote address will be their network address.
     /// </para>
     ///
     /// <para>
-    /// We use the same type for either IPv4 or IPv6, and
-    /// the address is always store as IPv6.  We use IPv4
+    /// We use the same type for either IPv4 or IPv6, and<br/>
+    /// the address is always store as IPv6.  We use IPv4<br/>
     /// mapped addresses to handle IPv4.
     /// </para>
     /// </summary>
@@ -55,7 +55,7 @@ public enum ESteamNetworkingIdentityType : int
 
     /// <summary>
     /// Generic string blobs.  It's up to your app to interpret this.<br/>
-    /// This library can tell you if the remote host presented a certificate
+    /// This library can tell you if the remote host presented a certificate<br/>
     /// signed by somebody you have chosen to trust, with this identity on it.<br/>
     /// It's up to you to ultimately decide what this identity means.
     /// </summary>
@@ -63,17 +63,17 @@ public enum ESteamNetworkingIdentityType : int
 
     /// <summary>
     /// Generic binary blobs.  It's up to your app to interpret this.<br/>
-    /// This library can tell you if the remote host presented a certificate
+    /// This library can tell you if the remote host presented a certificate<br/>
     /// signed by somebody you have chosen to trust, with this identity on it.<br/>
     /// It's up to you to ultimately decide what this identity means.
     /// </summary>
     GenericBytes = 3,
 
     /// <summary>
-    /// This identity type is used when we parse a string that looks like is a
-    /// valid identity, just of a kind that we don't recognize.  In this case, we
-    /// can often still communicate with the peer!  Allowing such identities
-    /// for types we do not recognize useful is very useful for forward
+    /// This identity type is used when we parse a string that looks like is a<br/>
+    /// valid identity, just of a kind that we don't recognize.  In this case, we<br/>
+    /// can often still communicate with the peer!  Allowing such identities<br/>
+    /// for types we do not recognize useful is very useful for forward<br/>
     /// compatibility.
     /// </summary>
     UnknownType = 4,
