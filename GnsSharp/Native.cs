@@ -54,18 +54,64 @@ internal static partial class Native
 
 #if GNS_SHARP_OPENSOURCE_GNS // Open-source GNS exclusive API
 
+    /// <summary>
+    /// <para>
+    /// Initialize the library.  Optionally, you can set an initial identity for the default<br/>
+    /// interface that is returned by SteamNetworkingSockets().
+    /// </para>
+    ///
+    /// </para>
+    /// On failure, false is returned, and a non-localized diagnostic message is returned
+    /// </para>
+    /// </summary>
     [LibraryImport(GnsLibraryName)]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool GameNetworkingSockets_Init(in SteamNetworkingIdentity identity, ref SteamNetworkingErrMsg errMsg);
 
+    /// <summary>
+    /// Close all connections and listen sockets and free all resources
+    /// </summary>
     [LibraryImport(GnsLibraryName)]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
     public static partial void GameNetworkingSockets_Kill();
 
+    /// <summary>
+    /// Statistics about the global lock.
+    /// </summary>
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial void SteamNetworkingSockets_SetLockWaitWarningThreshold(SteamNetworkingMicroseconds usecThreshold);
+
+    /// <summary>
+    /// Statistics about the global lock.
+    /// </summary>
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial void SteamNetworkingSockets_SetLockAcquiredCallback(IntPtr callback);
+
+    /// <summary>
+    /// Statistics about the global lock.
+    /// </summary>
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial void SteamNetworkingSockets_SetLockHeldCallback(IntPtr callback);
+
+    /// <summary>
+    /// Called from the service thread at initialization time.<br/>
+    /// Use this to customize its priority / affinity, etc
+    /// </summary>
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial void SteamNetworkingSockets_SetServiceThreadInitCallback(IntPtr callback);
+
     [LibraryImport(GnsLibraryName)]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
     public static partial IntPtr SteamAPI_SteamNetworkingSockets_v009();
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial IntPtr SteamAPI_SteamNetworkingUtils_v003();
 
     [LibraryImport(GnsLibraryName)]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
@@ -104,6 +150,106 @@ internal static partial class Native
 
 #elif GNS_SHARP_STEAMWORKS_SDK // Steamworks SDK exclusive API
 
+    /// <summary>
+    /// See "Initializing the Steamworks SDK" above for how to choose an init method.<br/>
+    /// Same usage as SteamAPI_InitEx(), however does not verify ISteam* interfaces are<br/>
+    /// supported by the user's client and is exported from the dll
+    /// </summary>
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial ESteamAPIInitResult SteamAPI_InitFlat(out SteamErrMsg pOutErrMsg);
+
+    /// <summary>
+    /// Internal implementation of SteamAPI_InitEx.  This is done in a way that checks<br/>
+    /// all of the versions of interfaces from headers being compiled into this code.
+    /// </summary>
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial ESteamAPIInitResult SteamInternal_SteamAPI_Init([MarshalAs(UnmanagedType.LPUTF8Str)] string pszInternalCheckInterfaceVersions, out SteamErrMsg pOutErrMsg);
+
+    /// <summary>
+    /// SteamAPI_Shutdown should be called during process shutdown if possible.
+    /// </summary>
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial void SteamAPI_Shutdown();
+
+    /// <summary>
+    /// <para>
+    /// SteamAPI_RestartAppIfNecessary ensures that your executable was launched through Steam.
+    /// </para>
+    ///
+    /// <para>
+    /// Returns true if the current process should terminate. Steam is now re-launching your application.
+    /// </para>
+    ///
+    /// <para>
+    /// Returns false if no action needs to be taken. This means that your executable was started through<br/>
+    /// the Steam client, or a steam_appid.txt file is present in your game's directory (for development).<br/>
+    /// Your current process should continue if false is returned.
+    /// </para>
+    ///
+    /// <para>
+    /// NOTE: If you use the Steam DRM wrapper on your primary executable file, this check is unnecessary<br/>
+    /// since the DRM wrapper will ensure that your application was launched properly through Steam.
+    /// </para>
+    /// </summary>
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_RestartAppIfNecessary(uint unOwnAppID);
+
+    /// <summary>
+    /// Many Steam API functions allocate a small amount of thread-local memory for parameter storage.<br/>
+    /// SteamAPI_ReleaseCurrentThreadMemory() will free API memory associated with the calling thread.<br/>
+    /// This function is also called automatically by SteamAPI_RunCallbacks(), so a single-threaded<br/>
+    /// program never needs to explicitly call this function.
+    /// </summary>
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial void SteamAPI_ReleaseCurrentThreadMemory();
+
+    /// <summary>
+    /// Inform the API that you wish to use manual event dispatch.  This must be called after SteamAPI_Init, but before
+    /// you use any of the other manual dispatch functions below.
+    ///     </summary>
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial void SteamAPI_ManualDispatch_Init();
+
+    /// <summary>
+    /// Perform certain periodic actions that need to be performed.
+    /// </summary>
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial void SteamAPI_ManualDispatch_RunFrame(HSteamPipe hSteamPipe);
+
+    /// <summary>
+    /// Fetch the next pending callback on the given pipe, if any.  If a callback is available, true is returned
+    /// and the structure is populated.  In this case, you MUST call SteamAPI_ManualDispatch_FreeLastCallback
+    /// (after dispatching the callback) before calling SteamAPI_ManualDispatch_GetNextCallback again.
+    /// </summary>
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ManualDispatch_GetNextCallback(HSteamPipe hSteamPipe, ref CallbackMsg_t pCallbackMsg);
+
+    /// <summary>
+    /// You must call this after dispatching the callback, if SteamAPI_ManualDispatch_GetNextCallback returns true.
+    /// </summary>
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial void SteamAPI_ManualDispatch_FreeLastCallback(HSteamPipe hSteamPipe);
+
+    /// <summary>
+    /// Return the call result for the specified call on the specified pipe.  You really should
+    /// only call this in a handler for SteamAPICallCompleted_t callback.
+    /// </summary>
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ManualDispatch_GetAPICallResult(HSteamPipe hSteamPipe, SteamAPICall_t hSteamAPICall, Span<byte> pCallback, int cubCallback, int iCallbackExpected, [MarshalAs(UnmanagedType.I1)] ref bool pbFailed);
+
     [LibraryImport(GnsLibraryName)]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
     public static partial IntPtr SteamAPI_SteamNetworkingSockets_SteamAPI_v012();
@@ -111,6 +257,10 @@ internal static partial class Native
     [LibraryImport(GnsLibraryName)]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
     public static partial IntPtr SteamAPI_SteamGameServerNetworkingSockets_SteamAPI_v012();
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial IntPtr SteamAPI_SteamNetworkingUtils_SteamAPI_v004();
 
     [LibraryImport(GnsLibraryName)]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
@@ -158,6 +308,56 @@ internal static partial class Native
     [LibraryImport(GnsLibraryName)]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
     public static partial IntPtr SteamAPI_ISteamNetworkingSockets_CreateFakeUDPPort(IntPtr self, int idxFakeServerPort);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamNetworkingUtils_IsFakeIPv4(IntPtr self, uint nIPv4);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial ESteamNetworkingFakeIPType SteamAPI_ISteamNetworkingUtils_GetIPv4FakeIPType(IntPtr self, uint nIPv4);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial EResult SteamAPI_ISteamNetworkingUtils_GetRealIdentityForFakeIP(IntPtr self, in SteamNetworkingIPAddr fakeIP, out SteamNetworkingIdentity pOutRealIdentity);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static unsafe partial bool SteamAPI_ISteamNetworkingUtils_SetGlobalCallback_FakeIPResult(IntPtr self, FnSteamNetworkingFakeIPResult fnCallback);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static unsafe partial bool SteamAPI_ISteamNetworkingUtils_SetGlobalCallback_MessagesSessionRequest(IntPtr self, FnSteamNetworkingMessagesSessionRequest fnCallback);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static unsafe partial bool SteamAPI_ISteamNetworkingUtils_SetGlobalCallback_MessagesSessionFailed(IntPtr self, FnSteamNetworkingMessagesSessionFailed fnCallback);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial void SteamAPI_ISteamNetworkingUtils_SteamNetworkingIPAddr_ToString(IntPtr self, in SteamNetworkingIPAddr addr, Span<byte> buf, uint cbBuf, [MarshalAs(UnmanagedType.I1)] bool bWithPort);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamNetworkingUtils_SteamNetworkingIPAddr_ParseString(IntPtr self, ref SteamNetworkingIPAddr pAddr, [MarshalAs(UnmanagedType.LPUTF8Str)] string pszStr);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial ESteamNetworkingFakeIPType SteamAPI_ISteamNetworkingUtils_SteamNetworkingIPAddr_GetFakeIPType(IntPtr self, in SteamNetworkingIPAddr addr);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial void SteamAPI_ISteamNetworkingUtils_SteamNetworkingIdentity_ToString(IntPtr self, in SteamNetworkingIdentity identity, Span<byte> buf, uint cbBuf);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamNetworkingUtils_SteamNetworkingIdentity_ParseString(IntPtr self, ref SteamNetworkingIdentity pIdentity, [MarshalAs(UnmanagedType.LPUTF8Str)] string pszStr);
 
 #endif // Common API
 
@@ -461,4 +661,139 @@ internal static partial class Native
     [LibraryImport(GnsLibraryName)]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
     public static partial void SteamAPI_ISteamNetworkingSockets_RunCallbacks(IntPtr self);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial IntPtr SteamAPI_ISteamNetworkingUtils_AllocateMessage(IntPtr self, int cbAllocateBuffer);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial void SteamAPI_ISteamNetworkingUtils_InitRelayNetworkAccess(IntPtr self);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial ESteamNetworkingAvailability SteamAPI_ISteamNetworkingUtils_GetRelayNetworkStatus(IntPtr self, ref SteamRelayNetworkStatus_t pDetails);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial float SteamAPI_ISteamNetworkingUtils_GetLocalPingLocation(IntPtr self, ref SteamNetworkPingLocation_t result);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial int SteamAPI_ISteamNetworkingUtils_EstimatePingTimeBetweenTwoLocations(IntPtr self, in SteamNetworkPingLocation_t location1, in SteamNetworkPingLocation_t location2);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial int SteamAPI_ISteamNetworkingUtils_EstimatePingTimeFromLocalHost(IntPtr self, in SteamNetworkPingLocation_t remoteLocation);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial void SteamAPI_ISteamNetworkingUtils_ConvertPingLocationToString(IntPtr self, in SteamNetworkPingLocation_t location, Span<byte> pszBuf, int cchBufSize);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamNetworkingUtils_ParsePingLocationString(IntPtr self, [MarshalAs(UnmanagedType.LPUTF8Str)] string pszString, ref SteamNetworkPingLocation_t result);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamNetworkingUtils_CheckPingDataUpToDate(IntPtr self, float flMaxAgeSeconds);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial int SteamAPI_ISteamNetworkingUtils_GetPingToDataCenter(IntPtr self, SteamNetworkingPOPID popID, ref SteamNetworkingPOPID pViaRelayPoP);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial int SteamAPI_ISteamNetworkingUtils_GetDirectPingToPOP(IntPtr self, SteamNetworkingPOPID popID);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial int SteamAPI_ISteamNetworkingUtils_GetPOPCount(IntPtr self);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial int SteamAPI_ISteamNetworkingUtils_GetPOPList(IntPtr self, ref SteamNetworkingPOPID list, int nListSz);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial SteamNetworkingMicroseconds SteamAPI_ISteamNetworkingUtils_GetLocalTimestamp(IntPtr self);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static unsafe partial void SteamAPI_ISteamNetworkingUtils_SetDebugOutputFunction(IntPtr self, ESteamNetworkingSocketsDebugOutputType eDetailLevel, FSteamNetworkingSocketsDebugOutput pfnFunc);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamNetworkingUtils_SetGlobalConfigValueInt32(IntPtr self, ESteamNetworkingConfigValue eValue, int val);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamNetworkingUtils_SetGlobalConfigValueFloat(IntPtr self, ESteamNetworkingConfigValue eValue, float val);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamNetworkingUtils_SetGlobalConfigValueString(IntPtr self, ESteamNetworkingConfigValue eValue, [MarshalAs(UnmanagedType.LPUTF8Str)] string val);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamNetworkingUtils_SetGlobalConfigValuePtr(IntPtr self, ESteamNetworkingConfigValue eValue, IntPtr val);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamNetworkingUtils_SetConnectionConfigValueInt32(IntPtr self, HSteamNetConnection hConn, ESteamNetworkingConfigValue eValue, int val);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamNetworkingUtils_SetConnectionConfigValueFloat(IntPtr self, HSteamNetConnection hConn, ESteamNetworkingConfigValue eValue, float val);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamNetworkingUtils_SetConnectionConfigValueString(IntPtr self, HSteamNetConnection hConn, ESteamNetworkingConfigValue eValue, [MarshalAs(UnmanagedType.LPUTF8Str)] string val);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static unsafe partial bool SteamAPI_ISteamNetworkingUtils_SetGlobalCallback_SteamNetConnectionStatusChanged(IntPtr self, FnSteamNetConnectionStatusChanged fnCallback);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static unsafe partial bool SteamAPI_ISteamNetworkingUtils_SetGlobalCallback_SteamNetAuthenticationStatusChanged(IntPtr self, FnSteamNetAuthenticationStatusChanged fnCallback);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static unsafe partial bool SteamAPI_ISteamNetworkingUtils_SetGlobalCallback_SteamRelayNetworkStatusChanged(IntPtr self, FnSteamRelayNetworkStatusChanged fnCallback);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamNetworkingUtils_SetConfigValue(IntPtr self, ESteamNetworkingConfigValue eValue, ESteamNetworkingConfigScope eScopeType, IntPtr scopeObj, ESteamNetworkingConfigDataType eDataType, ReadOnlySpan<byte> pArg);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamNetworkingUtils_SetConfigValueStruct(IntPtr self, in SteamNetworkingConfigValue_t opt, ESteamNetworkingConfigScope eScopeType, IntPtr scopeObj);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial ESteamNetworkingGetConfigValueResult SteamAPI_ISteamNetworkingUtils_GetConfigValue(IntPtr self, ESteamNetworkingConfigValue eValue, ESteamNetworkingConfigScope eScopeType, IntPtr scopeObj, out ESteamNetworkingConfigDataType pOutDataType, Span<byte> pResult, ref SizeT cbResult);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.LPUTF8Str)]
+    public static partial string SteamAPI_ISteamNetworkingUtils_GetConfigValueInfo(IntPtr self, ESteamNetworkingConfigValue eValue, out ESteamNetworkingConfigDataType pOutDataType, out ESteamNetworkingConfigScope pOutScope);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial ESteamNetworkingConfigValue SteamAPI_ISteamNetworkingUtils_IterateGenericEditableConfigValues(IntPtr self, ESteamNetworkingConfigValue eCurrent, [MarshalAs(UnmanagedType.I1)] bool bEnumerateDevVars);
 }

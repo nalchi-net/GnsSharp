@@ -38,5 +38,8 @@ dotnet_diagnostic.SA1121.severity = none
 # SA1602: Enumeration items should be documented
 dotnet_diagnostic.SA1602.severity = none
 
+# SA1200: Using directives should be placed correctly
+dotnet_diagnostic.SA1200.severity = none
+
 [*.csproj]
 indent_size = 2

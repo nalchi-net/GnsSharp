@@ -67,6 +67,12 @@ public struct Array256<T>
     private T elem;
 }
 
+[InlineArray(512)]
+public struct Array512<T>
+{
+    private T elem;
+}
+
 [InlineArray(1024)]
 public struct Array1024<T>
 {

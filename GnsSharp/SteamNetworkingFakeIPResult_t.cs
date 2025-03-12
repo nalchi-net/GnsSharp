@@ -14,6 +14,8 @@ using System.Runtime.InteropServices;
 [StructLayout(LayoutKind.Sequential, Pack = Native.PackSize)]
 public struct SteamNetworkingFakeIPResult_t
 {
+    public const int Callback = Constants.SteamNetworkingSocketsCallbacks + 3;
+
     /// <summary>
     /// <para>
     /// Status/result of the allocation request.  Possible failure values are:<br/>

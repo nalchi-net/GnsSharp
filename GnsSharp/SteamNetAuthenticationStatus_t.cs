@@ -24,10 +24,12 @@ using System.Runtime.InteropServices;
 [StructLayout(LayoutKind.Sequential, Pack = Native.PackSize)]
 public struct SteamNetAuthenticationStatus_t
 {
+    public const int Callback = Constants.SteamNetworkingSocketsCallbacks + 2;
+
     /// <summary>
     /// Status
     /// </summary>
-    public ESteamNetworkingAvailability Availability;
+    public ESteamNetworkingAvailability Avail;
 
     /// <summary>
     /// Non-localized English language status.  For diagnostic/debugging
