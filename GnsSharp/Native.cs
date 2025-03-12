@@ -295,7 +295,7 @@ internal static partial class Native
 
     [LibraryImport(GnsLibraryName)]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
-    public static partial void SteamAPI_ISteamNetworkingSockets_GetFakeIP(IntPtr self, int idxFirstPort, ref SteamNetworkingFakeIPResult_t pInfo);
+    public static partial void SteamAPI_ISteamNetworkingSockets_GetFakeIP(IntPtr self, int idxFirstPort, out SteamNetworkingFakeIPResult_t pInfo);
 
     [LibraryImport(GnsLibraryName)]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
@@ -507,7 +507,7 @@ internal static partial class Native
     [LibraryImport(GnsLibraryName)]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool SteamAPI_ISteamNetworkingSockets_CloseConnection(IntPtr self, HSteamNetConnection hPeer, int nReason, [MarshalAs(UnmanagedType.LPUTF8Str)] string pszDebug, [MarshalAs(UnmanagedType.I1)] bool bEnableLinger);
+    public static partial bool SteamAPI_ISteamNetworkingSockets_CloseConnection(IntPtr self, HSteamNetConnection hPeer, int nReason, [MarshalAs(UnmanagedType.LPUTF8Str)] string? pszDebug, [MarshalAs(UnmanagedType.I1)] bool bEnableLinger);
 
     [LibraryImport(GnsLibraryName)]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
@@ -551,11 +551,11 @@ internal static partial class Native
     [LibraryImport(GnsLibraryName)]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool SteamAPI_ISteamNetworkingSockets_GetConnectionInfo(IntPtr self, HSteamNetConnection hConn, ref SteamNetConnectionInfo_t pInfo);
+    public static partial bool SteamAPI_ISteamNetworkingSockets_GetConnectionInfo(IntPtr self, HSteamNetConnection hConn, out SteamNetConnectionInfo_t pInfo);
 
     [LibraryImport(GnsLibraryName)]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
-    public static partial EResult SteamAPI_ISteamNetworkingSockets_GetConnectionRealTimeStatus(IntPtr self, HSteamNetConnection hConn, ref SteamNetConnectionRealTimeStatus_t pStatus, int nLanes, Span<SteamNetConnectionRealTimeLaneStatus_t> pLanes);
+    public static partial EResult SteamAPI_ISteamNetworkingSockets_GetConnectionRealTimeStatus(IntPtr self, HSteamNetConnection hConn, out SteamNetConnectionRealTimeStatus_t pStatus, int nLanes, Span<SteamNetConnectionRealTimeLaneStatus_t> pLanes);
 
     [LibraryImport(GnsLibraryName)]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
@@ -564,7 +564,7 @@ internal static partial class Native
     [LibraryImport(GnsLibraryName)]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool SteamAPI_ISteamNetworkingSockets_GetListenSocketAddress(IntPtr self, HSteamListenSocket hSocket, ref SteamNetworkingIPAddr address);
+    public static partial bool SteamAPI_ISteamNetworkingSockets_GetListenSocketAddress(IntPtr self, HSteamListenSocket hSocket, out SteamNetworkingIPAddr address);
 
     [LibraryImport(GnsLibraryName)]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
@@ -578,7 +578,7 @@ internal static partial class Native
     [LibraryImport(GnsLibraryName)]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool SteamAPI_ISteamNetworkingSockets_GetIdentity(IntPtr self, ref SteamNetworkingIdentity pIdentity);
+    public static partial bool SteamAPI_ISteamNetworkingSockets_GetIdentity(IntPtr self, out SteamNetworkingIdentity pIdentity);
 
     [LibraryImport(GnsLibraryName)]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
@@ -586,7 +586,7 @@ internal static partial class Native
 
     [LibraryImport(GnsLibraryName)]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
-    public static partial ESteamNetworkingAvailability SteamAPI_ISteamNetworkingSockets_GetAuthenticationStatus(IntPtr self, ref SteamNetAuthenticationStatus_t pDetails);
+    public static partial ESteamNetworkingAvailability SteamAPI_ISteamNetworkingSockets_GetAuthenticationStatus(IntPtr self, out SteamNetAuthenticationStatus_t pDetails);
 
     [LibraryImport(GnsLibraryName)]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
@@ -629,7 +629,7 @@ internal static partial class Native
 
     [LibraryImport(GnsLibraryName)]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
-    public static partial EResult SteamAPI_ISteamNetworkingSockets_GetHostedDedicatedServerAddress(IntPtr self, ref SteamDatagramHostedAddress pRouting);
+    public static partial EResult SteamAPI_ISteamNetworkingSockets_GetHostedDedicatedServerAddress(IntPtr self, out SteamDatagramHostedAddress pRouting);
 
     [LibraryImport(GnsLibraryName)]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]

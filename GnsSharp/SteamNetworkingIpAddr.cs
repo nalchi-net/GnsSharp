@@ -133,11 +133,7 @@ public struct SteamNetworkingIPAddr : IEquatable<SteamNetworkingIPAddr>
 #elif GNS_SHARP_STEAMWORKS_SDK
         Native.SteamAPI_SteamNetworkingIPAddr_ToString(ref this, raw, (uint)raw.Length, withPort);
 #endif
-
-        int nullIndex = raw.IndexOf((byte)0);
-        ReadOnlySpan<byte> trunc = raw.Slice(0, nullIndex);
-
-        return Encoding.UTF8.GetString(trunc);
+        return Utf8StringHelper.NullTerminatedSpanToString(raw);
     }
 
     /// <summary>
