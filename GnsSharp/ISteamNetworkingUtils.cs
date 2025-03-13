@@ -502,7 +502,7 @@ public static class ISteamNetworkingUtils
     /// </summary>
     public static bool SetGlobalConfigValueInt32(ESteamNetworkingConfigValue value, int val)
     {
-        return SetConfigValue(value, ESteamNetworkingConfigScope.Global, IntPtr.Zero, ESteamNetworkingConfigDataType.Int32, MemoryMarshal.AsBytes(MemoryMarshal.CreateReadOnlySpan(ref val, 1)));
+        return Native.SteamAPI_ISteamNetworkingUtils_SetGlobalConfigValueInt32(Self, value, val);
     }
 
     /// <summary>
@@ -510,7 +510,7 @@ public static class ISteamNetworkingUtils
     /// </summary>
     public static bool SetGlobalConfigValueFloat(ESteamNetworkingConfigValue value, float val)
     {
-        return SetConfigValue(value, ESteamNetworkingConfigScope.Global, IntPtr.Zero, ESteamNetworkingConfigDataType.Float, MemoryMarshal.AsBytes(MemoryMarshal.CreateReadOnlySpan(ref val, 1)));
+        return Native.SteamAPI_ISteamNetworkingUtils_SetGlobalConfigValueFloat(Self, value, val);
     }
 
     /// <summary>
@@ -518,15 +518,7 @@ public static class ISteamNetworkingUtils
     /// </summary>
     public static bool SetGlobalConfigValueString(ESteamNetworkingConfigValue value, string val)
     {
-        // Allocate enough space for the converted UTF-8 string.
-        int utf8BytesCount = Encoding.UTF8.GetByteCount(val);
-        Span<byte> span = stackalloc byte[utf8BytesCount + 1];
-
-        // Marshal to this span directly.
-        int bytesWritten = Encoding.UTF8.GetBytes(val.AsSpan(), span);
-        span[bytesWritten++] = (byte)0;
-
-        return SetConfigValue(value, ESteamNetworkingConfigScope.Global, IntPtr.Zero, ESteamNetworkingConfigDataType.String, span);
+        return Native.SteamAPI_ISteamNetworkingUtils_SetGlobalConfigValueString(Self, value, val);
     }
 
     /// <summary>
@@ -534,7 +526,7 @@ public static class ISteamNetworkingUtils
     /// </summary>
     public static bool SetGlobalConfigValuePtr(ESteamNetworkingConfigValue value, IntPtr val)
     {
-        return SetConfigValue(value, ESteamNetworkingConfigScope.Global, IntPtr.Zero, ESteamNetworkingConfigDataType.Ptr, MemoryMarshal.AsBytes(MemoryMarshal.CreateReadOnlySpan(ref val, 1)));
+        return Native.SteamAPI_ISteamNetworkingUtils_SetGlobalConfigValuePtr(Self, value, val);
     }
 
     /// <summary>
@@ -542,7 +534,7 @@ public static class ISteamNetworkingUtils
     /// </summary>
     public static bool SetConnectionConfigValueInt32(HSteamNetConnection conn, ESteamNetworkingConfigValue value, int val)
     {
-        return SetConfigValue(value, ESteamNetworkingConfigScope.Connection, (IntPtr)conn.Handle, ESteamNetworkingConfigDataType.Int32, MemoryMarshal.AsBytes(MemoryMarshal.CreateReadOnlySpan(ref val, 1)));
+        return Native.SteamAPI_ISteamNetworkingUtils_SetConnectionConfigValueInt32(Self, conn, value, val);
     }
 
     /// <summary>
@@ -550,7 +542,7 @@ public static class ISteamNetworkingUtils
     /// </summary>
     public static bool SetConnectionConfigValueFloat(HSteamNetConnection conn, ESteamNetworkingConfigValue value, float val)
     {
-        return SetConfigValue(value, ESteamNetworkingConfigScope.Connection, (IntPtr)conn.Handle, ESteamNetworkingConfigDataType.Float, MemoryMarshal.AsBytes(MemoryMarshal.CreateReadOnlySpan(ref val, 1)));
+        return Native.SteamAPI_ISteamNetworkingUtils_SetConnectionConfigValueFloat(Self, conn, value, val);
     }
 
     /// <summary>
@@ -558,15 +550,7 @@ public static class ISteamNetworkingUtils
     /// </summary>
     public static bool SetConnectionConfigValueString(HSteamNetConnection conn, ESteamNetworkingConfigValue value, string val)
     {
-        // Allocate enough space for the converted UTF-8 string.
-        int utf8BytesCount = Encoding.UTF8.GetByteCount(val);
-        Span<byte> span = stackalloc byte[utf8BytesCount + 1];
-
-        // Marshal to this span directly.
-        int bytesWritten = Encoding.UTF8.GetBytes(val.AsSpan(), span);
-        span[bytesWritten++] = (byte)0;
-
-        return SetConfigValue(value, ESteamNetworkingConfigScope.Connection, (IntPtr)conn.Handle, ESteamNetworkingConfigDataType.String, span);
+        return Native.SteamAPI_ISteamNetworkingUtils_SetConnectionConfigValueString(Self, conn, value, val);
     }
 
     /// <summary>
@@ -577,7 +561,7 @@ public static class ISteamNetworkingUtils
     /// </summary>
     public static unsafe bool SetGlobalCallback_SteamNetConnectionStatusChanged(FnPtrSteamNetConnectionStatusChanged callback)
     {
-        return SetGlobalConfigValuePtr(ESteamNetworkingConfigValue.Callback_ConnectionStatusChanged, (IntPtr)callback);
+        return Native.SteamAPI_ISteamNetworkingUtils_SetGlobalCallback_SteamNetConnectionStatusChanged(Self, callback);
     }
 
     /// <summary>
@@ -588,7 +572,7 @@ public static class ISteamNetworkingUtils
     /// </summary>
     public static bool SetGlobalCallback_SteamNetConnectionStatusChanged(FnSteamNetConnectionStatusChanged callback)
     {
-        return SetGlobalConfigValuePtr(ESteamNetworkingConfigValue.Callback_ConnectionStatusChanged, Marshal.GetFunctionPointerForDelegate(callback));
+        return Native.SteamAPI_ISteamNetworkingUtils_SetGlobalCallback_SteamNetConnectionStatusChanged(Self, callback);
     }
 
     /// <summary>
@@ -599,7 +583,7 @@ public static class ISteamNetworkingUtils
     /// </summary>
     public static unsafe bool SetGlobalCallback_SteamNetAuthenticationStatusChanged(FnPtrSteamNetAuthenticationStatusChanged callback)
     {
-        return SetGlobalConfigValuePtr(ESteamNetworkingConfigValue.Callback_AuthStatusChanged, (IntPtr)callback);
+        return Native.SteamAPI_ISteamNetworkingUtils_SetGlobalCallback_SteamNetAuthenticationStatusChanged(Self, callback);
     }
 
     /// <summary>
@@ -610,7 +594,7 @@ public static class ISteamNetworkingUtils
     /// </summary>
     public static bool SetGlobalCallback_SteamNetAuthenticationStatusChanged(FnSteamNetAuthenticationStatusChanged callback)
     {
-        return SetGlobalConfigValuePtr(ESteamNetworkingConfigValue.Callback_AuthStatusChanged, Marshal.GetFunctionPointerForDelegate(callback));
+        return Native.SteamAPI_ISteamNetworkingUtils_SetGlobalCallback_SteamNetAuthenticationStatusChanged(Self, callback);
     }
 
     /// <summary>
@@ -621,7 +605,7 @@ public static class ISteamNetworkingUtils
     /// </summary>
     public static unsafe bool SetGlobalCallback_SteamRelayNetworkStatusChanged(FnPtrSteamRelayNetworkStatusChanged callback)
     {
-        return SetGlobalConfigValuePtr(ESteamNetworkingConfigValue.Callback_RelayNetworkStatusChanged, (IntPtr)callback);
+        return Native.SteamAPI_ISteamNetworkingUtils_SetGlobalCallback_SteamRelayNetworkStatusChanged(Self, callback);
     }
 
     /// <summary>
@@ -632,7 +616,7 @@ public static class ISteamNetworkingUtils
     /// </summary>
     public static bool SetGlobalCallback_SteamRelayNetworkStatusChanged(FnSteamRelayNetworkStatusChanged callback)
     {
-        return SetGlobalConfigValuePtr(ESteamNetworkingConfigValue.Callback_RelayNetworkStatusChanged, Marshal.GetFunctionPointerForDelegate(callback));
+        return Native.SteamAPI_ISteamNetworkingUtils_SetGlobalCallback_SteamRelayNetworkStatusChanged(Self, callback);
     }
 
     /// <summary>
@@ -643,7 +627,11 @@ public static class ISteamNetworkingUtils
     /// </summary>
     public static unsafe bool SetGlobalCallback_FakeIPResult(FnPtrSteamNetworkingFakeIPResult callback)
     {
+#if GNS_SHARP_OPENSOURCE_GNS
         return SetGlobalConfigValuePtr(ESteamNetworkingConfigValue.Callback_FakeIPResult, (IntPtr)callback);
+#elif GNS_SHARP_STEAMWORKS_SDK
+        return Native.SteamAPI_ISteamNetworkingUtils_SetGlobalCallback_FakeIPResult(Self, callback);
+#endif
     }
 
     /// <summary>
@@ -654,7 +642,11 @@ public static class ISteamNetworkingUtils
     /// </summary>
     public static bool SetGlobalCallback_FakeIPResult(FnSteamNetworkingFakeIPResult callback)
     {
+#if GNS_SHARP_OPENSOURCE_GNS
         return SetGlobalConfigValuePtr(ESteamNetworkingConfigValue.Callback_FakeIPResult, Marshal.GetFunctionPointerForDelegate(callback));
+#elif GNS_SHARP_STEAMWORKS_SDK
+        return Native.SteamAPI_ISteamNetworkingUtils_SetGlobalCallback_FakeIPResult(Self, callback);
+#endif
     }
 
     /// <summary>
@@ -665,7 +657,11 @@ public static class ISteamNetworkingUtils
     /// </summary>
     public static unsafe bool SetGlobalCallback_MessagesSessionRequest(FnPtrSteamNetworkingMessagesSessionRequest callback)
     {
+#if GNS_SHARP_OPENSOURCE_GNS
         return SetGlobalConfigValuePtr(ESteamNetworkingConfigValue.Callback_MessagesSessionRequest, (IntPtr)callback);
+#elif GNS_SHARP_STEAMWORKS_SDK
+        return Native.SteamAPI_ISteamNetworkingUtils_SetGlobalCallback_MessagesSessionRequest(Self, callback);
+#endif
     }
 
     /// <summary>
@@ -676,7 +672,11 @@ public static class ISteamNetworkingUtils
     /// </summary>
     public static bool SetGlobalCallback_MessagesSessionRequest(FnSteamNetworkingMessagesSessionRequest callback)
     {
+#if GNS_SHARP_OPENSOURCE_GNS
         return SetGlobalConfigValuePtr(ESteamNetworkingConfigValue.Callback_MessagesSessionRequest, Marshal.GetFunctionPointerForDelegate(callback));
+#elif GNS_SHARP_STEAMWORKS_SDK
+        return Native.SteamAPI_ISteamNetworkingUtils_SetGlobalCallback_MessagesSessionRequest(Self, callback);
+#endif
     }
 
     /// <summary>
@@ -687,7 +687,11 @@ public static class ISteamNetworkingUtils
     /// </summary>
     public static unsafe bool SetGlobalCallback_MessagesSessionFailed(FnPtrSteamNetworkingMessagesSessionFailed callback)
     {
+#if GNS_SHARP_OPENSOURCE_GNS
         return SetGlobalConfigValuePtr(ESteamNetworkingConfigValue.Callback_MessagesSessionFailed, (IntPtr)callback);
+#elif GNS_SHARP_STEAMWORKS_SDK
+        return Native.SteamAPI_ISteamNetworkingUtils_SetGlobalCallback_MessagesSessionFailed(Self, callback);
+#endif
     }
 
     /// <summary>
@@ -698,7 +702,11 @@ public static class ISteamNetworkingUtils
     /// </summary>
     public static bool SetGlobalCallback_MessagesSessionFailed(FnSteamNetworkingMessagesSessionFailed callback)
     {
+#if GNS_SHARP_OPENSOURCE_GNS
         return SetGlobalConfigValuePtr(ESteamNetworkingConfigValue.Callback_MessagesSessionFailed, Marshal.GetFunctionPointerForDelegate(callback));
+#elif GNS_SHARP_STEAMWORKS_SDK
+        return Native.SteamAPI_ISteamNetworkingUtils_SetGlobalCallback_MessagesSessionFailed(Self, callback);
+#endif
     }
 
     /// <summary>
