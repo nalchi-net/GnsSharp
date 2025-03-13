@@ -12,7 +12,14 @@ global using unsafe FnPtrSteamNetworkingMessagesSessionFailed = delegate* unmana
 global using unsafe FnPtrSteamNetworkingMessagesSessionRequest = delegate* unmanaged[Cdecl]<ref GnsSharp.SteamNetworkingMessagesSessionRequest_t, void>;
 global using unsafe FnPtrSteamRelayNetworkStatusChanged = delegate* unmanaged[Cdecl]<ref GnsSharp.SteamRelayNetworkStatus_t, void>;
 
+global using unsafe FPtrCustomMemoryFree = delegate* unmanaged[Cdecl]<void*, void>;
+global using unsafe FPtrCustomMemoryMalloc = delegate* unmanaged[Cdecl]<System.UIntPtr, void*>;
+global using unsafe FPtrCustomMemoryRealloc = delegate* unmanaged[Cdecl]<void*, System.UIntPtr, void*>;
+
 global using unsafe FPtrSteamNetworkingSocketsDebugOutput = delegate* unmanaged[Cdecl]<GnsSharp.ESteamNetworkingSocketsDebugOutputType, byte*, void>;
+
+global using unsafe FPtrSteamNetworkingSocketsLockWaitedFor = delegate* unmanaged[Cdecl]<byte*, System.Int64, void>;
+global using unsafe FPtrSteamNetworkingSocketsServiceThreadInit = delegate* unmanaged[Cdecl]<void>;
 
 /// <summary>
 /// handle to a communication pipe to the Steam client

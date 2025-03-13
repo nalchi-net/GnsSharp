@@ -54,56 +54,46 @@ internal static partial class Native
 
 #if GNS_SHARP_OPENSOURCE_GNS // Open-source GNS exclusive API
 
-    /// <summary>
-    /// <para>
-    /// Initialize the library.  Optionally, you can set an initial identity for the default<br/>
-    /// interface that is returned by SteamNetworkingSockets().
-    /// </para>
-    ///
-    /// </para>
-    /// On failure, false is returned, and a non-localized diagnostic message is returned
-    /// </para>
-    /// </summary>
     [LibraryImport(GnsLibraryName)]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool GameNetworkingSockets_Init(in SteamNetworkingIdentity identity, ref SteamNetworkingErrMsg errMsg);
+    public static partial bool GameNetworkingSockets_Init(in SteamNetworkingIdentity identity, out SteamNetworkingErrMsg errMsg);
 
-    /// <summary>
-    /// Close all connections and listen sockets and free all resources
-    /// </summary>
     [LibraryImport(GnsLibraryName)]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
     public static partial void GameNetworkingSockets_Kill();
 
-    /// <summary>
-    /// Statistics about the global lock.
-    /// </summary>
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static unsafe partial void SteamNetworkingSockets_SetCustomMemoryAllocator(FPtrCustomMemoryMalloc malloc, FPtrCustomMemoryFree free, FPtrCustomMemoryRealloc realloc);
+
     [LibraryImport(GnsLibraryName)]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
     public static partial void SteamNetworkingSockets_SetLockWaitWarningThreshold(SteamNetworkingMicroseconds usecThreshold);
 
-    /// <summary>
-    /// Statistics about the global lock.
-    /// </summary>
     [LibraryImport(GnsLibraryName)]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
-    public static partial void SteamNetworkingSockets_SetLockAcquiredCallback(IntPtr callback);
+    public static unsafe partial void SteamNetworkingSockets_SetLockAcquiredCallback(FPtrSteamNetworkingSocketsLockWaitedFor callback);
 
-    /// <summary>
-    /// Statistics about the global lock.
-    /// </summary>
     [LibraryImport(GnsLibraryName)]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
-    public static partial void SteamNetworkingSockets_SetLockHeldCallback(IntPtr callback);
+    public static partial void SteamNetworkingSockets_SetLockAcquiredCallback(FSteamNetworkingSocketsLockWaitedFor callback);
 
-    /// <summary>
-    /// Called from the service thread at initialization time.<br/>
-    /// Use this to customize its priority / affinity, etc
-    /// </summary>
     [LibraryImport(GnsLibraryName)]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
-    public static partial void SteamNetworkingSockets_SetServiceThreadInitCallback(IntPtr callback);
+    public static unsafe partial void SteamNetworkingSockets_SetLockHeldCallback(FPtrSteamNetworkingSocketsLockWaitedFor callback);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial void SteamNetworkingSockets_SetLockHeldCallback(FSteamNetworkingSocketsLockWaitedFor callback);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static unsafe partial void SteamNetworkingSockets_SetServiceThreadInitCallback(FPtrSteamNetworkingSocketsServiceThreadInit callback);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial void SteamNetworkingSockets_SetServiceThreadInitCallback(FSteamNetworkingSocketsServiceThreadInit callback);
 
     [LibraryImport(GnsLibraryName)]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]

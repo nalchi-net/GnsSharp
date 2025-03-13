@@ -14,6 +14,12 @@ using System.Runtime.InteropServices;
 public delegate void FSteamNetworkingSocketsDebugOutput(ESteamNetworkingSocketsDebugOutputType type, [MarshalAs(UnmanagedType.LPUTF8Str)] string msg);
 
 [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+public delegate void FSteamNetworkingSocketsLockWaitedFor([MarshalAs(UnmanagedType.LPUTF8Str)] string tags, SteamNetworkingMicroseconds usecWaited);
+
+[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+public delegate void FSteamNetworkingSocketsServiceThreadInit();
+
+[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 public delegate void FnSteamNetConnectionStatusChanged(ref SteamNetConnectionStatusChangedCallback_t callback);
 
 [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
