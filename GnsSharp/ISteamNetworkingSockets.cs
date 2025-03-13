@@ -1491,18 +1491,42 @@ public static class ISteamNetworkingSockets
     /// Pass this blob to your game coordinator and call SteamDatagram_CreateCert.
     /// </para>
     /// </summary>
-    public static bool GetCertificateRequest(ref int blobSize, Span<byte> blob, ref SteamNetworkingErrMsg errMsg)
+    public static bool GetCertificateRequest(ref int blobSize, Span<byte> blob, out string? errMsg)
     {
-        return Native.SteamAPI_ISteamNetworkingSockets_GetCertificateRequest(Self, ref blobSize, blob, ref errMsg);
+        bool result = Native.SteamAPI_ISteamNetworkingSockets_GetCertificateRequest(Self, ref blobSize, blob, out SteamNetworkingErrMsg msg);
+
+        if (!result)
+        {
+            ReadOnlySpan<byte> span = msg;
+            errMsg = Utf8StringHelper.NullTerminatedSpanToString(span);
+        }
+        else
+        {
+            errMsg = null;
+        }
+
+        return result;
     }
 
     /// <summary>
     /// Set the certificate.  The certificate blob should be the output of<br/>
     /// SteamDatagram_CreateCert.
     /// </summary>
-    public static bool SetCertificate(ReadOnlySpan<byte> certificate, ref SteamNetworkingErrMsg errMsg)
+    public static bool SetCertificate(ReadOnlySpan<byte> certificate, out string? errMsg)
     {
-        return Native.SteamAPI_ISteamNetworkingSockets_SetCertificate(Self, certificate, certificate.Length, ref errMsg);
+        bool result = Native.SteamAPI_ISteamNetworkingSockets_SetCertificate(Self, certificate, certificate.Length, out SteamNetworkingErrMsg msg);
+
+        if (!result)
+        {
+            ReadOnlySpan<byte> span = msg;
+            errMsg = Utf8StringHelper.NullTerminatedSpanToString(span);
+        }
+        else
+        {
+            errMsg = null;
+        }
+
+        return result;
     }
 
     /// <summary>

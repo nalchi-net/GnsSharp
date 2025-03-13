@@ -656,12 +656,12 @@ internal static partial class Native
     [LibraryImport(GnsLibraryName)]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool SteamAPI_ISteamNetworkingSockets_GetCertificateRequest(IntPtr self, ref int pcbBlob, Span<byte> pBlob, ref SteamNetworkingErrMsg errMsg);
+    public static partial bool SteamAPI_ISteamNetworkingSockets_GetCertificateRequest(IntPtr self, ref int pcbBlob, Span<byte> pBlob, out SteamNetworkingErrMsg errMsg);
 
     [LibraryImport(GnsLibraryName)]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool SteamAPI_ISteamNetworkingSockets_SetCertificate(IntPtr self, ReadOnlySpan<byte> pCertificate, int cbCertificate, ref SteamNetworkingErrMsg errMsg);
+    public static partial bool SteamAPI_ISteamNetworkingSockets_SetCertificate(IntPtr self, ReadOnlySpan<byte> pCertificate, int cbCertificate, out SteamNetworkingErrMsg errMsg);
 
     [LibraryImport(GnsLibraryName)]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
