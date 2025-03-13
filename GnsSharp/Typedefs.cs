@@ -3,16 +3,16 @@
 
 global using AppId_t = uint;
 
-global using unsafe FnSteamNetAuthenticationStatusChanged = delegate* unmanaged[Cdecl]<ref GnsSharp.SteamNetAuthenticationStatus_t, void>;
-global using unsafe FnSteamNetConnectionStatusChanged = delegate* unmanaged[Cdecl]<ref GnsSharp.SteamNetConnectionStatusChangedCallback_t, void>;
+global using unsafe FnPtrSteamNetAuthenticationStatusChanged = delegate* unmanaged[Cdecl]<ref GnsSharp.SteamNetAuthenticationStatus_t, void>;
+global using unsafe FnPtrSteamNetConnectionStatusChanged = delegate* unmanaged[Cdecl]<ref GnsSharp.SteamNetConnectionStatusChangedCallback_t, void>;
 
-global using unsafe FnSteamNetworkingFakeIPResult = delegate* unmanaged[Cdecl]<ref GnsSharp.SteamNetworkingFakeIPResult_t, void>;
+global using unsafe FnPtrSteamNetworkingFakeIPResult = delegate* unmanaged[Cdecl]<ref GnsSharp.SteamNetworkingFakeIPResult_t, void>;
 
-global using unsafe FnSteamNetworkingMessagesSessionFailed = delegate* unmanaged[Cdecl]<ref GnsSharp.SteamNetworkingMessagesSessionFailed_t, void>;
-global using unsafe FnSteamNetworkingMessagesSessionRequest = delegate* unmanaged[Cdecl]<ref GnsSharp.SteamNetworkingMessagesSessionRequest_t, void>;
-global using unsafe FnSteamRelayNetworkStatusChanged = delegate* unmanaged[Cdecl]<ref GnsSharp.SteamRelayNetworkStatus_t, void>;
+global using unsafe FnPtrSteamNetworkingMessagesSessionFailed = delegate* unmanaged[Cdecl]<ref GnsSharp.SteamNetworkingMessagesSessionFailed_t, void>;
+global using unsafe FnPtrSteamNetworkingMessagesSessionRequest = delegate* unmanaged[Cdecl]<ref GnsSharp.SteamNetworkingMessagesSessionRequest_t, void>;
+global using unsafe FnPtrSteamRelayNetworkStatusChanged = delegate* unmanaged[Cdecl]<ref GnsSharp.SteamRelayNetworkStatus_t, void>;
 
-global using unsafe FSteamNetworkingSocketsDebugOutput = delegate* unmanaged[Cdecl]<GnsSharp.ESteamNetworkingSocketsDebugOutputType, byte*, void>;
+global using unsafe FPtrSteamNetworkingSocketsDebugOutput = delegate* unmanaged[Cdecl]<GnsSharp.ESteamNetworkingSocketsDebugOutputType, byte*, void>;
 
 /// <summary>
 /// handle to a communication pipe to the Steam client

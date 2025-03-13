@@ -91,23 +91,9 @@ public struct SteamNetworkingConfigValue_t : IDisposable
         this.OptionKind = optionKind;
         this.DataType = ESteamNetworkingConfigDataType.String;
 
-        // Allocate enough space for the converted UTF-8 unmanaged string.
-        int utf8BytesCount = Encoding.UTF8.GetByteCount(str);
-        IntPtr unmanagedPtr = Marshal.AllocHGlobal(utf8BytesCount + 1);
-
-        // Get the span of unmanaged space.
-        Span<byte> unmanagedSpan;
-        unsafe
-        {
-            unmanagedSpan = new Span<byte>((void*)unmanagedPtr, utf8BytesCount + 1);
-        }
-
-        // Marshal to this unmanaged span directly.
-        int bytesWritten = Encoding.UTF8.GetBytes(str.AsSpan(), unmanagedSpan);
-        unmanagedSpan[bytesWritten] = (byte)0;
-
-        // Store the unmanaged pointer.
-        this.OptionValue.String = unmanagedPtr;
+        // Store the unmanaged pointer to converted UTF-8 string.
+        IntPtr ptr = Utf8StringHelper.AllocHGlobalString(str);
+        this.OptionValue.String = ptr;
     }
 
     /// <summary>

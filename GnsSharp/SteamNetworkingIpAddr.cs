@@ -23,7 +23,7 @@ public struct SteamNetworkingIPAddr : IEquatable<SteamNetworkingIPAddr>
     /// Max length of the buffer needed to hold IP formatted using ToString, including '\0'<br/>
     /// ([0123:4567:89ab:cdef:0123:4567:89ab:cdef]:12345)
     /// </summary>
-    private const int MaxString = 48;
+    internal const int MaxString = 48;
 
     /// <summary>
     /// See if two addresses are identical
@@ -129,7 +129,7 @@ public struct SteamNetworkingIPAddr : IEquatable<SteamNetworkingIPAddr>
     {
         Span<byte> raw = stackalloc byte[MaxString];
 #if GNS_SHARP_OPENSOURCE_GNS
-        Native.SteamAPI_SteamNetworkingIPAddr_ToString(in this, raw, (UIntPtr)raw.Length, withPort);
+        Native.SteamAPI_SteamNetworkingIPAddr_ToString(in this, raw, (SizeT)raw.Length, withPort);
 #elif GNS_SHARP_STEAMWORKS_SDK
         Native.SteamAPI_SteamNetworkingIPAddr_ToString(ref this, raw, (uint)raw.Length, withPort);
 #endif

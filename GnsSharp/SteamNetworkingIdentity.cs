@@ -43,7 +43,7 @@ public struct SteamNetworkingIdentity : IEquatable<SteamNetworkingIdentity>
     /// <summary>
     /// Max length of the buffer needed to hold any identity, formatted in string format by ToString.
     /// </summary>
-    private const int MaxString = 128;
+    internal const int MaxString = 128;
 
     /// <summary>
     /// Max length of the string for generic string identities.  Including terminating '\0'.
@@ -291,7 +291,7 @@ public struct SteamNetworkingIdentity : IEquatable<SteamNetworkingIdentity>
     {
         Span<byte> raw = stackalloc byte[MaxString];
 #if GNS_SHARP_OPENSOURCE_GNS
-        Native.SteamAPI_SteamNetworkingIdentity_ToString(in this, raw, (UIntPtr)raw.Length);
+        Native.SteamAPI_SteamNetworkingIdentity_ToString(in this, raw, (SizeT)raw.Length);
 #elif GNS_SHARP_STEAMWORKS_SDK
         Native.SteamAPI_SteamNetworkingIdentity_ToString(ref this, raw, (uint)raw.Length);
 #endif
@@ -308,10 +308,10 @@ public struct SteamNetworkingIdentity : IEquatable<SteamNetworkingIdentity>
     public bool ParseString(string str)
     {
 #if GNS_SHARP_OPENSOURCE_GNS
-        UIntPtr sizeofIdentity;
+        SizeT sizeofIdentity;
         unsafe
         {
-            sizeofIdentity = (UIntPtr)sizeof(SteamNetworkingIdentity);
+            sizeofIdentity = (SizeT)sizeof(SteamNetworkingIdentity);
         }
 
         return Native.SteamAPI_SteamNetworkingIdentity_ParseString(ref this, sizeofIdentity, str);
