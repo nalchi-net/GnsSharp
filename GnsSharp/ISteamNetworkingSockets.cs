@@ -1755,4 +1755,13 @@ public static class ISteamNetworkingSockets
         return Native.SteamAPI_ISteamNetworkingSockets_CreateFakeUDPPort(Self, idxFakeServerPort);
 #endif
     }
+
+    internal static void Setup()
+    {
+#if GNS_SHARP_OPENSOURCE_GNS
+        Self = Native.SteamAPI_SteamNetworkingSockets_v009();
+#elif GNS_SHARP_STEAMWORKS_SDK
+        Self = Native.SteamAPI_SteamNetworkingSockets_SteamAPI_v012();
+#endif
+    }
 }

@@ -27,7 +27,7 @@ namespace GnsSharp;
 [StructLayout(LayoutKind.Sequential, Pack = 1)]
 public struct SteamNetworkingMessagesSessionFailed_t
 {
-    public const int Callback = Constants.SteamNetworkingMessagesCallbacks + 2;
+    public const int CallbackId = Constants.SteamNetworkingMessagesCallbacks + 2;
 
     /// <summary>
     /// Detailed info about the session that failed.

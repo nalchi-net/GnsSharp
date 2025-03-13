@@ -11,7 +11,7 @@ namespace GnsSharp;
 [StructLayout(LayoutKind.Sequential, Pack = 1)]
 public struct SteamNetworkingMessagesSessionRequest_t
 {
-    public const int Callback = Constants.SteamNetworkingMessagesCallbacks + 1;
+    public const int CallbackId = Constants.SteamNetworkingMessagesCallbacks + 1;
 
     /// <summary>
     /// user who wants to talk to us

@@ -6,31 +6,38 @@ namespace GnsSharp;
 using System;
 using System.Runtime.InteropServices;
 
+/// <summary>
+/// Handle used to identify a poll group, used to query many<br/>
+/// connections at once efficiently.
+/// </summary>
 [StructLayout(LayoutKind.Sequential)]
-public struct HSteamNetPollGroup : IEquatable<HSteamNetPollGroup>, IComparable<HSteamNetPollGroup>
+public struct HSteamNetPollGroup(uint handle) : IEquatable<HSteamNetPollGroup>, IComparable<HSteamNetPollGroup>
 {
-    public uint Handle;
+    public static readonly HSteamNetPollGroup Invalid = new(0);
 
-    public HSteamNetPollGroup(uint handle)
-    {
-        this.Handle = handle;
-    }
+    public uint Handle = handle;
+
+    public static explicit operator HSteamNetPollGroup(uint handle) => new(handle);
+
+    public static explicit operator uint(HSteamNetPollGroup socket) => socket.Handle;
 
     public static bool operator ==(HSteamNetPollGroup conn1, HSteamNetPollGroup conn2) => conn1.Handle == conn2.Handle;
 
     public static bool operator !=(HSteamNetPollGroup conn1, HSteamNetPollGroup conn2) => conn1.Handle != conn2.Handle;
 
+    public static bool operator <(HSteamNetPollGroup conn1, HSteamNetPollGroup conn2) => conn1.Handle < conn2.Handle;
+
+    public static bool operator >(HSteamNetPollGroup conn1, HSteamNetPollGroup conn2) => conn1.Handle > conn2.Handle;
+
+    public static bool operator <=(HSteamNetPollGroup conn1, HSteamNetPollGroup conn2) => conn1.Handle <= conn2.Handle;
+
+    public static bool operator >=(HSteamNetPollGroup conn1, HSteamNetPollGroup conn2) => conn1.Handle >= conn2.Handle;
+
     public readonly bool Equals(HSteamNetPollGroup other) => this == other;
 
-    public override readonly bool Equals(object? obj)
-    {
-        return obj is HSteamNetPollGroup conn && this == conn;
-    }
+    public override readonly bool Equals(object? obj) => obj is HSteamNetPollGroup conn && this == conn;
 
-    public int CompareTo(HSteamNetPollGroup other)
-    {
-        return this.Handle.CompareTo(other.Handle);
-    }
+    public readonly int CompareTo(HSteamNetPollGroup other) => this.Handle.CompareTo(other.Handle);
 
     public override readonly int GetHashCode() => this.Handle.GetHashCode();
 

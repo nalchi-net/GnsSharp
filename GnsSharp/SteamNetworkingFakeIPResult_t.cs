@@ -14,7 +14,7 @@ using System.Runtime.InteropServices;
 [StructLayout(LayoutKind.Sequential, Pack = Native.PackSize)]
 public struct SteamNetworkingFakeIPResult_t
 {
-    public const int Callback = Constants.SteamNetworkingSocketsCallbacks + 3;
+    public const int CallbackId = Constants.SteamNetworkingSocketsCallbacks + 3;
 
     /// <summary>
     /// <para>

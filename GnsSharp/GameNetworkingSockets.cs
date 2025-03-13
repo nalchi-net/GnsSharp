@@ -6,6 +6,9 @@ namespace GnsSharp;
 using System;
 using System.Runtime.CompilerServices;
 
+/// <summary>
+/// High level interface to GameNetworkingSockets library.
+/// </summary>
 public static class GameNetworkingSockets
 {
     /// <summary>
@@ -32,6 +35,8 @@ public static class GameNetworkingSockets
         else
         {
             errMsg = null;
+
+            GnsSharp.SetupInterfaces();
         }
 
         return result;

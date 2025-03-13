@@ -53,7 +53,7 @@ using System.Runtime.InteropServices;
 [StructLayout(LayoutKind.Sequential, Pack = Native.PackSize)]
 public struct SteamNetConnectionStatusChangedCallback_t
 {
-    public const int Callback = Constants.SteamNetworkingSocketsCallbacks + 1;
+    public const int CallbackId = Constants.SteamNetworkingSocketsCallbacks + 1;
 
     /// <summary>
     /// Connection handle

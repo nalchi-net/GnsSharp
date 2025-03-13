@@ -13,7 +13,7 @@ using System.Runtime.InteropServices;
 [StructLayout(LayoutKind.Sequential)]
 public struct SteamRelayNetworkStatus_t
 {
-    public const int Callback = Constants.SteamNetworkingUtilsCallbacks + 1;
+    public const int CallbackId = Constants.SteamNetworkingUtilsCallbacks + 1;
 
     /// <summary>
     /// Summary status.  When this is "current", initialization has<br/>

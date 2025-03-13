@@ -140,69 +140,31 @@ internal static partial class Native
 
 #elif GNS_SHARP_STEAMWORKS_SDK // Steamworks SDK exclusive API
 
-    /// <summary>
-    /// See "Initializing the Steamworks SDK" above for how to choose an init method.<br/>
-    /// Same usage as SteamAPI_InitEx(), however does not verify ISteam* interfaces are<br/>
-    /// supported by the user's client and is exported from the dll
-    /// </summary>
     [LibraryImport(GnsLibraryName)]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
     public static partial ESteamAPIInitResult SteamAPI_InitFlat(out SteamErrMsg pOutErrMsg);
 
-    /// <summary>
-    /// Internal implementation of SteamAPI_InitEx.  This is done in a way that checks<br/>
-    /// all of the versions of interfaces from headers being compiled into this code.
-    /// </summary>
     [LibraryImport(GnsLibraryName)]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
     public static partial ESteamAPIInitResult SteamInternal_SteamAPI_Init([MarshalAs(UnmanagedType.LPUTF8Str)] string pszInternalCheckInterfaceVersions, out SteamErrMsg pOutErrMsg);
 
-    /// <summary>
-    /// SteamAPI_Shutdown should be called during process shutdown if possible.
-    /// </summary>
     [LibraryImport(GnsLibraryName)]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
     public static partial void SteamAPI_Shutdown();
 
-    /// <summary>
-    /// <para>
-    /// SteamAPI_RestartAppIfNecessary ensures that your executable was launched through Steam.
-    /// </para>
-    ///
-    /// <para>
-    /// Returns true if the current process should terminate. Steam is now re-launching your application.
-    /// </para>
-    ///
-    /// <para>
-    /// Returns false if no action needs to be taken. This means that your executable was started through<br/>
-    /// the Steam client, or a steam_appid.txt file is present in your game's directory (for development).<br/>
-    /// Your current process should continue if false is returned.
-    /// </para>
-    ///
-    /// <para>
-    /// NOTE: If you use the Steam DRM wrapper on your primary executable file, this check is unnecessary<br/>
-    /// since the DRM wrapper will ensure that your application was launched properly through Steam.
-    /// </para>
-    /// </summary>
     [LibraryImport(GnsLibraryName)]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool SteamAPI_RestartAppIfNecessary(uint unOwnAppID);
 
-    /// <summary>
-    /// Many Steam API functions allocate a small amount of thread-local memory for parameter storage.<br/>
-    /// SteamAPI_ReleaseCurrentThreadMemory() will free API memory associated with the calling thread.<br/>
-    /// This function is also called automatically by SteamAPI_RunCallbacks(), so a single-threaded<br/>
-    /// program never needs to explicitly call this function.
-    /// </summary>
     [LibraryImport(GnsLibraryName)]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
     public static partial void SteamAPI_ReleaseCurrentThreadMemory();
 
     /// <summary>
-    /// Inform the API that you wish to use manual event dispatch.  This must be called after SteamAPI_Init, but before
+    /// Inform the API that you wish to use manual event dispatch.  This must be called after SteamAPI_Init, but before<br/>
     /// you use any of the other manual dispatch functions below.
-    ///     </summary>
+    /// </summary>
     [LibraryImport(GnsLibraryName)]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
     public static partial void SteamAPI_ManualDispatch_Init();
@@ -215,14 +177,14 @@ internal static partial class Native
     public static partial void SteamAPI_ManualDispatch_RunFrame(HSteamPipe hSteamPipe);
 
     /// <summary>
-    /// Fetch the next pending callback on the given pipe, if any.  If a callback is available, true is returned
-    /// and the structure is populated.  In this case, you MUST call SteamAPI_ManualDispatch_FreeLastCallback
+    /// Fetch the next pending callback on the given pipe, if any.  If a callback is available, true is returned<br/>
+    /// and the structure is populated.  In this case, you MUST call SteamAPI_ManualDispatch_FreeLastCallback<br/>
     /// (after dispatching the callback) before calling SteamAPI_ManualDispatch_GetNextCallback again.
     /// </summary>
     [LibraryImport(GnsLibraryName)]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool SteamAPI_ManualDispatch_GetNextCallback(HSteamPipe hSteamPipe, ref CallbackMsg_t pCallbackMsg);
+    public static partial bool SteamAPI_ManualDispatch_GetNextCallback(HSteamPipe hSteamPipe, out CallbackMsg_t pCallbackMsg);
 
     /// <summary>
     /// You must call this after dispatching the callback, if SteamAPI_ManualDispatch_GetNextCallback returns true.
@@ -232,13 +194,21 @@ internal static partial class Native
     public static partial void SteamAPI_ManualDispatch_FreeLastCallback(HSteamPipe hSteamPipe);
 
     /// <summary>
-    /// Return the call result for the specified call on the specified pipe.  You really should
+    /// Return the call result for the specified call on the specified pipe.  You really should<br/>
     /// only call this in a handler for SteamAPICallCompleted_t callback.
     /// </summary>
     [LibraryImport(GnsLibraryName)]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool SteamAPI_ManualDispatch_GetAPICallResult(HSteamPipe hSteamPipe, SteamAPICall_t hSteamAPICall, Span<byte> pCallback, int cubCallback, int iCallbackExpected, [MarshalAs(UnmanagedType.I1)] ref bool pbFailed);
+    public static partial bool SteamAPI_ManualDispatch_GetAPICallResult(HSteamPipe hSteamPipe, SteamAPICall_t hSteamAPICall, Span<byte> pCallback, int cubCallback, int iCallbackExpected, [MarshalAs(UnmanagedType.I1)] out bool pbFailed);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial void SteamAPI_RunCallbacks();
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial HSteamPipe SteamAPI_GetHSteamPipe();
 
     [LibraryImport(GnsLibraryName)]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
@@ -814,8 +784,7 @@ internal static partial class Native
 
     [LibraryImport(GnsLibraryName)]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
-    [return: MarshalAs(UnmanagedType.LPUTF8Str)]
-    public static partial string SteamAPI_ISteamNetworkingUtils_GetConfigValueInfo(IntPtr self, ESteamNetworkingConfigValue eValue, out ESteamNetworkingConfigDataType pOutDataType, out ESteamNetworkingConfigScope pOutScope);
+    public static partial IntPtr SteamAPI_ISteamNetworkingUtils_GetConfigValueInfo(IntPtr self, ESteamNetworkingConfigValue eValue, out ESteamNetworkingConfigDataType pOutDataType, out ESteamNetworkingConfigScope pOutScope);
 
     [LibraryImport(GnsLibraryName)]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]

@@ -756,9 +756,17 @@ public static class ISteamNetworkingUtils
     /// or NULL if the value doesn't exist.  Other output parameters can be NULL<br/>
     /// if you do not need them.
     /// </summary>
-    public static string GetConfigValueInfo(ESteamNetworkingConfigValue value, out ESteamNetworkingConfigDataType outDataType, out ESteamNetworkingConfigScope outScope)
+    public static string? GetConfigValueInfo(ESteamNetworkingConfigValue value, out ESteamNetworkingConfigDataType outDataType, out ESteamNetworkingConfigScope outScope)
     {
-        return Native.SteamAPI_ISteamNetworkingUtils_GetConfigValueInfo(Self, value, out outDataType, out outScope);
+        string? result = null;
+        IntPtr ptr = Native.SteamAPI_ISteamNetworkingUtils_GetConfigValueInfo(Self, value, out outDataType, out outScope);
+
+        if (ptr != IntPtr.Zero)
+        {
+            result = Marshal.PtrToStringUTF8(ptr);
+        }
+
+        return result;
     }
 
     /// <summary>
@@ -852,6 +860,15 @@ public static class ISteamNetworkingUtils
         return Native.SteamNetworkingIdentity_ParseString(ref identity, sizeofIdentity, str);
 #elif GNS_SHARP_STEAMWORKS_SDK
         return Native.SteamAPI_ISteamNetworkingUtils_SteamNetworkingIdentity_ParseString(Self, ref identity, str);
+#endif
+    }
+
+    internal static void Setup()
+    {
+#if GNS_SHARP_OPENSOURCE_GNS
+        Self = Native.SteamAPI_SteamNetworkingUtils_v003();
+#elif GNS_SHARP_STEAMWORKS_SDK
+        Self = Native.SteamAPI_SteamNetworkingUtils_SteamAPI_v004();
 #endif
     }
 }

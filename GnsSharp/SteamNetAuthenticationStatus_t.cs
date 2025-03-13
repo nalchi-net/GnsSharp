@@ -24,7 +24,7 @@ using System.Runtime.InteropServices;
 [StructLayout(LayoutKind.Sequential, Pack = Native.PackSize)]
 public struct SteamNetAuthenticationStatus_t
 {
-    public const int Callback = Constants.SteamNetworkingSocketsCallbacks + 2;
+    public const int CallbackId = Constants.SteamNetworkingSocketsCallbacks + 2;
 
     /// <summary>
     /// Status

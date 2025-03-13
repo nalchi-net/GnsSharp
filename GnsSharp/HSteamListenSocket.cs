@@ -6,31 +6,39 @@ namespace GnsSharp;
 using System;
 using System.Runtime.InteropServices;
 
+/// <summary>
+/// Handle used to identify a "listen socket".  Unlike traditional<br/>
+/// Berkeley sockets, a listen socket and a connection are two<br/>
+/// different abstractions.
+/// </summary>
 [StructLayout(LayoutKind.Sequential)]
-public struct HSteamListenSocket : IEquatable<HSteamListenSocket>, IComparable<HSteamListenSocket>
+public struct HSteamListenSocket(uint handle) : IEquatable<HSteamListenSocket>, IComparable<HSteamListenSocket>
 {
-    public uint Handle;
+    public static readonly HSteamListenSocket Invalid = new(0);
 
-    public HSteamListenSocket(uint handle)
-    {
-        this.Handle = handle;
-    }
+    public uint Handle = handle;
+
+    public static explicit operator HSteamListenSocket(uint handle) => new(handle);
+
+    public static explicit operator uint(HSteamListenSocket socket) => socket.Handle;
 
     public static bool operator ==(HSteamListenSocket conn1, HSteamListenSocket conn2) => conn1.Handle == conn2.Handle;
 
     public static bool operator !=(HSteamListenSocket conn1, HSteamListenSocket conn2) => conn1.Handle != conn2.Handle;
 
+    public static bool operator <(HSteamListenSocket conn1, HSteamListenSocket conn2) => conn1.Handle < conn2.Handle;
+
+    public static bool operator >(HSteamListenSocket conn1, HSteamListenSocket conn2) => conn1.Handle > conn2.Handle;
+
+    public static bool operator <=(HSteamListenSocket conn1, HSteamListenSocket conn2) => conn1.Handle <= conn2.Handle;
+
+    public static bool operator >=(HSteamListenSocket conn1, HSteamListenSocket conn2) => conn1.Handle >= conn2.Handle;
+
     public readonly bool Equals(HSteamListenSocket other) => this == other;
 
-    public override readonly bool Equals(object? obj)
-    {
-        return obj is HSteamListenSocket conn && this == conn;
-    }
+    public override readonly bool Equals(object? obj) => obj is HSteamListenSocket conn && this == conn;
 
-    public int CompareTo(HSteamListenSocket other)
-    {
-        return this.Handle.CompareTo(other.Handle);
-    }
+    public readonly int CompareTo(HSteamListenSocket other) => this.Handle.CompareTo(other.Handle);
 
     public override readonly int GetHashCode() => this.Handle.GetHashCode();
 

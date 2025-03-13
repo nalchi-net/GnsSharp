@@ -6,31 +6,37 @@ namespace GnsSharp;
 using System;
 using System.Runtime.InteropServices;
 
+/// <summary>
+/// Handle used to identify a connection to a remote host.
+/// </summary>
 [StructLayout(LayoutKind.Sequential)]
-public struct HSteamNetConnection : IEquatable<HSteamNetConnection>, IComparable<HSteamNetConnection>
+public struct HSteamNetConnection(uint handle) : IEquatable<HSteamNetConnection>, IComparable<HSteamNetConnection>
 {
-    public uint Handle;
+    public static readonly HSteamNetConnection Invalid = new(0);
 
-    public HSteamNetConnection(uint handle)
-    {
-        this.Handle = handle;
-    }
+    public uint Handle = handle;
+
+    public static explicit operator HSteamNetConnection(uint handle) => new(handle);
+
+    public static explicit operator uint(HSteamNetConnection socket) => socket.Handle;
 
     public static bool operator ==(HSteamNetConnection conn1, HSteamNetConnection conn2) => conn1.Handle == conn2.Handle;
 
     public static bool operator !=(HSteamNetConnection conn1, HSteamNetConnection conn2) => conn1.Handle != conn2.Handle;
 
+    public static bool operator <(HSteamNetConnection conn1, HSteamNetConnection conn2) => conn1.Handle < conn2.Handle;
+
+    public static bool operator >(HSteamNetConnection conn1, HSteamNetConnection conn2) => conn1.Handle > conn2.Handle;
+
+    public static bool operator <=(HSteamNetConnection conn1, HSteamNetConnection conn2) => conn1.Handle <= conn2.Handle;
+
+    public static bool operator >=(HSteamNetConnection conn1, HSteamNetConnection conn2) => conn1.Handle >= conn2.Handle;
+
     public readonly bool Equals(HSteamNetConnection other) => this == other;
 
-    public override readonly bool Equals(object? obj)
-    {
-        return obj is HSteamNetConnection conn && this == conn;
-    }
+    public override readonly bool Equals(object? obj) => obj is HSteamNetConnection conn && this == conn;
 
-    public int CompareTo(HSteamNetConnection other)
-    {
-        return this.Handle.CompareTo(other.Handle);
-    }
+    public readonly int CompareTo(HSteamNetConnection other) => this.Handle.CompareTo(other.Handle);
 
     public override readonly int GetHashCode() => this.Handle.GetHashCode();
 
