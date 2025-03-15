@@ -188,9 +188,7 @@ public struct SteamDatagramRelayAuthTicket
 
     // TODO... Maybe?
 
-    /// <summary>
-    /// Helper to add an extra field in a single call
-    /// </summary>
+    // Helper to add an extra field in a single call
     // void AddExtraField_Int( const char* pszName, int64 val)
     // {
     //     ExtraField* p = AddExtraField(pszName, ExtraField::k_EType_Int);
@@ -198,9 +196,7 @@ public struct SteamDatagramRelayAuthTicket
     //         p->m_nIntValue = val;
     // }
 
-    /// <summary>
-    /// Helper to add an extra field in a single call
-    /// </summary>
+    // Helper to add an extra field in a single call
     // void AddExtraField_Fixed64( const char* pszName, uint64 val)
     // {
     //     ExtraField* p = AddExtraField(pszName, ExtraField::k_EType_Fixed64);
@@ -208,9 +204,7 @@ public struct SteamDatagramRelayAuthTicket
     //         p->m_nFixed64Value = val;
     // }
 
-    /// <summary>
-    /// Helper to add an extra field in a single call
-    /// </summary>
+    // Helper to add an extra field in a single call
     // void AddExtraField_String( const char* pszName, const char* val)
     // {
     //     ExtraField* p = AddExtraField(pszName, ExtraField::k_EType_String);

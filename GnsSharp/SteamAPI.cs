@@ -11,7 +11,7 @@ using System.Text;
 
 /// <summary>
 /// <para>
-/// Steam API setup & shutdown
+/// Steam API setup and shutdown
 /// </para>
 ///
 /// <para>

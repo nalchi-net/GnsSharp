@@ -7,7 +7,7 @@ using System;
 using System.Runtime.InteropServices;
 
 /// <summary>
-/// RTime32.  Seconds elapsed since Jan 1 1970, i.e. unix timestamp.<br>
+/// RTime32.  Seconds elapsed since Jan 1 1970, i.e. unix timestamp.<br/>
 /// It's the same as time_t, but it is always 32-bit and unsigned.
 /// </summary>
 [StructLayout(LayoutKind.Sequential)]

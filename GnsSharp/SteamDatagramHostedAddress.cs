@@ -36,20 +36,16 @@ public struct SteamDatagramHostedAddress
 
     // TODO... Maybe?
 
-    /// <summary>
-    /// Parse the data center out of the blob.
-    /// </summary>
+    // Parse the data center out of the blob.
     // SteamNetworkingPOPID GetPopID() const
     // {
     //     return CalculateSteamNetworkingPOPIDFromString( m_data );
     // }
 
-    /// <summary>
-    /// Set a dummy routing blob with a hardcoded IP:port.  You should only use<br/>
-    /// this in a dev environment, since the address is in plaintext!<br/>
-    /// In production this information should come from the server,<br/>
-    /// using ISteamNetworkingSockets::GetHostedDedicatedServerAddress
-    /// </summary>
+    // Set a dummy routing blob with a hardcoded IP:port.  You should only use<br/>
+    // this in a dev environment, since the address is in plaintext!<br/>
+    // In production this information should come from the server,<br/>
+    // using ISteamNetworkingSockets::GetHostedDedicatedServerAddress
     // void SetDevAddress(uint32 nIP, uint16 nPort, SteamNetworkingPOPID popid = 0)
     // {
     //     GetSteamNetworkingLocationPOPStringFromID(popid, m_data);
@@ -64,13 +60,11 @@ public struct SteamDatagramHostedAddress
     //     m_data[m_cbSize++] = char(nIP >> 24);
     // }
 
-    /// <summary>
-    /// Convert to/from std::string (or anything that acts like it).<br/>
-    /// Useful for interfacing with google protobuf.  It's a template<br/>
-    /// mainly so that we don't have to include "string" in the header.<br/>
-    /// Note: by "string", we don't mean that it's text.  It's a binary<br/>
-    /// blob, and it might have zeros in it.  (std::string can handle that.)
-    /// </summary>
+    // Convert to/from std::string (or anything that acts like it).<br/>
+    // Useful for interfacing with google protobuf.  It's a template<br/>
+    // mainly so that we don't have to include "string" in the header.<br/>
+    // Note: by "string", we don't mean that it's text.  It's a binary<br/>
+    // blob, and it might have zeros in it.  (std::string can handle that.)
 
     // template <typename T> bool SetFromString(string str)
     // {

@@ -279,7 +279,7 @@ public struct SteamNetworkingIdentity : IEquatable<SteamNetworkingIdentity>
     /// <para>
     /// Print to a human-readable string.  This is suitable for debug messages<br/>
     /// or any other time you need to encode the identity as a string.  It has a<br/>
-    /// URL-like format (type:<type-data>).  Your buffer should be at least<br/>
+    /// URL-like format (type:(type-data)).  Your buffer should be at least<br/>
     /// k_cchMaxString bytes big to avoid truncation.
     /// </para>
     ///
@@ -300,7 +300,7 @@ public struct SteamNetworkingIdentity : IEquatable<SteamNetworkingIdentity>
 
     /// <summary>
     /// Parse back a string that was generated using ToString.  If we don't understand the<br/>
-    /// string, but it looks "reasonable" (it matches the pattern type:<type-data> and doesn't<br/>
+    /// string, but it looks "reasonable" (it matches the pattern type:(type-data) and doesn't<br/>
     /// have any funky characters, etc), then we will return true, and the type is set to<br/>
     /// k_ESteamNetworkingIdentityType_UnknownType.  false will only be returned if the string<br/>
     /// looks invalid.

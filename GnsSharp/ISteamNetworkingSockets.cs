@@ -255,7 +255,7 @@ public static class ISteamNetworkingSockets
     /// <para>
     /// nReason is an application defined code that will be received on the other<br/>
     /// end and recorded (when possible) in backend analytics.  The value should<br/>
-    /// come from a restricted range.  (See <see cref="ESteamNetConnectionEnd"/>.)  If you don't need<br/>
+    /// come from a restricted range.  (See `ESteamNetConnectionEnd`.)  If you don't need<br/>
     /// to communicate any information to the remote host, and do not want analytics to<br/>
     /// be able to distinguish "normal" connection terminations from "exceptional" ones,<br/>
     /// You may pass zero, in which case the generic value of<br/>

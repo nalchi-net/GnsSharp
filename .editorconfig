@@ -41,5 +41,8 @@ dotnet_diagnostic.SA1602.severity = none
 # SA1200: Using directives should be placed correctly
 dotnet_diagnostic.SA1200.severity = none
 
+# CS1591: Missing XML comment for publicly visible type or member
+dotnet_diagnostic.CS1591.severity = none
+
 [*.csproj]
 indent_size = 2
