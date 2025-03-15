@@ -31,9 +31,14 @@ public struct SteamNetAuthenticationStatus_t
     /// </summary>
     public ESteamNetworkingAvailability Avail;
 
+    private Array256<byte> debugMsg;
+
     /// <summary>
     /// Non-localized English language status.  For diagnostic/debugging
     /// purposes only.
     /// </summary>
-    public Array256<byte> DebugMsg;
+    public readonly string? DebugMsg
+    {
+        get => Utf8StringHelper.NullTerminatedSpanToString(this.debugMsg);
+    }
 }

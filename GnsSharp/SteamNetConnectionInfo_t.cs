@@ -59,13 +59,30 @@ public struct SteamNetConnectionInfo_t
     /// </summary>
     public int EndReason;
 
+    private Array128<byte> endDebug;
+
+    private Array128<byte> connectionDescription;
+
+    /// <summary>
+    /// Misc flags.  Bitmask of k_nSteamNetworkConnectionInfoFlags_Xxxx
+    /// </summary>
+    public int Flags;
+
+    /// <summary>
+    /// Internal stuff, room to change API easily
+    /// </summary>
+    private Array63<uint> reserved;
+
     /// <summary>
     /// Human-readable, but non-localized explanation for connection<br/>
     /// termination or problem.  This is intended for debugging /<br/>
     /// diagnostic purposes only, not to display to users.  It might<br/>
     /// have some details specific to the issue.
     /// </summary>
-    public Array128<byte> EndDebug;
+    public readonly string? EndDebug
+    {
+        get => Utf8StringHelper.NullTerminatedSpanToString(this.endDebug);
+    }
 
     /// <summary>
     /// <para>
@@ -80,17 +97,10 @@ public struct SteamNetConnectionInfo_t
     /// handle, but in certain cases with symmetric connections it might not.
     /// </para>
     /// </summary>
-    public Array128<byte> ConnectionDescription;
-
-    /// <summary>
-    /// Misc flags.  Bitmask of k_nSteamNetworkConnectionInfoFlags_Xxxx
-    /// </summary>
-    public int Flags;
-
-    /// <summary>
-    /// Internal stuff, room to change API easily
-    /// </summary>
-    private Array63<uint> reserved;
+    public string? ConnectionDescription
+    {
+        get => Utf8StringHelper.NullTerminatedSpanToString(this.connectionDescription);
+    }
 }
 
 #pragma warning restore SA1202 // Elements should be ordered by access
