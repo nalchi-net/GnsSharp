@@ -3,48 +3,60 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.2.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GnsSharp.Gns.Posix", "GnsSharp\GnsSharp.Gns.Posix.csproj", "{59969F08-D75F-D7E9-A3F8-A7D4D8678800}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GnsSharp.Gns.Win32", "GnsSharp\GnsSharp.Gns.Win32.csproj", "{88C86049-0E80-45FA-A063-7729AE37F339}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GnsSharp.Gns.Win64", "GnsSharp\GnsSharp.Gns.Win64.csproj", "{A89CD825-6E68-4901-9524-E6169FB08EF9}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GnsSharp.Steamworks.Posix", "GnsSharp\GnsSharp.Steamworks.Posix.csproj", "{B534C41C-BD1B-4C93-B40B-D68A03ED5234}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GnsSharp.Steamworks.Win64", "GnsSharp\GnsSharp.Steamworks.Win64.csproj", "{E149B1F6-D8E6-4F8D-9F47-6618D060CBE2}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GnsSharp.Steamworks.Win32", "GnsSharp\GnsSharp.Steamworks.Win32.csproj", "{F035CD8A-F92E-43EA-9955-60E1D6E5AF94}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GnsSharp", "GnsSharp.csproj", "{59969F08-D75F-D7E9-A3F8-A7D4D8678800}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
-		Release|Any CPU = Release|Any CPU
+		Linux-GNS|Any CPU = Linux-GNS|Any CPU
+		Linux-GNS|x64 = Linux-GNS|x64
+		Linux-GNS|x86 = Linux-GNS|x86
+		Linux-Steamworks|Any CPU = Linux-Steamworks|Any CPU
+		Linux-Steamworks|x64 = Linux-Steamworks|x64
+		Linux-Steamworks|x86 = Linux-Steamworks|x86
+		macOS-GNS|Any CPU = macOS-GNS|Any CPU
+		macOS-GNS|x64 = macOS-GNS|x64
+		macOS-GNS|x86 = macOS-GNS|x86
+		macOS-Steamworks|Any CPU = macOS-Steamworks|Any CPU
+		macOS-Steamworks|x64 = macOS-Steamworks|x64
+		macOS-Steamworks|x86 = macOS-Steamworks|x86
+		Windows-GNS|Any CPU = Windows-GNS|Any CPU
+		Windows-GNS|x64 = Windows-GNS|x64
+		Windows-GNS|x86 = Windows-GNS|x86
+		Windows-Steamworks|Any CPU = Windows-Steamworks|Any CPU
+		Windows-Steamworks|x64 = Windows-Steamworks|x64
+		Windows-Steamworks|x86 = Windows-Steamworks|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{59969F08-D75F-D7E9-A3F8-A7D4D8678800}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{59969F08-D75F-D7E9-A3F8-A7D4D8678800}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{59969F08-D75F-D7E9-A3F8-A7D4D8678800}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{59969F08-D75F-D7E9-A3F8-A7D4D8678800}.Release|Any CPU.Build.0 = Release|Any CPU
-		{88C86049-0E80-45FA-A063-7729AE37F339}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{88C86049-0E80-45FA-A063-7729AE37F339}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{88C86049-0E80-45FA-A063-7729AE37F339}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{88C86049-0E80-45FA-A063-7729AE37F339}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A89CD825-6E68-4901-9524-E6169FB08EF9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A89CD825-6E68-4901-9524-E6169FB08EF9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A89CD825-6E68-4901-9524-E6169FB08EF9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A89CD825-6E68-4901-9524-E6169FB08EF9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B534C41C-BD1B-4C93-B40B-D68A03ED5234}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B534C41C-BD1B-4C93-B40B-D68A03ED5234}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B534C41C-BD1B-4C93-B40B-D68A03ED5234}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B534C41C-BD1B-4C93-B40B-D68A03ED5234}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E149B1F6-D8E6-4F8D-9F47-6618D060CBE2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E149B1F6-D8E6-4F8D-9F47-6618D060CBE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E149B1F6-D8E6-4F8D-9F47-6618D060CBE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E149B1F6-D8E6-4F8D-9F47-6618D060CBE2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F035CD8A-F92E-43EA-9955-60E1D6E5AF94}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F035CD8A-F92E-43EA-9955-60E1D6E5AF94}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F035CD8A-F92E-43EA-9955-60E1D6E5AF94}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F035CD8A-F92E-43EA-9955-60E1D6E5AF94}.Release|Any CPU.Build.0 = Release|Any CPU
+		{59969F08-D75F-D7E9-A3F8-A7D4D8678800}.Linux-GNS|Any CPU.ActiveCfg = Linux-GNS|Any CPU
+		{59969F08-D75F-D7E9-A3F8-A7D4D8678800}.Linux-GNS|Any CPU.Build.0 = Linux-GNS|Any CPU
+		{59969F08-D75F-D7E9-A3F8-A7D4D8678800}.Linux-GNS|x64.ActiveCfg = Linux-GNS|x64
+		{59969F08-D75F-D7E9-A3F8-A7D4D8678800}.Linux-GNS|x64.Build.0 = Linux-GNS|x64
+		{59969F08-D75F-D7E9-A3F8-A7D4D8678800}.Linux-GNS|x86.ActiveCfg = Linux-GNS|x86
+		{59969F08-D75F-D7E9-A3F8-A7D4D8678800}.Linux-GNS|x86.Build.0 = Linux-GNS|x86
+		{59969F08-D75F-D7E9-A3F8-A7D4D8678800}.Linux-Steamworks|Any CPU.ActiveCfg = Linux-Steamworks|Any CPU
+		{59969F08-D75F-D7E9-A3F8-A7D4D8678800}.Linux-Steamworks|Any CPU.Build.0 = Linux-Steamworks|Any CPU
+		{59969F08-D75F-D7E9-A3F8-A7D4D8678800}.Linux-Steamworks|x64.ActiveCfg = Linux-Steamworks|x64
+		{59969F08-D75F-D7E9-A3F8-A7D4D8678800}.Linux-Steamworks|x64.Build.0 = Linux-Steamworks|x64
+		{59969F08-D75F-D7E9-A3F8-A7D4D8678800}.Linux-Steamworks|x86.ActiveCfg = Linux-Steamworks|x86
+		{59969F08-D75F-D7E9-A3F8-A7D4D8678800}.Linux-Steamworks|x86.Build.0 = Linux-Steamworks|x86
+		{59969F08-D75F-D7E9-A3F8-A7D4D8678800}.macOS-GNS|Any CPU.ActiveCfg = macOS-GNS|Any CPU
+		{59969F08-D75F-D7E9-A3F8-A7D4D8678800}.macOS-GNS|x64.ActiveCfg = macOS-GNS|x64
+		{59969F08-D75F-D7E9-A3F8-A7D4D8678800}.macOS-GNS|x86.ActiveCfg = macOS-GNS|x86
+		{59969F08-D75F-D7E9-A3F8-A7D4D8678800}.macOS-Steamworks|Any CPU.ActiveCfg = macOS-Steamworks|Any CPU
+		{59969F08-D75F-D7E9-A3F8-A7D4D8678800}.macOS-Steamworks|x64.ActiveCfg = macOS-Steamworks|x64
+		{59969F08-D75F-D7E9-A3F8-A7D4D8678800}.macOS-Steamworks|x86.ActiveCfg = macOS-Steamworks|x86
+		{59969F08-D75F-D7E9-A3F8-A7D4D8678800}.Windows-GNS|Any CPU.ActiveCfg = Windows-GNS|Any CPU
+		{59969F08-D75F-D7E9-A3F8-A7D4D8678800}.Windows-GNS|Any CPU.Build.0 = Windows-GNS|Any CPU
+		{59969F08-D75F-D7E9-A3F8-A7D4D8678800}.Windows-GNS|x64.ActiveCfg = Windows-GNS|x64
+		{59969F08-D75F-D7E9-A3F8-A7D4D8678800}.Windows-GNS|x64.Build.0 = Windows-GNS|x64
+		{59969F08-D75F-D7E9-A3F8-A7D4D8678800}.Windows-GNS|x86.ActiveCfg = Windows-GNS|x86
+		{59969F08-D75F-D7E9-A3F8-A7D4D8678800}.Windows-GNS|x86.Build.0 = Windows-GNS|x86
+		{59969F08-D75F-D7E9-A3F8-A7D4D8678800}.Windows-Steamworks|Any CPU.ActiveCfg = Windows-Steamworks|Any CPU
+		{59969F08-D75F-D7E9-A3F8-A7D4D8678800}.Windows-Steamworks|Any CPU.Build.0 = Windows-Steamworks|Any CPU
+		{59969F08-D75F-D7E9-A3F8-A7D4D8678800}.Windows-Steamworks|x64.ActiveCfg = Windows-Steamworks|x64
+		{59969F08-D75F-D7E9-A3F8-A7D4D8678800}.Windows-Steamworks|x64.Build.0 = Windows-Steamworks|x64
+		{59969F08-D75F-D7E9-A3F8-A7D4D8678800}.Windows-Steamworks|x86.ActiveCfg = Windows-Steamworks|x86
+		{59969F08-D75F-D7E9-A3F8-A7D4D8678800}.Windows-Steamworks|x86.Build.0 = Windows-Steamworks|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

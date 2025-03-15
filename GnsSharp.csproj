@@ -1,0 +1,147 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <RootNamespace>GnsSharp</RootNamespace>
+    <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
+    <LangVersion>12</LangVersion>
+    <Nullable>enable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Platforms>AnyCPU;x64;x86</Platforms>
+    <Configurations>macOS-GNS;Windows-GNS;Linux-GNS;macOS-Steamworks;Windows-Steamworks;Linux-Steamworks</Configurations>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='macOS-GNS|AnyCPU'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <Optimize>True</Optimize>
+    <OutputPath>bin\GNS\macOS\AnyCPU</OutputPath>
+    <DefineConstants>$(DefineConstants);GNS_SHARP_OPENSOURCE_GNS;GNS_SHARP_PLATFORM_POSIX</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='macOS-GNS|x64'">
+    <PlatformTarget>x64</PlatformTarget>
+    <Optimize>True</Optimize>
+    <OutputPath>bin\GNS\macOS\AMD64</OutputPath>
+    <DefineConstants>$(DefineConstants);GNS_SHARP_OPENSOURCE_GNS;GNS_SHARP_PLATFORM_POSIX</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='macOS-GNS|x86'">
+    <PlatformTarget>x86</PlatformTarget>
+    <Optimize>True</Optimize>
+    <OutputPath>bin\GNS\macOS\x86</OutputPath>
+    <DefineConstants>$(DefineConstants);GNS_SHARP_OPENSOURCE_GNS;GNS_SHARP_PLATFORM_POSIX</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Windows-GNS|AnyCPU'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <Optimize>True</Optimize>
+    <OutputPath>bin\GNS\Windows\AnyCPU</OutputPath>
+    <DefineConstants>$(DefineConstants);GNS_SHARP_OPENSOURCE_GNS;GNS_SHARP_PLATFORM_WIN64</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Windows-GNS|x64'">
+    <PlatformTarget>x64</PlatformTarget>
+    <Optimize>True</Optimize>
+    <OutputPath>bin\GNS\Windows\AMD64</OutputPath>
+    <DefineConstants>$(DefineConstants);GNS_SHARP_OPENSOURCE_GNS;GNS_SHARP_PLATFORM_WIN64</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Windows-GNS|x86'">
+    <PlatformTarget>x86</PlatformTarget>
+    <Optimize>True</Optimize>
+    <OutputPath>bin\GNS\Windows\x86</OutputPath>
+    <DefineConstants>$(DefineConstants);GNS_SHARP_OPENSOURCE_GNS;GNS_SHARP_PLATFORM_WIN32</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Linux-GNS|AnyCPU'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <Optimize>True</Optimize>
+    <OutputPath>bin\GNS\Linux\AnyCPU</OutputPath>
+    <DefineConstants>$(DefineConstants);GNS_SHARP_OPENSOURCE_GNS;GNS_SHARP_PLATFORM_POSIX</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Linux-GNS|x64'">
+    <PlatformTarget>x64</PlatformTarget>
+    <Optimize>True</Optimize>
+    <OutputPath>bin\GNS\Linux\AMD64</OutputPath>
+    <DefineConstants>$(DefineConstants);GNS_SHARP_OPENSOURCE_GNS;GNS_SHARP_PLATFORM_POSIX</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Linux-GNS|x86'">
+    <PlatformTarget>x86</PlatformTarget>
+    <Optimize>True</Optimize>
+    <OutputPath>bin\GNS\Linux\x86</OutputPath>
+    <DefineConstants>$(DefineConstants);GNS_SHARP_OPENSOURCE_GNS;GNS_SHARP_PLATFORM_POSIX</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='macOS-Steamworks|AnyCPU'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <Optimize>True</Optimize>
+    <OutputPath>bin\Steamworks\macOS\AnyCPU</OutputPath>
+    <DefineConstants>$(DefineConstants);GNS_SHARP_STEAMWORKS_SDK;GNS_SHARP_PLATFORM_POSIX</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='macOS-Steamworks|x64'">
+    <PlatformTarget>x64</PlatformTarget>
+    <Optimize>True</Optimize>
+    <OutputPath>bin\Steamworks\macOS\AMD64</OutputPath>
+    <DefineConstants>$(DefineConstants);GNS_SHARP_STEAMWORKS_SDK;GNS_SHARP_PLATFORM_POSIX</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='macOS-Steamworks|x86'">
+    <PlatformTarget>x86</PlatformTarget>
+    <Optimize>True</Optimize>
+    <OutputPath>bin\Steamworks\macOS\x86</OutputPath>
+    <DefineConstants>$(DefineConstants);GNS_SHARP_STEAMWORKS_SDK;GNS_SHARP_PLATFORM_POSIX</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Windows-Steamworks|AnyCPU'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <Optimize>True</Optimize>
+    <OutputPath>bin\Steamworks\Windows\AnyCPU</OutputPath>
+    <DefineConstants>$(DefineConstants);GNS_SHARP_STEAMWORKS_SDK;GNS_SHARP_PLATFORM_WIN64</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Windows-Steamworks|x64'">
+    <PlatformTarget>x64</PlatformTarget>
+    <Optimize>True</Optimize>
+    <OutputPath>bin\Steamworks\Windows\AMD64</OutputPath>
+    <DefineConstants>$(DefineConstants);GNS_SHARP_STEAMWORKS_SDK;GNS_SHARP_PLATFORM_WIN64</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Windows-Steamworks|x86'">
+    <PlatformTarget>x86</PlatformTarget>
+    <Optimize>True</Optimize>
+    <OutputPath>bin\Steamworks\Windows\x86</OutputPath>
+    <DefineConstants>$(DefineConstants);GNS_SHARP_STEAMWORKS_SDK;GNS_SHARP_PLATFORM_WIN32</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Linux-Steamworks|AnyCPU'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <Optimize>True</Optimize>
+    <OutputPath>bin\Steamworks\Linux\AnyCPU</OutputPath>
+    <DefineConstants>$(DefineConstants);GNS_SHARP_STEAMWORKS_SDK;GNS_SHARP_PLATFORM_POSIX</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Linux-Steamworks|x64'">
+    <PlatformTarget>x64</PlatformTarget>
+    <Optimize>True</Optimize>
+    <OutputPath>bin\Steamworks\Linux\AMD64</OutputPath>
+    <DefineConstants>$(DefineConstants);GNS_SHARP_STEAMWORKS_SDK;GNS_SHARP_PLATFORM_POSIX</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Linux-Steamworks|x86'">
+    <PlatformTarget>x86</PlatformTarget>
+    <Optimize>True</Optimize>
+    <OutputPath>bin\Steamworks\Linux\x86</OutputPath>
+    <DefineConstants>$(DefineConstants);GNS_SHARP_STEAMWORKS_SDK;GNS_SHARP_PLATFORM_POSIX</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.556">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <AdditionalFiles Include="stylecop.json" />
+  </ItemGroup>
+
+</Project>
