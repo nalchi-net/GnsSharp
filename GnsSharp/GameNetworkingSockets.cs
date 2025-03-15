@@ -36,7 +36,7 @@ public static class GameNetworkingSockets
         {
             errMsg = null;
 
-            GnsSharp.SetupInterfaces();
+            GnsSharpCore.SetupInterfaces();
         }
 
         return result;

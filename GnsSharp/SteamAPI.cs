@@ -131,7 +131,7 @@ public static class SteamAPI
         {
             outErrMsg = null;
 
-            GnsSharp.SetupInterfaces();
+            GnsSharpCore.SetupInterfaces();
 
             Native.SteamAPI_ManualDispatch_Init();
         }
