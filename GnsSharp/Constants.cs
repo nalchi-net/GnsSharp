@@ -16,7 +16,7 @@ internal static class Constants
     public const string SteamUtilsInterfaceVersion = "SteamUtils010";
     public const string SteamAppsInterfaceVersion = "STEAMAPPS_INTERFACE_VERSION008";
     public const string SteamControllerInterfaceVersion = "SteamController008";
-    public const string SteamFriendsInterfaceVersion = "SteamFriends017";
+    public const string SteamFriendsInterfaceVersion = "SteamFriends018";
     public const string SteamGameSearchInterfaceVersion = "SteamMatchGameSearch001";
     public const string SteamHtmlSurfaceInterfaceVersion = "STEAMHTMLSURFACE_INTERFACE_VERSION_005";
     public const string SteamHttpInterfaceVersion = "STEAMHTTP_INTERFACE_VERSION003";
@@ -30,10 +30,10 @@ internal static class Constants
     public const string SteamNetworkingInterfaceVersion = "SteamNetworking006";
     public const string SteamParentalSettingsInterfaceVersion = "STEAMPARENTALSETTINGS_INTERFACE_VERSION001";
     public const string SteamPartiesInterfaceVersion = "SteamParties002";
-    public const string SteamRemotePlayInterfaceVersion = "STEAMREMOTEPLAY_INTERFACE_VERSION002";
+    public const string SteamRemotePlayInterfaceVersion = "STEAMREMOTEPLAY_INTERFACE_VERSION003";
     public const string SteamRemoteStorageInterfaceVersion = "STEAMREMOTESTORAGE_INTERFACE_VERSION016";
     public const string SteamScreenshotsInterfaceVersion = "STEAMSCREENSHOTS_INTERFACE_VERSION003";
-    public const string SteamUgcInterfaceVersion = "STEAMUGC_INTERFACE_VERSION020";
+    public const string SteamUgcInterfaceVersion = "STEAMUGC_INTERFACE_VERSION021";
     public const string SteamUserStatsInterfaceVersion = "STEAMUSERSTATS_INTERFACE_VERSION013";
     public const string SteamUserInterfaceVersion = "SteamUser023";
     public const string SteamVideoInterfaceVersion = "STEAMVIDEO_INTERFACE_V007";
