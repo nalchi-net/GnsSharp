@@ -5,7 +5,8 @@ GnsSharp is a C# binding for the [ValveSoftware/GameNetworkingSockets](https://g
 It supports both the stand-alone open source GameNetworkingSockets, and the Steamworks SDK version of it,\
 So you can switch between those without too much hassle.
 
-> This project is **heavily WIP**.  API might change, things might break or not work at all;\
+> This project is **heavily WIP**.\
+> API might be missing, subject to change, and things might break or not work at all;\
 > Use it at your own risk.
 
 ## Why?
@@ -13,23 +14,81 @@ So you can switch between those without too much hassle.
 None of the existing C# bindings support switching between stand-alone GNS and Steamworks SDK version of it.\
 So, I'm creating one for my own needs.
 
-## Scope
+## State of binding
 
-Currently, I've only ported the APIs that are compatible for both the stand-alone and Steamworks versions.\
-This includes [`ISteamNetworkingSockets`](https://partner.steamgames.com/doc/api/ISteamNetworkingSockets), [`ISteamNetworkingUtils`](https://partner.steamgames.com/doc/api/ISteamNetworkingUtils) and [`steamnetworkingtypes` header](https://partner.steamgames.com/doc/api/steamnetworkingtypes).
+Currently, I've only ported the APIs that are compatible for both the stand-alone GNS and Steamworks SDK.\
+This means that there's **almost NO support** for the Steamworks exclusive features.
 
-This means that there's no support for the Steamworks exclusive features at all (e.g. matchmaking, steam friends...).\
 This might change in the future if I need those.
+
+<details>
+    <summary>Table of state</summary>
+
+| Interfaces          | Ported? | Interfaces              | Ported? |
+|---------------------|---------|-------------------------|---------|
+| ISteamApps               | ❌ | ISteamNetworking        | ❌ |
+| ISteamAppTicket          | ❌ | ISteamNetworkingSockets | ✔ |
+| ISteamClient             | ❌ | ISteamNetworkingUtils   | ✔ |
+| ISteamController         | ❌ | ISteamRemotePlay        | ❌ |
+| ISteamFriends            | ❌ | ISteamRemoteStorage     | ❌ |
+| ISteamGameCoordinator    | ❌ | ISteamScreenshots       | ❌ |
+| ISteamGameServer         | ❌ | ISteamTimeline          | ❌ |
+| ISteamGameServerStats    | ❌ | ISteamUGC               | ❌ |
+| ISteamHTMLSurface        | ❌ | ISteamUser              | ❌ |
+| ISteamHTTP               | ❌ | ISteamUserStats         | ❌ |
+| ISteamInput              | ❌ | ISteamUtils             | ❌ |
+| ISteamInventory          | ❌ | ISteamVideo             | ❌ |
+| ISteamMatchmaking        | ❌ | SteamEncryptedAppTicket | ❌ |
+| ISteamMatchmakingServers | ❌ | steam_api               | ✔ |
+| ISteamMusic              | ❌ | steam_gameserver        | ✔ |
+| ISteamMusicRemote        | ❌ | GameNetworkingSockets   | ✔ |
+</details>
 
 # Documentation
 
 Most of the APIs are almost the same as the original GNS, so you can refer to the [official Steam Networking Docs](https://partner.steamgames.com/doc/features/multiplayer/networking) to figure out how to use them.
 
-## Usage
+## Differences
 
-### Setup
+### Steam Callbacks
 
-#### Stand-alone GameNetworkingSockets
+Steam callbacks are implemented as C# events in the respective Steam interfaces.
+
+```cs
+// Subscribe an event to receive Steam callbacks associated with it.
+ISteamNetworkingSockets.User.SteamNetAuthenticationStatusChanged
+    += (ref SteamNetAuthenticationStatus_t data) {
+        ...
+    }
+```
+
+There's one exception to this, which is `FnSteamNetConnectionStatusChanged`:
+
+```cs
+// This delegate should be alive until the listen socket is closed.
+FnSteamNetConnectionStatusChanged listenSocketStatusChanged = /* your callback handler */;
+
+// Setup this delegate object as a listen socket's configuration.
+Span<SteamNetworkingConfigValue_t> listenSocketConfigs = stackalloc SteamNetworkingConfigValue_t[1];
+listenSocketConfigs[0].SetPtr(ESteamNetworkingConfigValue.Callback_ConnectionStatusChanged,
+                        Marshal.GetFunctionPointerForDelegate(listenSocketStatusChanged));
+
+// Start listening with specifying this configuration.
+HSteamListenSocket listener
+    = ISteamNetworkingSockets.User.CreateListenSocketIP(in address, listenSocketConfigs);
+```
+
+This is to allow the listen socket and the client connections to have a different callback set up.
+
+### Steam CallResults
+
+Steam CallResults will be implemented with C# async-await pattern.
+
+It's not implemented yet, so no example for now.
+
+## Build
+
+### Stand-alone GameNetworkingSockets
 
 1. Build the open source [GameNetworkingSockets](https://github.com/ValveSoftware/GameNetworkingSockets).
     * As of writing, the latest is [commit `725e273`](https://github.com/ValveSoftware/GameNetworkingSockets/tree/725e273c7442bac7a8bc903c0b210b1c15c34d92)
@@ -42,13 +101,13 @@ Most of the APIs are almost the same as the original GNS, so you can refer to th
 1. Copy the native library files to your executable's build directory.
     * On Windows, you should copy all the dependent dlls along with the `GameNetworkingSockets.dll`.
 
-#### Steamworks SDK
+### Steamworks SDK
 
 1. Download the Steamworks SDK from the [Steamworks partner site](https://partner.steamgames.com/).
     * As of writing, the latest is [Steamworks SDK v1.62](https://partner.steamgames.com/downloads/steamworks_sdk_162.zip)
 1. Copy the native library files from the `sdk/redistributable_bin/` to your executable's build directory.
 
-### Basic Examples
+## Basic Examples
 
 <details>
     <summary>Self connect example</summary>
