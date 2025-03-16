@@ -3,13 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.2.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GnsSharp.Gns.Posix", "GnsSharp\GnsSharp.Gns.Posix.csproj", "{59969F08-D75F-D7E9-A3F8-A7D4D8678800}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GnsSharp.Gns.Posix64", "GnsSharp\GnsSharp.Gns.Posix64.csproj", "{08844AAC-6F2D-3635-28A8-919CF2376579}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GnsSharp.Gns.Win32", "GnsSharp\GnsSharp.Gns.Win32.csproj", "{88C86049-0E80-45FA-A063-7729AE37F339}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GnsSharp.Gns.Posix32", "GnsSharp\GnsSharp.Gns.Posix32.csproj", "{59969F08-D75F-D7E9-A3F8-A7D4D8678800}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GnsSharp.Gns.Win64", "GnsSharp\GnsSharp.Gns.Win64.csproj", "{A89CD825-6E68-4901-9524-E6169FB08EF9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GnsSharp.Steamworks.Posix", "GnsSharp\GnsSharp.Steamworks.Posix.csproj", "{B534C41C-BD1B-4C93-B40B-D68A03ED5234}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GnsSharp.Gns.Win32", "GnsSharp\GnsSharp.Gns.Win32.csproj", "{88C86049-0E80-45FA-A063-7729AE37F339}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GnsSharp.Steamworks.Posix64", "GnsSharp\GnsSharp.Steamworks.Posix64.csproj", "{7360A4F3-7560-7B52-2E9A-1826EBE2A32E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GnsSharp.Steamworks.Posix32", "GnsSharp\GnsSharp.Steamworks.Posix32.csproj", "{B534C41C-BD1B-4C93-B40B-D68A03ED5234}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GnsSharp.Steamworks.Win64", "GnsSharp\GnsSharp.Steamworks.Win64.csproj", "{E149B1F6-D8E6-4F8D-9F47-6618D060CBE2}"
 EndProject
@@ -45,6 +49,14 @@ Global
 		{F035CD8A-F92E-43EA-9955-60E1D6E5AF94}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F035CD8A-F92E-43EA-9955-60E1D6E5AF94}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F035CD8A-F92E-43EA-9955-60E1D6E5AF94}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08844AAC-6F2D-3635-28A8-919CF2376579}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08844AAC-6F2D-3635-28A8-919CF2376579}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08844AAC-6F2D-3635-28A8-919CF2376579}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08844AAC-6F2D-3635-28A8-919CF2376579}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7360A4F3-7560-7B52-2E9A-1826EBE2A32E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7360A4F3-7560-7B52-2E9A-1826EBE2A32E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7360A4F3-7560-7B52-2E9A-1826EBE2A32E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7360A4F3-7560-7B52-2E9A-1826EBE2A32E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

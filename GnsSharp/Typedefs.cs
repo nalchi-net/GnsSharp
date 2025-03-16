@@ -25,7 +25,11 @@ global using unsafe FPtrSteamNetworkingSocketsServiceThreadInit = delegate* unma
 
 global using PsnIdType = System.UInt64;
 
-global using SizeT = System.UIntPtr;
+#if GNS_SHARP_PLATFORM_WIN64 || GNS_SHARP_PLATFORM_POSIX64
+global using SizeT = System.UInt64;
+#elif GNS_SHARP_PLATFORM_WIN32 || GNS_SHARP_PLATFORM_POSIX32
+global using SizeT = System.UInt32;
+#endif
 
 global using SteamErrMsg = GnsSharp.Array1024<byte>;
 global using SteamNetworkingErrMsg = GnsSharp.Array1024<byte>;

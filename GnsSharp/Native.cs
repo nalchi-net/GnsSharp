@@ -15,7 +15,7 @@ internal static partial class Native
     /// <summary>
     /// Platform dependent struct pack size.
     /// </summary>
-#if GNS_SHARP_PLATFORM_POSIX
+#if GNS_SHARP_PLATFORM_POSIX64 || GNS_SHARP_PLATFORM_POSIX32
     public const int PackSize = 4;
 #elif GNS_SHARP_PLATFORM_WIN64 || GNS_SHARP_PLATFORM_WIN32
     public const int PackSize = 8;
@@ -30,7 +30,7 @@ internal static partial class Native
 
 #if GNS_SHARP_PLATFORM_WIN64 || GNS_SHARP_PLATFORM_WIN32
     public const string GnsLibraryName = "GameNetworkingSockets";
-#elif GNS_SHARP_PLATFORM_POSIX
+#elif GNS_SHARP_PLATFORM_POSIX64 || GNS_SHARP_PLATFORM_POSIX32
     public const string GnsLibraryName = "libGameNetworkingSockets";
 #endif
 
@@ -40,7 +40,7 @@ internal static partial class Native
     public const string GnsLibraryName = "steam_api64";
 #elif GNS_SHARP_PLATFORM_WIN32
     public const string GnsLibraryName = "steam_api";
-#elif GNS_SHARP_PLATFORM_POSIX
+#elif GNS_SHARP_PLATFORM_POSIX64 || GNS_SHARP_PLATFORM_POSIX32
     public const string GnsLibraryName = "libsteam_api";
 #else
 #error "Unknown native library name. Define `GNS_SHARP_PLATFORM_*` according to your platform."

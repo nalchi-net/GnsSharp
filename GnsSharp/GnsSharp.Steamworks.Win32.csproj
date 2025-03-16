@@ -1,41 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+  <Import Project="GnsSharp.props" />
+
   <PropertyGroup>
-    <RootNamespace>GnsSharp</RootNamespace>
     <DefineConstants>$(DefineConstants);GNS_SHARP_STEAMWORKS_SDK;GNS_SHARP_PLATFORM_WIN32</DefineConstants>
-    <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
-    <LangVersion>12</LangVersion>
-    <Nullable>enable</Nullable>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
-
-  <PropertyGroup>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
-    <RepositoryUrl>https://github.com/nalchi-net/GnsSharp</RepositoryUrl>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/nalchi-net/GnsSharp</PackageProjectUrl>
-    <Copyright>Copyright 2025 Guyeon Yu &lt;copyrat90@gmail.com&gt;</Copyright>
-    <Company>nalchi-net</Company>
-    <Authors>copyrat90</Authors>
-    <Description>Valve's GameNetworkingSockets binding for C#</Description>
-    <Version>0.1.0-alpha.1</Version>
-    <PackageTags>GameNetworkingSockets;Steamworks</PackageTags>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <None Include="..\README.md">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.556">
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-    <AdditionalFiles Include="stylecop.json" />
-  </ItemGroup>
 
 </Project>

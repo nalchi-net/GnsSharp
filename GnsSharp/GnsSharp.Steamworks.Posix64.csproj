@@ -3,7 +3,7 @@
   <Import Project="GnsSharp.props" />
 
   <PropertyGroup>
-    <DefineConstants>$(DefineConstants);GNS_SHARP_OPENSOURCE_GNS;GNS_SHARP_PLATFORM_WIN64</DefineConstants>
+    <DefineConstants>$(DefineConstants);GNS_SHARP_STEAMWORKS_SDK;GNS_SHARP_PLATFORM_POSIX64</DefineConstants>
   </PropertyGroup>
 
 </Project>

@@ -1,8 +1,7 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project>
 
   <PropertyGroup>
     <RootNamespace>GnsSharp</RootNamespace>
-    <DefineConstants>$(DefineConstants);GNS_SHARP_STEAMWORKS_SDK;GNS_SHARP_PLATFORM_POSIX</DefineConstants>
     <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
     <LangVersion>12</LangVersion>
     <Nullable>enable</Nullable>
@@ -19,7 +18,7 @@
     <Company>nalchi-net</Company>
     <Authors>copyrat90</Authors>
     <Description>Valve's GameNetworkingSockets binding for C#</Description>
-    <Version>0.1.0-alpha.1</Version>
+    <Version>0.1.0-alpha.2</Version>
     <PackageTags>GameNetworkingSockets;Steamworks</PackageTags>
   </PropertyGroup>
 
