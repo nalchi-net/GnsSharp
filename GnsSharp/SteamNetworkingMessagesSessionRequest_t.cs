@@ -1,9 +1,9 @@
 // SPDX-FileCopyrightText: Copyright 2025 Guyeon Yu <copyrat90@gmail.com>
 // SPDX-License-Identifier: MIT
 
-using System.Runtime.InteropServices;
-
 namespace GnsSharp;
+
+using System.Runtime.InteropServices;
 
 /// <summary>
 /// Posted when a remote host is sending us a message, and we do not already have a session with them
