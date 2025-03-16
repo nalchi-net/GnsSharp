@@ -12,10 +12,8 @@ using System.Text;
 /// Misc networking utilities for checking the local networking environment
 /// and estimating pings.
 /// </summary>
-public static class ISteamNetworkingUtils
+public class ISteamNetworkingUtils
 {
-    internal static IntPtr Self = IntPtr.Zero;
-
     /// <summary>
     /// Max possible length of a ping location, in string format.  This is<br/>
     /// an extremely conservative worst case value which leaves room for future<br/>
@@ -24,6 +22,29 @@ public static class ISteamNetworkingUtils
     /// using dynamic memory.
     /// </summary>
     private const int MaxSteamNetworkingPingLocationString = 1024;
+
+    private IntPtr ptr = IntPtr.Zero;
+
+    internal ISteamNetworkingUtils()
+    {
+#if GNS_SHARP_OPENSOURCE_GNS
+        this.ptr = Native.SteamAPI_SteamNetworkingUtils_v003();
+#elif GNS_SHARP_STEAMWORKS_SDK
+        this.ptr = Native.SteamAPI_SteamNetworkingUtils_SteamAPI_v004();
+#endif
+    }
+
+    /// <summary>
+    /// For <see cref="ISteamNetworkingUtils"/>, the native pointer is actually the same with the <see cref="GameServer"/><br/>
+    /// (i.e. It will share the same global settings with <see cref="GameServer"/> )
+    /// </summary>
+    public static ISteamNetworkingUtils? User { get; internal set; }
+
+    /// <summary>
+    /// For <see cref="ISteamNetworkingUtils"/>, the native pointer is actually the same with the <see cref="User"/><br/>
+    /// (i.e. It will share the same global settings with <see cref="User"/> )
+    /// </summary>
+    public static ISteamNetworkingUtils? GameServer { get; internal set; }
 
     // Efficient message sending
 
@@ -49,9 +70,9 @@ public static class ISteamNetworkingUtils
     /// set each of these.
     /// </para>
     /// </summary>
-    public static IntPtr AllocateMessage(int allocateBuffer)
+    public IntPtr AllocateMessage(int allocateBuffer)
     {
-        return Native.SteamAPI_ISteamNetworkingUtils_AllocateMessage(Self, allocateBuffer);
+        return Native.SteamAPI_ISteamNetworkingUtils_AllocateMessage(this.ptr, allocateBuffer);
     }
 
     // Access to Steam Datagram Relay (SDR) network
@@ -88,9 +109,9 @@ public static class ISteamNetworkingUtils
     /// a "client" and this should be called.
     /// </para>
     /// </summary>
-    public static void InitRelayNetworkAccess()
+    public void InitRelayNetworkAccess()
     {
-        Native.SteamAPI_ISteamNetworkingUtils_InitRelayNetworkAccess(Self);
+        Native.SteamAPI_ISteamNetworkingUtils_InitRelayNetworkAccess(this.ptr);
     }
 
     /// <summary>
@@ -109,9 +130,9 @@ public static class ISteamNetworkingUtils
     /// more details, you can pass a non-NULL value.
     /// </para>
     /// </summary>
-    public static ESteamNetworkingAvailability GetRelayNetworkStatus(out SteamRelayNetworkStatus_t details)
+    public ESteamNetworkingAvailability GetRelayNetworkStatus(out SteamRelayNetworkStatus_t details)
     {
-        return Native.SteamAPI_ISteamNetworkingUtils_GetRelayNetworkStatus(Self, out details);
+        return Native.SteamAPI_ISteamNetworkingUtils_GetRelayNetworkStatus(this.ptr, out details);
     }
 
     /// <summary>
@@ -130,9 +151,9 @@ public static class ISteamNetworkingUtils
     /// more details, you can pass a non-NULL value.
     /// </para>
     /// </summary>
-    public static ESteamNetworkingAvailability GetRelayNetworkStatus()
+    public ESteamNetworkingAvailability GetRelayNetworkStatus()
     {
-        return GetRelayNetworkStatus(out Unsafe.NullRef<SteamRelayNetworkStatus_t>());
+        return this.GetRelayNetworkStatus(out Unsafe.NullRef<SteamRelayNetworkStatus_t>());
     }
 
     // "Ping location" functions
@@ -169,9 +190,9 @@ public static class ISteamNetworkingUtils
     /// right now, even if we are in the middle of re-calculating ping times.
     /// </para>
     /// </summary>
-    public static float GetLocalPingLocation(out SteamNetworkPingLocation_t result)
+    public float GetLocalPingLocation(out SteamNetworkPingLocation_t result)
     {
-        return Native.SteamAPI_ISteamNetworkingUtils_GetLocalPingLocation(Self, out result);
+        return Native.SteamAPI_ISteamNetworkingUtils_GetLocalPingLocation(this.ptr, out result);
     }
 
     /// <summary>
@@ -208,9 +229,9 @@ public static class ISteamNetworkingUtils
     /// You are looking for the "game coordinator" library.
     /// </para>
     /// </summary>
-    public static int EstimatePingTimeBetweenTwoLocations(in SteamNetworkPingLocation_t location1, in SteamNetworkPingLocation_t location2)
+    public int EstimatePingTimeBetweenTwoLocations(in SteamNetworkPingLocation_t location1, in SteamNetworkPingLocation_t location2)
     {
-        return Native.SteamAPI_ISteamNetworkingUtils_EstimatePingTimeBetweenTwoLocations(Self, location1, location2);
+        return Native.SteamAPI_ISteamNetworkingUtils_EstimatePingTimeBetweenTwoLocations(this.ptr, location1, location2);
     }
 
     /// <summary>
@@ -227,9 +248,9 @@ public static class ISteamNetworkingUtils
     /// route would be taken.
     /// </para>
     /// </summary>
-    public static int EstimatePingTimeFromLocalHost(in SteamNetworkPingLocation_t remoteLocation)
+    public int EstimatePingTimeFromLocalHost(in SteamNetworkPingLocation_t remoteLocation)
     {
-        return Native.SteamAPI_ISteamNetworkingUtils_EstimatePingTimeFromLocalHost(Self, remoteLocation);
+        return Native.SteamAPI_ISteamNetworkingUtils_EstimatePingTimeFromLocalHost(this.ptr, remoteLocation);
     }
 
     /// <summary>
@@ -238,10 +259,10 @@ public static class ISteamNetworkingUtils
     /// so please do not parse it yourself.  Your buffer must be at least<br/>
     /// k_cchMaxSteamNetworkingPingLocationString bytes.
     /// </summary>
-    public static string ConvertPingLocationToString(in SteamNetworkPingLocation_t location)
+    public string ConvertPingLocationToString(in SteamNetworkPingLocation_t location)
     {
         Span<byte> raw = stackalloc byte[MaxSteamNetworkingPingLocationString];
-        Native.SteamAPI_ISteamNetworkingUtils_ConvertPingLocationToString(Self, in location, raw, raw.Length);
+        Native.SteamAPI_ISteamNetworkingUtils_ConvertPingLocationToString(this.ptr, in location, raw, raw.Length);
 
         return Utf8StringHelper.NullTerminatedSpanToString(raw);
     }
@@ -250,9 +271,9 @@ public static class ISteamNetworkingUtils
     /// Parse back SteamNetworkPingLocation_t string.  Returns false if we couldn't understand<br/>
     /// the string.
     /// </summary>
-    public static bool ParsePingLocationString(string str, out SteamNetworkPingLocation_t result)
+    public bool ParsePingLocationString(string str, out SteamNetworkPingLocation_t result)
     {
-        return Native.SteamAPI_ISteamNetworkingUtils_ParsePingLocationString(Self, str, out result);
+        return Native.SteamAPI_ISteamNetworkingUtils_ParsePingLocationString(this.ptr, str, out result);
     }
 
     /// <summary>
@@ -285,9 +306,9 @@ public static class ISteamNetworkingUtils
     /// to know when ping measurement completes.
     /// </para>
     /// </summary>
-    public static bool CheckPingDataUpToDate(float maxAgeSeconds)
+    public bool CheckPingDataUpToDate(float maxAgeSeconds)
     {
-        return Native.SteamAPI_ISteamNetworkingUtils_CheckPingDataUpToDate(Self, maxAgeSeconds);
+        return Native.SteamAPI_ISteamNetworkingUtils_CheckPingDataUpToDate(this.ptr, maxAgeSeconds);
     }
 
     // List of Valve data centers, and ping times to them.  This might
@@ -298,34 +319,34 @@ public static class ISteamNetworkingUtils
     /// Fetch ping time of best available relayed route from this host to<br/>
     /// the specified data center.
     /// </summary>
-    public static int GetPingToDataCenter(SteamNetworkingPOPID popID, ref SteamNetworkingPOPID viaRelayPoP)
+    public int GetPingToDataCenter(SteamNetworkingPOPID popID, ref SteamNetworkingPOPID viaRelayPoP)
     {
-        return Native.SteamAPI_ISteamNetworkingUtils_GetPingToDataCenter(Self, popID, ref viaRelayPoP);
+        return Native.SteamAPI_ISteamNetworkingUtils_GetPingToDataCenter(this.ptr, popID, ref viaRelayPoP);
     }
 
     /// <summary>
     /// Get *direct* ping time to the relays at the data center.
     /// </summary>
-    public static int GetDirectPingToPOP(SteamNetworkingPOPID popID)
+    public int GetDirectPingToPOP(SteamNetworkingPOPID popID)
     {
-        return Native.SteamAPI_ISteamNetworkingUtils_GetDirectPingToPOP(Self, popID);
+        return Native.SteamAPI_ISteamNetworkingUtils_GetDirectPingToPOP(this.ptr, popID);
     }
 
     /// <summary>
     /// Get number of network points of presence in the config
     /// </summary>
-    public static int GetPOPCount()
+    public int GetPOPCount()
     {
-        return Native.SteamAPI_ISteamNetworkingUtils_GetPOPCount(Self);
+        return Native.SteamAPI_ISteamNetworkingUtils_GetPOPCount(this.ptr);
     }
 
     /// <summary>
     /// Get list of all POP IDs.  Returns the number of entries that were filled into<br/>
     /// your list.
     /// </summary>
-    public static int GetPOPList(Span<SteamNetworkingPOPID> list)
+    public int GetPOPList(Span<SteamNetworkingPOPID> list)
     {
-        return Native.SteamAPI_ISteamNetworkingUtils_GetPOPList(Self, list, list.Length);
+        return Native.SteamAPI_ISteamNetworkingUtils_GetPOPList(this.ptr, list, list.Length);
     }
 
     // Misc
@@ -357,9 +378,9 @@ public static class ISteamNetworkingUtils
     /// it to values obtained on another computer, or other runs of the same process.
     /// </para>
     /// </summary>
-    public static SteamNetworkingMicroseconds GetLocalTimestamp()
+    public SteamNetworkingMicroseconds GetLocalTimestamp()
     {
-        return Native.SteamAPI_ISteamNetworkingUtils_GetLocalTimestamp(Self);
+        return Native.SteamAPI_ISteamNetworkingUtils_GetLocalTimestamp(this.ptr);
     }
 
     /// <summary>
@@ -397,9 +418,9 @@ public static class ISteamNetworkingUtils
     /// Steamworks calls from within the handler.
     /// </para>
     /// </summary>
-    public static unsafe void SetDebugOutputFunction(ESteamNetworkingSocketsDebugOutputType detailLevel, FPtrSteamNetworkingSocketsDebugOutput func)
+    public unsafe void SetDebugOutputFunction(ESteamNetworkingSocketsDebugOutputType detailLevel, FPtrSteamNetworkingSocketsDebugOutput func)
     {
-        Native.SteamAPI_ISteamNetworkingUtils_SetDebugOutputFunction(Self, detailLevel, func);
+        Native.SteamAPI_ISteamNetworkingUtils_SetDebugOutputFunction(this.ptr, detailLevel, func);
     }
 
     /// <summary>
@@ -437,9 +458,9 @@ public static class ISteamNetworkingUtils
     /// Steamworks calls from within the handler.
     /// </para>
     /// </summary>
-    public static void SetDebugOutputFunction(ESteamNetworkingSocketsDebugOutputType detailLevel, FSteamNetworkingSocketsDebugOutput func)
+    public void SetDebugOutputFunction(ESteamNetworkingSocketsDebugOutputType detailLevel, FSteamNetworkingSocketsDebugOutput func)
     {
-        Native.SteamAPI_ISteamNetworkingUtils_SetDebugOutputFunction(Self, detailLevel, func);
+        Native.SteamAPI_ISteamNetworkingUtils_SetDebugOutputFunction(this.ptr, detailLevel, func);
     }
 
     // Fake IP
@@ -451,17 +472,17 @@ public static class ISteamNetworkingUtils
     /// This function is fast; it just does some logical tests on the IP and does<br/>
     /// not need to do any lookup operations.
     /// </summary>
-    public static bool IsFakeIPv4(uint ipv4)
+    public bool IsFakeIPv4(uint ipv4)
     {
-        return GetIPv4FakeIPType(ipv4) > ESteamNetworkingFakeIPType.NotFake;
+        return this.GetIPv4FakeIPType(ipv4) > ESteamNetworkingFakeIPType.NotFake;
     }
 
-    public static ESteamNetworkingFakeIPType GetIPv4FakeIPType(uint ipv4)
+    public ESteamNetworkingFakeIPType GetIPv4FakeIPType(uint ipv4)
     {
 #if GNS_SHARP_OPENSOURCE_GNS
         return ESteamNetworkingFakeIPType.NotFake;
 #elif GNS_SHARP_STEAMWORKS_SDK
-        return Native.SteamAPI_ISteamNetworkingUtils_GetIPv4FakeIPType(Self, ipv4);
+        return Native.SteamAPI_ISteamNetworkingUtils_GetIPv4FakeIPType(this.ptr, ipv4);
 #endif
     }
 
@@ -485,13 +506,13 @@ public static class ISteamNetworkingUtils
     /// indefinitely.
     /// </para>
     /// </summary>
-    public static EResult GetRealIdentityForFakeIP(in SteamNetworkingIPAddr fakeIP, ref SteamNetworkingIdentity outRealIdentity)
+    public EResult GetRealIdentityForFakeIP(in SteamNetworkingIPAddr fakeIP, ref SteamNetworkingIdentity outRealIdentity)
     {
 #if GNS_SHARP_OPENSOURCE_GNS
         // Not supported without Steam
         return EResult.Disabled;
 #elif GNS_SHARP_STEAMWORKS_SDK
-        return Native.SteamAPI_ISteamNetworkingUtils_GetRealIdentityForFakeIP(Self, in fakeIP, ref outRealIdentity);
+        return Native.SteamAPI_ISteamNetworkingUtils_GetRealIdentityForFakeIP(this.ptr, in fakeIP, ref outRealIdentity);
 #endif
     }
 
@@ -500,57 +521,57 @@ public static class ISteamNetworkingUtils
     /// <summary>
     /// Shortcuts for common cases.
     /// </summary>
-    public static bool SetGlobalConfigValueInt32(ESteamNetworkingConfigValue value, int val)
+    public bool SetGlobalConfigValueInt32(ESteamNetworkingConfigValue value, int val)
     {
-        return Native.SteamAPI_ISteamNetworkingUtils_SetGlobalConfigValueInt32(Self, value, val);
+        return Native.SteamAPI_ISteamNetworkingUtils_SetGlobalConfigValueInt32(this.ptr, value, val);
     }
 
     /// <summary>
     /// Shortcuts for common cases.
     /// </summary>
-    public static bool SetGlobalConfigValueFloat(ESteamNetworkingConfigValue value, float val)
+    public bool SetGlobalConfigValueFloat(ESteamNetworkingConfigValue value, float val)
     {
-        return Native.SteamAPI_ISteamNetworkingUtils_SetGlobalConfigValueFloat(Self, value, val);
+        return Native.SteamAPI_ISteamNetworkingUtils_SetGlobalConfigValueFloat(this.ptr, value, val);
     }
 
     /// <summary>
     /// Shortcuts for common cases.
     /// </summary>
-    public static bool SetGlobalConfigValueString(ESteamNetworkingConfigValue value, string val)
+    public bool SetGlobalConfigValueString(ESteamNetworkingConfigValue value, string val)
     {
-        return Native.SteamAPI_ISteamNetworkingUtils_SetGlobalConfigValueString(Self, value, val);
+        return Native.SteamAPI_ISteamNetworkingUtils_SetGlobalConfigValueString(this.ptr, value, val);
     }
 
     /// <summary>
     /// Shortcuts for common cases.
     /// </summary>
-    public static bool SetGlobalConfigValuePtr(ESteamNetworkingConfigValue value, IntPtr val)
+    public bool SetGlobalConfigValuePtr(ESteamNetworkingConfigValue value, IntPtr val)
     {
-        return Native.SteamAPI_ISteamNetworkingUtils_SetGlobalConfigValuePtr(Self, value, val);
+        return Native.SteamAPI_ISteamNetworkingUtils_SetGlobalConfigValuePtr(this.ptr, value, val);
     }
 
     /// <summary>
     /// Shortcuts for common cases.
     /// </summary>
-    public static bool SetConnectionConfigValueInt32(HSteamNetConnection conn, ESteamNetworkingConfigValue value, int val)
+    public bool SetConnectionConfigValueInt32(HSteamNetConnection conn, ESteamNetworkingConfigValue value, int val)
     {
-        return Native.SteamAPI_ISteamNetworkingUtils_SetConnectionConfigValueInt32(Self, conn, value, val);
+        return Native.SteamAPI_ISteamNetworkingUtils_SetConnectionConfigValueInt32(this.ptr, conn, value, val);
     }
 
     /// <summary>
     /// Shortcuts for common cases.
     /// </summary>
-    public static bool SetConnectionConfigValueFloat(HSteamNetConnection conn, ESteamNetworkingConfigValue value, float val)
+    public bool SetConnectionConfigValueFloat(HSteamNetConnection conn, ESteamNetworkingConfigValue value, float val)
     {
-        return Native.SteamAPI_ISteamNetworkingUtils_SetConnectionConfigValueFloat(Self, conn, value, val);
+        return Native.SteamAPI_ISteamNetworkingUtils_SetConnectionConfigValueFloat(this.ptr, conn, value, val);
     }
 
     /// <summary>
     /// Shortcuts for common cases.
     /// </summary>
-    public static bool SetConnectionConfigValueString(HSteamNetConnection conn, ESteamNetworkingConfigValue value, string val)
+    public bool SetConnectionConfigValueString(HSteamNetConnection conn, ESteamNetworkingConfigValue value, string val)
     {
-        return Native.SteamAPI_ISteamNetworkingUtils_SetConnectionConfigValueString(Self, conn, value, val);
+        return Native.SteamAPI_ISteamNetworkingUtils_SetConnectionConfigValueString(this.ptr, conn, value, val);
     }
 
     /// <summary>
@@ -559,9 +580,9 @@ public static class ISteamNetworkingUtils
     /// simply install these callbacks first thing, and you are good to go.<br/>
     /// See ISteamNetworkingSockets::RunCallbacks
     /// </summary>
-    public static unsafe bool SetGlobalCallback_SteamNetConnectionStatusChanged(FnPtrSteamNetConnectionStatusChanged callback)
+    public unsafe bool SetGlobalCallback_SteamNetConnectionStatusChanged(FnPtrSteamNetConnectionStatusChanged callback)
     {
-        return Native.SteamAPI_ISteamNetworkingUtils_SetGlobalCallback_SteamNetConnectionStatusChanged(Self, callback);
+        return Native.SteamAPI_ISteamNetworkingUtils_SetGlobalCallback_SteamNetConnectionStatusChanged(this.ptr, callback);
     }
 
     /// <summary>
@@ -570,9 +591,9 @@ public static class ISteamNetworkingUtils
     /// simply install these callbacks first thing, and you are good to go.<br/>
     /// See ISteamNetworkingSockets::RunCallbacks
     /// </summary>
-    public static bool SetGlobalCallback_SteamNetConnectionStatusChanged(FnSteamNetConnectionStatusChanged callback)
+    public bool SetGlobalCallback_SteamNetConnectionStatusChanged(FnSteamNetConnectionStatusChanged callback)
     {
-        return Native.SteamAPI_ISteamNetworkingUtils_SetGlobalCallback_SteamNetConnectionStatusChanged(Self, callback);
+        return Native.SteamAPI_ISteamNetworkingUtils_SetGlobalCallback_SteamNetConnectionStatusChanged(this.ptr, callback);
     }
 
     /// <summary>
@@ -581,9 +602,9 @@ public static class ISteamNetworkingUtils
     /// simply install these callbacks first thing, and you are good to go.<br/>
     /// See ISteamNetworkingSockets::RunCallbacks
     /// </summary>
-    public static unsafe bool SetGlobalCallback_SteamNetAuthenticationStatusChanged(FnPtrSteamNetAuthenticationStatusChanged callback)
+    public unsafe bool SetGlobalCallback_SteamNetAuthenticationStatusChanged(FnPtrSteamNetAuthenticationStatusChanged callback)
     {
-        return Native.SteamAPI_ISteamNetworkingUtils_SetGlobalCallback_SteamNetAuthenticationStatusChanged(Self, callback);
+        return Native.SteamAPI_ISteamNetworkingUtils_SetGlobalCallback_SteamNetAuthenticationStatusChanged(this.ptr, callback);
     }
 
     /// <summary>
@@ -592,9 +613,9 @@ public static class ISteamNetworkingUtils
     /// simply install these callbacks first thing, and you are good to go.<br/>
     /// See ISteamNetworkingSockets::RunCallbacks
     /// </summary>
-    public static bool SetGlobalCallback_SteamNetAuthenticationStatusChanged(FnSteamNetAuthenticationStatusChanged callback)
+    public bool SetGlobalCallback_SteamNetAuthenticationStatusChanged(FnSteamNetAuthenticationStatusChanged callback)
     {
-        return Native.SteamAPI_ISteamNetworkingUtils_SetGlobalCallback_SteamNetAuthenticationStatusChanged(Self, callback);
+        return Native.SteamAPI_ISteamNetworkingUtils_SetGlobalCallback_SteamNetAuthenticationStatusChanged(this.ptr, callback);
     }
 
     /// <summary>
@@ -603,9 +624,9 @@ public static class ISteamNetworkingUtils
     /// simply install these callbacks first thing, and you are good to go.<br/>
     /// See ISteamNetworkingSockets::RunCallbacks
     /// </summary>
-    public static unsafe bool SetGlobalCallback_SteamRelayNetworkStatusChanged(FnPtrSteamRelayNetworkStatusChanged callback)
+    public unsafe bool SetGlobalCallback_SteamRelayNetworkStatusChanged(FnPtrSteamRelayNetworkStatusChanged callback)
     {
-        return Native.SteamAPI_ISteamNetworkingUtils_SetGlobalCallback_SteamRelayNetworkStatusChanged(Self, callback);
+        return Native.SteamAPI_ISteamNetworkingUtils_SetGlobalCallback_SteamRelayNetworkStatusChanged(this.ptr, callback);
     }
 
     /// <summary>
@@ -614,9 +635,9 @@ public static class ISteamNetworkingUtils
     /// simply install these callbacks first thing, and you are good to go.<br/>
     /// See ISteamNetworkingSockets::RunCallbacks
     /// </summary>
-    public static bool SetGlobalCallback_SteamRelayNetworkStatusChanged(FnSteamRelayNetworkStatusChanged callback)
+    public bool SetGlobalCallback_SteamRelayNetworkStatusChanged(FnSteamRelayNetworkStatusChanged callback)
     {
-        return Native.SteamAPI_ISteamNetworkingUtils_SetGlobalCallback_SteamRelayNetworkStatusChanged(Self, callback);
+        return Native.SteamAPI_ISteamNetworkingUtils_SetGlobalCallback_SteamRelayNetworkStatusChanged(this.ptr, callback);
     }
 
     /// <summary>
@@ -625,12 +646,12 @@ public static class ISteamNetworkingUtils
     /// simply install these callbacks first thing, and you are good to go.<br/>
     /// See ISteamNetworkingSockets::RunCallbacks
     /// </summary>
-    public static unsafe bool SetGlobalCallback_FakeIPResult(FnPtrSteamNetworkingFakeIPResult callback)
+    public unsafe bool SetGlobalCallback_FakeIPResult(FnPtrSteamNetworkingFakeIPResult callback)
     {
 #if GNS_SHARP_OPENSOURCE_GNS
-        return SetGlobalConfigValuePtr(ESteamNetworkingConfigValue.Callback_FakeIPResult, (IntPtr)callback);
+        return this.SetGlobalConfigValuePtr(ESteamNetworkingConfigValue.Callback_FakeIPResult, (IntPtr)callback);
 #elif GNS_SHARP_STEAMWORKS_SDK
-        return Native.SteamAPI_ISteamNetworkingUtils_SetGlobalCallback_FakeIPResult(Self, callback);
+        return Native.SteamAPI_ISteamNetworkingUtils_SetGlobalCallback_FakeIPResult(this.ptr, callback);
 #endif
     }
 
@@ -640,12 +661,12 @@ public static class ISteamNetworkingUtils
     /// simply install these callbacks first thing, and you are good to go.<br/>
     /// See ISteamNetworkingSockets::RunCallbacks
     /// </summary>
-    public static bool SetGlobalCallback_FakeIPResult(FnSteamNetworkingFakeIPResult callback)
+    public bool SetGlobalCallback_FakeIPResult(FnSteamNetworkingFakeIPResult callback)
     {
 #if GNS_SHARP_OPENSOURCE_GNS
-        return SetGlobalConfigValuePtr(ESteamNetworkingConfigValue.Callback_FakeIPResult, Marshal.GetFunctionPointerForDelegate(callback));
+        return this.SetGlobalConfigValuePtr(ESteamNetworkingConfigValue.Callback_FakeIPResult, Marshal.GetFunctionPointerForDelegate(callback));
 #elif GNS_SHARP_STEAMWORKS_SDK
-        return Native.SteamAPI_ISteamNetworkingUtils_SetGlobalCallback_FakeIPResult(Self, callback);
+        return Native.SteamAPI_ISteamNetworkingUtils_SetGlobalCallback_FakeIPResult(this.ptr, callback);
 #endif
     }
 
@@ -655,12 +676,12 @@ public static class ISteamNetworkingUtils
     /// simply install these callbacks first thing, and you are good to go.<br/>
     /// See ISteamNetworkingSockets::RunCallbacks
     /// </summary>
-    public static unsafe bool SetGlobalCallback_MessagesSessionRequest(FnPtrSteamNetworkingMessagesSessionRequest callback)
+    public unsafe bool SetGlobalCallback_MessagesSessionRequest(FnPtrSteamNetworkingMessagesSessionRequest callback)
     {
 #if GNS_SHARP_OPENSOURCE_GNS
-        return SetGlobalConfigValuePtr(ESteamNetworkingConfigValue.Callback_MessagesSessionRequest, (IntPtr)callback);
+        return this.SetGlobalConfigValuePtr(ESteamNetworkingConfigValue.Callback_MessagesSessionRequest, (IntPtr)callback);
 #elif GNS_SHARP_STEAMWORKS_SDK
-        return Native.SteamAPI_ISteamNetworkingUtils_SetGlobalCallback_MessagesSessionRequest(Self, callback);
+        return Native.SteamAPI_ISteamNetworkingUtils_SetGlobalCallback_MessagesSessionRequest(this.ptr, callback);
 #endif
     }
 
@@ -670,12 +691,12 @@ public static class ISteamNetworkingUtils
     /// simply install these callbacks first thing, and you are good to go.<br/>
     /// See ISteamNetworkingSockets::RunCallbacks
     /// </summary>
-    public static bool SetGlobalCallback_MessagesSessionRequest(FnSteamNetworkingMessagesSessionRequest callback)
+    public bool SetGlobalCallback_MessagesSessionRequest(FnSteamNetworkingMessagesSessionRequest callback)
     {
 #if GNS_SHARP_OPENSOURCE_GNS
-        return SetGlobalConfigValuePtr(ESteamNetworkingConfigValue.Callback_MessagesSessionRequest, Marshal.GetFunctionPointerForDelegate(callback));
+        return this.SetGlobalConfigValuePtr(ESteamNetworkingConfigValue.Callback_MessagesSessionRequest, Marshal.GetFunctionPointerForDelegate(callback));
 #elif GNS_SHARP_STEAMWORKS_SDK
-        return Native.SteamAPI_ISteamNetworkingUtils_SetGlobalCallback_MessagesSessionRequest(Self, callback);
+        return Native.SteamAPI_ISteamNetworkingUtils_SetGlobalCallback_MessagesSessionRequest(this.ptr, callback);
 #endif
     }
 
@@ -685,12 +706,12 @@ public static class ISteamNetworkingUtils
     /// simply install these callbacks first thing, and you are good to go.<br/>
     /// See ISteamNetworkingSockets::RunCallbacks
     /// </summary>
-    public static unsafe bool SetGlobalCallback_MessagesSessionFailed(FnPtrSteamNetworkingMessagesSessionFailed callback)
+    public unsafe bool SetGlobalCallback_MessagesSessionFailed(FnPtrSteamNetworkingMessagesSessionFailed callback)
     {
 #if GNS_SHARP_OPENSOURCE_GNS
-        return SetGlobalConfigValuePtr(ESteamNetworkingConfigValue.Callback_MessagesSessionFailed, (IntPtr)callback);
+        return this.SetGlobalConfigValuePtr(ESteamNetworkingConfigValue.Callback_MessagesSessionFailed, (IntPtr)callback);
 #elif GNS_SHARP_STEAMWORKS_SDK
-        return Native.SteamAPI_ISteamNetworkingUtils_SetGlobalCallback_MessagesSessionFailed(Self, callback);
+        return Native.SteamAPI_ISteamNetworkingUtils_SetGlobalCallback_MessagesSessionFailed(this.ptr, callback);
 #endif
     }
 
@@ -700,12 +721,12 @@ public static class ISteamNetworkingUtils
     /// simply install these callbacks first thing, and you are good to go.<br/>
     /// See ISteamNetworkingSockets::RunCallbacks
     /// </summary>
-    public static bool SetGlobalCallback_MessagesSessionFailed(FnSteamNetworkingMessagesSessionFailed callback)
+    public bool SetGlobalCallback_MessagesSessionFailed(FnSteamNetworkingMessagesSessionFailed callback)
     {
 #if GNS_SHARP_OPENSOURCE_GNS
-        return SetGlobalConfigValuePtr(ESteamNetworkingConfigValue.Callback_MessagesSessionFailed, Marshal.GetFunctionPointerForDelegate(callback));
+        return this.SetGlobalConfigValuePtr(ESteamNetworkingConfigValue.Callback_MessagesSessionFailed, Marshal.GetFunctionPointerForDelegate(callback));
 #elif GNS_SHARP_STEAMWORKS_SDK
-        return Native.SteamAPI_ISteamNetworkingUtils_SetGlobalCallback_MessagesSessionFailed(Self, callback);
+        return Native.SteamAPI_ISteamNetworkingUtils_SetGlobalCallback_MessagesSessionFailed(this.ptr, callback);
 #endif
     }
 
@@ -721,9 +742,9 @@ public static class ISteamNetworkingUtils
     /// NOTE: When setting pointers (e.g. callback functions), do not pass the function pointer directly.<br/>
     /// Your argument should be a pointer to a function pointer.
     /// </summary>
-    public static bool SetConfigValue(ESteamNetworkingConfigValue value, ESteamNetworkingConfigScope scopeType, IntPtr scopeObj, ESteamNetworkingConfigDataType dataType, ReadOnlySpan<byte> arg)
+    public bool SetConfigValue(ESteamNetworkingConfigValue value, ESteamNetworkingConfigScope scopeType, IntPtr scopeObj, ESteamNetworkingConfigDataType dataType, ReadOnlySpan<byte> arg)
     {
-        return Native.SteamAPI_ISteamNetworkingUtils_SetConfigValue(Self, value, scopeType, scopeObj, dataType, arg);
+        return Native.SteamAPI_ISteamNetworkingUtils_SetConfigValue(this.ptr, value, scopeType, scopeObj, dataType, arg);
     }
 
     /// <summary>
@@ -732,9 +753,9 @@ public static class ISteamNetworkingUtils
     /// a little insight into how SteamNetworkingConfigValue_t is used when<br/>
     /// setting config options during listen socket and connection creation.)
     /// </summary>
-    public static bool SetConfigValueStruct(in SteamNetworkingConfigValue_t opt, ESteamNetworkingConfigScope scopeType, IntPtr scopeObj)
+    public bool SetConfigValueStruct(in SteamNetworkingConfigValue_t opt, ESteamNetworkingConfigScope scopeType, IntPtr scopeObj)
     {
-        return Native.SteamAPI_ISteamNetworkingUtils_SetConfigValueStruct(Self, in opt, scopeType, scopeObj);
+        return Native.SteamAPI_ISteamNetworkingUtils_SetConfigValueStruct(this.ptr, in opt, scopeType, scopeObj);
     }
 
     /// <summary>
@@ -746,9 +767,9 @@ public static class ISteamNetworkingUtils
     /// - pResult: Where to put the result.  Pass NULL to query the required buffer size.  (k_ESteamNetworkingGetConfigValue_BufferTooSmall will be returned.)<br/>
     /// - cbResult: IN: the size of your buffer.  OUT: the number of bytes filled in or required.
     /// </summary>
-    public static ESteamNetworkingGetConfigValueResult GetConfigValue(ESteamNetworkingConfigValue value, ESteamNetworkingConfigScope scopeType, IntPtr scopeObj, out ESteamNetworkingConfigDataType outDataType, Span<byte> result, ref SizeT resultSize)
+    public ESteamNetworkingGetConfigValueResult GetConfigValue(ESteamNetworkingConfigValue value, ESteamNetworkingConfigScope scopeType, IntPtr scopeObj, out ESteamNetworkingConfigDataType outDataType, Span<byte> result, ref SizeT resultSize)
     {
-        return Native.SteamAPI_ISteamNetworkingUtils_GetConfigValue(Self, value, scopeType, scopeObj, out outDataType, result, ref resultSize);
+        return Native.SteamAPI_ISteamNetworkingUtils_GetConfigValue(this.ptr, value, scopeType, scopeObj, out outDataType, result, ref resultSize);
     }
 
     /// <summary>
@@ -756,14 +777,14 @@ public static class ISteamNetworkingUtils
     /// or NULL if the value doesn't exist.  Other output parameters can be NULL<br/>
     /// if you do not need them.
     /// </summary>
-    public static string? GetConfigValueInfo(ESteamNetworkingConfigValue value, out ESteamNetworkingConfigDataType outDataType, out ESteamNetworkingConfigScope outScope)
+    public string? GetConfigValueInfo(ESteamNetworkingConfigValue value, out ESteamNetworkingConfigDataType outDataType, out ESteamNetworkingConfigScope outScope)
     {
         string? result = null;
-        IntPtr ptr = Native.SteamAPI_ISteamNetworkingUtils_GetConfigValueInfo(Self, value, out outDataType, out outScope);
+        IntPtr configPtr = Native.SteamAPI_ISteamNetworkingUtils_GetConfigValueInfo(this.ptr, value, out outDataType, out outScope);
 
-        if (ptr != IntPtr.Zero)
+        if (configPtr != IntPtr.Zero)
         {
-            result = Marshal.PtrToStringUTF8(ptr);
+            result = Marshal.PtrToStringUTF8(configPtr);
         }
 
         return result;
@@ -783,22 +804,22 @@ public static class ISteamNetworkingUtils
     /// shown in a retail environment where a malicious local user might use this to cheat.
     /// </para>
     /// </summary>
-    public static ESteamNetworkingConfigValue IterateGenericEditableConfigValues(ESteamNetworkingConfigValue current, bool enumerateDevVars)
+    public ESteamNetworkingConfigValue IterateGenericEditableConfigValues(ESteamNetworkingConfigValue current, bool enumerateDevVars)
     {
-        return Native.SteamAPI_ISteamNetworkingUtils_IterateGenericEditableConfigValues(Self, current, enumerateDevVars);
+        return Native.SteamAPI_ISteamNetworkingUtils_IterateGenericEditableConfigValues(this.ptr, current, enumerateDevVars);
     }
 
     /// <summary>
     /// String conversions.  You'll usually access these using the respective<br/>
     /// inline methods.
     /// </summary>
-    public static string SteamNetworkingIPAddr_ToString(in SteamNetworkingIPAddr addr, bool withPort)
+    public string SteamNetworkingIPAddr_ToString(in SteamNetworkingIPAddr addr, bool withPort)
     {
         Span<byte> raw = stackalloc byte[SteamNetworkingIPAddr.MaxString];
 #if GNS_SHARP_OPENSOURCE_GNS
         Native.SteamNetworkingIPAddr_ToString(in addr, raw, (SizeT)raw.Length, withPort);
 #elif GNS_SHARP_STEAMWORKS_SDK
-        Native.SteamAPI_ISteamNetworkingUtils_SteamNetworkingIPAddr_ToString(Self, in addr, raw, (uint)raw.Length, withPort);
+        Native.SteamAPI_ISteamNetworkingUtils_SteamNetworkingIPAddr_ToString(this.ptr, in addr, raw, (uint)raw.Length, withPort);
 #endif
         return Utf8StringHelper.NullTerminatedSpanToString(raw);
     }
@@ -807,12 +828,12 @@ public static class ISteamNetworkingUtils
     /// String conversions.  You'll usually access these using the respective<br/>
     /// inline methods.
     /// </summary>
-    public static bool SteamNetworkingIPAddr_ParseString(ref SteamNetworkingIPAddr addr, string str)
+    public bool SteamNetworkingIPAddr_ParseString(ref SteamNetworkingIPAddr addr, string str)
     {
 #if GNS_SHARP_OPENSOURCE_GNS
         return Native.SteamNetworkingIPAddr_ParseString(ref addr, str);
 #elif GNS_SHARP_STEAMWORKS_SDK
-        return Native.SteamAPI_ISteamNetworkingUtils_SteamNetworkingIPAddr_ParseString(Self, ref addr, str);
+        return Native.SteamAPI_ISteamNetworkingUtils_SteamNetworkingIPAddr_ParseString(this.ptr, ref addr, str);
 #endif
     }
 
@@ -820,12 +841,12 @@ public static class ISteamNetworkingUtils
     /// String conversions.  You'll usually access these using the respective<br/>
     /// inline methods.
     /// </summary>
-    public static ESteamNetworkingFakeIPType SteamNetworkingIPAddr_GetFakeIPType(in SteamNetworkingIPAddr addr)
+    public ESteamNetworkingFakeIPType SteamNetworkingIPAddr_GetFakeIPType(in SteamNetworkingIPAddr addr)
     {
 #if GNS_SHARP_OPENSOURCE_GNS
         return Native.SteamNetworkingIPAddr_GetFakeIPType(in addr);
 #elif GNS_SHARP_STEAMWORKS_SDK
-        return Native.SteamAPI_ISteamNetworkingUtils_SteamNetworkingIPAddr_GetFakeIPType(Self, in addr);
+        return Native.SteamAPI_ISteamNetworkingUtils_SteamNetworkingIPAddr_GetFakeIPType(this.ptr, in addr);
 #endif
     }
 
@@ -833,13 +854,13 @@ public static class ISteamNetworkingUtils
     /// String conversions.  You'll usually access these using the respective<br/>
     /// inline methods.
     /// </summary>
-    public static string SteamNetworkingIdentity_ToString(in SteamNetworkingIdentity identity)
+    public string SteamNetworkingIdentity_ToString(in SteamNetworkingIdentity identity)
     {
         Span<byte> raw = stackalloc byte[SteamNetworkingIdentity.MaxString];
 #if GNS_SHARP_OPENSOURCE_GNS
         Native.SteamNetworkingIdentity_ToString(in identity, raw, (SizeT)raw.Length);
 #elif GNS_SHARP_STEAMWORKS_SDK
-        Native.SteamAPI_ISteamNetworkingUtils_SteamNetworkingIdentity_ToString(Self, in identity, raw, (uint)raw.Length);
+        Native.SteamAPI_ISteamNetworkingUtils_SteamNetworkingIdentity_ToString(this.ptr, in identity, raw, (uint)raw.Length);
 #endif
         return Utf8StringHelper.NullTerminatedSpanToString(raw);
     }
@@ -848,7 +869,7 @@ public static class ISteamNetworkingUtils
     /// String conversions.  You'll usually access these using the respective<br/>
     /// inline methods.
     /// </summary>
-    public static bool SteamNetworkingIdentity_ParseString(ref SteamNetworkingIdentity identity, string str)
+    public bool SteamNetworkingIdentity_ParseString(ref SteamNetworkingIdentity identity, string str)
     {
 #if GNS_SHARP_OPENSOURCE_GNS
         SizeT sizeofIdentity;
@@ -859,16 +880,7 @@ public static class ISteamNetworkingUtils
 
         return Native.SteamNetworkingIdentity_ParseString(ref identity, sizeofIdentity, str);
 #elif GNS_SHARP_STEAMWORKS_SDK
-        return Native.SteamAPI_ISteamNetworkingUtils_SteamNetworkingIdentity_ParseString(Self, ref identity, str);
-#endif
-    }
-
-    internal static void Setup()
-    {
-#if GNS_SHARP_OPENSOURCE_GNS
-        Self = Native.SteamAPI_SteamNetworkingUtils_v003();
-#elif GNS_SHARP_STEAMWORKS_SDK
-        Self = Native.SteamAPI_SteamNetworkingUtils_SteamAPI_v004();
+        return Native.SteamAPI_ISteamNetworkingUtils_SteamNetworkingIdentity_ParseString(this.ptr, ref identity, str);
 #endif
     }
 }

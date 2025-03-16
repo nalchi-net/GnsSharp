@@ -105,7 +105,7 @@ if (GnsSharpCore.Backend == GnsSharpCore.BackendKind.OpenSource)
     {
         while (!cancelToken.IsCancellationRequested)
         {
-            ISteamNetworkingSockets.RunCallbacks();
+            ISteamNetworkingSockets.User!.RunCallbacks();
             await Task.Delay(16, cancelToken);
         }
     }, cancelToken);
@@ -130,7 +130,7 @@ FSteamNetworkingSocketsDebugOutput debugOutput = (ESteamNetworkingSocketsDebugOu
     Console.WriteLine($"[{level}] {msg}");
 };
 
-ISteamNetworkingUtils.SetDebugOutputFunction(ESteamNetworkingSocketsDebugOutputType.Everything, debugOutput);
+ISteamNetworkingUtils.User!.SetDebugOutputFunction(ESteamNetworkingSocketsDebugOutputType.Everything, debugOutput);
 
 // Setup listen address: IPv6 any address & port 43000
 SteamNetworkingIPAddr addr = default;
@@ -144,7 +144,7 @@ FnSteamNetConnectionStatusChanged listenStatusChanged = (ref SteamNetConnectionS
     switch (status.Info.State)
     {
         case ESteamNetworkingConnectionState.Connecting:
-            ISteamNetworkingSockets.AcceptConnection(status.Conn);
+            ISteamNetworkingSockets.User!.AcceptConnection(status.Conn);
             Console.WriteLine("Server has accepted the connection from client!");
             break;
 
@@ -157,7 +157,7 @@ FnSteamNetConnectionStatusChanged listenStatusChanged = (ref SteamNetConnectionS
             Console.WriteLine(builder.ToString());
 
             // Server side also need to close the connection to clean up resources
-            ISteamNetworkingSockets.CloseConnection(status.Conn, 0, "Server's closing too!", false);
+            ISteamNetworkingSockets.User!.CloseConnection(status.Conn, 0, "Server's closing too!", false);
 
             Interlocked.Exchange(ref serverClosing, 1);
             break;
@@ -169,7 +169,7 @@ serverConfigs[0].SetPtr(ESteamNetworkingConfigValue.Callback_ConnectionStatusCha
                         Marshal.GetFunctionPointerForDelegate(listenStatusChanged));
 
 // Server: Start listening
-HSteamListenSocket listener = ISteamNetworkingSockets.CreateListenSocketIP(in addr, serverConfigs);
+HSteamListenSocket listener = ISteamNetworkingSockets.User!.CreateListenSocketIP(in addr, serverConfigs);
 
 serverConfigs[0].Dispose(); // Dispose config after usage, actually not required unless `SetString()` is used
 
@@ -179,7 +179,7 @@ if (GnsSharpCore.Backend == GnsSharpCore.BackendKind.Steamworks)
     for (int i = 0; ; ++i)
     {
         ESteamNetworkingAvailability avail =
-            ISteamNetworkingSockets.GetAuthenticationStatus(out SteamNetAuthenticationStatus_t auth);
+            ISteamNetworkingSockets.User.GetAuthenticationStatus(out SteamNetAuthenticationStatus_t auth);
 
         if (avail == ESteamNetworkingAvailability.Current)
             break;
@@ -220,8 +220,7 @@ FnSteamNetConnectionStatusChanged clientStatusChanged = (ref SteamNetConnectionS
                 builder.Append($": {status.Info.EndDebug}");
             Console.WriteLine(builder.ToString());
 
-            // Server side also need to close the connection to clean up resources
-            ISteamNetworkingSockets.CloseConnection(status.Conn, 0, "Client closing lately?", false);
+            ISteamNetworkingSockets.User.CloseConnection(status.Conn, 0, "Client closing lately?", false);
             break;
     }
 };
@@ -231,7 +230,7 @@ clientConfigs[0].SetPtr(ESteamNetworkingConfigValue.Callback_ConnectionStatusCha
                         Marshal.GetFunctionPointerForDelegate(clientStatusChanged));
 
 // Client: Connect to the server
-HSteamNetConnection client = ISteamNetworkingSockets.ConnectByIPAddress(addr, clientConfigs);
+HSteamNetConnection client = ISteamNetworkingSockets.User.ConnectByIPAddress(addr, clientConfigs);
 
 clientConfigs[0].Dispose();
 
@@ -240,7 +239,7 @@ while (clientConnected == 0)
     await Task.Delay(16);
 
 // Close from the client side
-ISteamNetworkingSockets.CloseConnection(client, 0, "Client's closing!", false);
+ISteamNetworkingSockets.User.CloseConnection(client, 0, "Client's closing!", false);
 
 // Wait for the server side to close the connection
 while (serverClosing == 0)

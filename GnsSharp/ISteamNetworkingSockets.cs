@@ -4,6 +4,7 @@
 namespace GnsSharp;
 
 using System;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
 /// <summary>
@@ -41,11 +42,32 @@ using System.Runtime.CompilerServices;
 /// easier to use, especially when porting existing UDP code.
 /// </para>
 /// </summary>
-public static class ISteamNetworkingSockets
+public class ISteamNetworkingSockets
 {
-    internal static IntPtr Self = IntPtr.Zero;
-
     private const int MaxUtf8StrBufSize = 1024;
+
+    private IntPtr ptr = IntPtr.Zero;
+
+    internal ISteamNetworkingSockets(bool isGameServer)
+    {
+#if GNS_SHARP_OPENSOURCE_GNS
+        Debug.Assert(!isGameServer, "Open source GNS doesn't have GameServer API");
+        this.ptr = Native.SteamAPI_SteamNetworkingSockets_v009();
+#elif GNS_SHARP_STEAMWORKS_SDK
+        if (isGameServer)
+        {
+            this.ptr = Native.SteamAPI_SteamGameServerNetworkingSockets_SteamAPI_v012();
+        }
+        else
+        {
+            this.ptr = Native.SteamAPI_SteamNetworkingSockets_SteamAPI_v012();
+        }
+#endif
+    }
+
+    public static ISteamNetworkingSockets? User { get; internal set; }
+
+    public static ISteamNetworkingSockets? GameServer { get; internal set; }
 
     /// <summary>
     /// <para>
@@ -78,9 +100,9 @@ public static class ISteamNetworkingSockets
     /// will be posted.  The connection will be in the connecting state.
     /// </para>
     /// </summary>
-    public static HSteamListenSocket CreateListenSocketIP(in SteamNetworkingIPAddr localAddress, ReadOnlySpan<SteamNetworkingConfigValue_t> options)
+    public HSteamListenSocket CreateListenSocketIP(in SteamNetworkingIPAddr localAddress, ReadOnlySpan<SteamNetworkingConfigValue_t> options)
     {
-        return Native.SteamAPI_ISteamNetworkingSockets_CreateListenSocketIP(Self, localAddress, options.Length, options);
+        return Native.SteamAPI_ISteamNetworkingSockets_CreateListenSocketIP(this.ptr, localAddress, options.Length, options);
     }
 
     /// <summary>
@@ -117,9 +139,9 @@ public static class ISteamNetworkingSockets
     /// setting the options "immediately" after creation.
     /// </para>
     /// </summary>
-    public static HSteamNetConnection ConnectByIPAddress(in SteamNetworkingIPAddr address, ReadOnlySpan<SteamNetworkingConfigValue_t> options)
+    public HSteamNetConnection ConnectByIPAddress(in SteamNetworkingIPAddr address, ReadOnlySpan<SteamNetworkingConfigValue_t> options)
     {
-        return Native.SteamAPI_ISteamNetworkingSockets_ConnectByIPAddress(Self, address, options.Length, options);
+        return Native.SteamAPI_ISteamNetworkingSockets_ConnectByIPAddress(this.ptr, address, options.Length, options);
     }
 
     /// <summary>
@@ -157,9 +179,9 @@ public static class ISteamNetworkingSockets
     /// setting the options "immediately" after creation.
     /// </para>
     /// </summary>
-    public static HSteamListenSocket CreateListenSocketP2P(int localVirtualPort, ReadOnlySpan<SteamNetworkingConfigValue_t> options)
+    public HSteamListenSocket CreateListenSocketP2P(int localVirtualPort, ReadOnlySpan<SteamNetworkingConfigValue_t> options)
     {
-        return Native.SteamAPI_ISteamNetworkingSockets_CreateListenSocketP2P(Self, localVirtualPort, options.Length, options);
+        return Native.SteamAPI_ISteamNetworkingSockets_CreateListenSocketP2P(this.ptr, localVirtualPort, options.Length, options);
     }
 
     /// <summary>
@@ -181,9 +203,9 @@ public static class ISteamNetworkingSockets
     /// - k_ESteamNetworkingConfig_Callback_CreateConnectionSignaling
     /// </para>
     /// </summary>
-    public static HSteamNetConnection ConnectP2P(in SteamNetworkingIdentity identityRemote, int remoteVirtualPort, ReadOnlySpan<SteamNetworkingConfigValue_t> options)
+    public HSteamNetConnection ConnectP2P(in SteamNetworkingIdentity identityRemote, int remoteVirtualPort, ReadOnlySpan<SteamNetworkingConfigValue_t> options)
     {
-        return Native.SteamAPI_ISteamNetworkingSockets_ConnectP2P(Self, identityRemote, remoteVirtualPort, options.Length, options);
+        return Native.SteamAPI_ISteamNetworkingSockets_ConnectP2P(this.ptr, identityRemote, remoteVirtualPort, options.Length, options);
     }
 
     /// <summary>
@@ -241,9 +263,9 @@ public static class ISteamNetworkingSockets
     /// specific, it is safe to set them on the connection before accepting the connection.
     /// </para>
     /// </summary>
-    public static EResult AcceptConnection(HSteamNetConnection conn)
+    public EResult AcceptConnection(HSteamNetConnection conn)
     {
-        return Native.SteamAPI_ISteamNetworkingSockets_AcceptConnection(Self, conn);
+        return Native.SteamAPI_ISteamNetworkingSockets_AcceptConnection(this.ptr, conn);
     }
 
     /// <summary>
@@ -279,18 +301,18 @@ public static class ISteamNetworkingSockets
     /// ignored.
     /// </para>
     /// </summary>
-    public static bool CloseConnection(HSteamNetConnection peer, int reason, string? debug, bool enableLinger)
+    public bool CloseConnection(HSteamNetConnection peer, int reason, string? debug, bool enableLinger)
     {
-        return Native.SteamAPI_ISteamNetworkingSockets_CloseConnection(Self, peer, reason, debug, enableLinger);
+        return Native.SteamAPI_ISteamNetworkingSockets_CloseConnection(this.ptr, peer, reason, debug, enableLinger);
     }
 
     /// <summary>
     /// Destroy a listen socket.  All the connections that were accepting on the listen<br/>
     /// socket are closed ungracefully.
     /// </summary>
-    public static bool CloseListenSocket(HSteamListenSocket socket)
+    public bool CloseListenSocket(HSteamListenSocket socket)
     {
-        return Native.SteamAPI_ISteamNetworkingSockets_CloseListenSocket(Self, socket);
+        return Native.SteamAPI_ISteamNetworkingSockets_CloseListenSocket(this.ptr, socket);
     }
 
     /// <summary>
@@ -327,35 +349,35 @@ public static class ISteamNetworkingSockets
     /// Returns false if the handle is invalid.
     /// </para>
     /// </summary>
-    public static bool SetConnectionUserData(HSteamNetConnection peer, long userData)
+    public bool SetConnectionUserData(HSteamNetConnection peer, long userData)
     {
-        return Native.SteamAPI_ISteamNetworkingSockets_SetConnectionUserData(Self, peer, userData);
+        return Native.SteamAPI_ISteamNetworkingSockets_SetConnectionUserData(this.ptr, peer, userData);
     }
 
     /// <summary>
     /// Fetch connection user data.  Returns -1 if handle is invalid<br/>
     /// or if you haven't set any userdata on the connection.
     /// </summary>
-    public static long GetConnectionUserData(HSteamNetConnection peer)
+    public long GetConnectionUserData(HSteamNetConnection peer)
     {
-        return Native.SteamAPI_ISteamNetworkingSockets_GetConnectionUserData(Self, peer);
+        return Native.SteamAPI_ISteamNetworkingSockets_GetConnectionUserData(this.ptr, peer);
     }
 
     /// <summary>
     /// Set a name for the connection, used mostly for debugging
     /// </summary>
-    public static void SetConnectionName(HSteamNetConnection peer, string name)
+    public void SetConnectionName(HSteamNetConnection peer, string name)
     {
-        Native.SteamAPI_ISteamNetworkingSockets_SetConnectionName(Self, peer, name);
+        Native.SteamAPI_ISteamNetworkingSockets_SetConnectionName(this.ptr, peer, name);
     }
 
     /// <summary>
     /// Fetch connection name.  Returns false if handle is invalid
     /// </summary>
-    public static bool GetConnectionName(HSteamNetConnection hPeer, out string name)
+    public bool GetConnectionName(HSteamNetConnection hPeer, out string name)
     {
         Span<byte> raw = stackalloc byte[MaxUtf8StrBufSize];
-        bool success = Native.SteamAPI_ISteamNetworkingSockets_GetConnectionName(Self, hPeer, raw, MaxUtf8StrBufSize);
+        bool success = Native.SteamAPI_ISteamNetworkingSockets_GetConnectionName(this.ptr, hPeer, raw, MaxUtf8StrBufSize);
         name = success ? Utf8StringHelper.NullTerminatedSpanToString(raw) : String.Empty;
 
         return success;
@@ -410,9 +432,9 @@ public static class ISteamNetworkingSockets
     /// (See k_ESteamNetworkingConfig_SendBufferSize)
     /// </para>
     /// </summary>
-    public static EResult SendMessageToConnection(HSteamNetConnection conn, ReadOnlySpan<byte> data, ESteamNetworkingSendType sendFlags, out long outMessageNumber)
+    public EResult SendMessageToConnection(HSteamNetConnection conn, ReadOnlySpan<byte> data, ESteamNetworkingSendType sendFlags, out long outMessageNumber)
     {
-        return Native.SteamAPI_ISteamNetworkingSockets_SendMessageToConnection(Self, conn, data, (uint)data.Length, sendFlags, out outMessageNumber);
+        return Native.SteamAPI_ISteamNetworkingSockets_SendMessageToConnection(this.ptr, conn, data, (uint)data.Length, sendFlags, out outMessageNumber);
     }
 
     /// <summary>
@@ -464,9 +486,9 @@ public static class ISteamNetworkingSockets
     /// (See k_ESteamNetworkingConfig_SendBufferSize)
     /// </para>
     /// </summary>
-    public static EResult SendMessageToConnection(HSteamNetConnection conn, ReadOnlySpan<byte> data, ESteamNetworkingSendType sendFlags)
+    public EResult SendMessageToConnection(HSteamNetConnection conn, ReadOnlySpan<byte> data, ESteamNetworkingSendType sendFlags)
     {
-        return SendMessageToConnection(conn, data, sendFlags, out Unsafe.NullRef<long>());
+        return this.SendMessageToConnection(conn, data, sendFlags, out Unsafe.NullRef<long>());
     }
 
     /// <summary>
@@ -515,9 +537,9 @@ public static class ISteamNetworkingSockets
     /// failure codes.
     /// </para>
     /// </summary>
-    public static void SendMessages(ReadOnlySpan<IntPtr> messages, Span<long> outMessageNumberOrResult)
+    public void SendMessages(ReadOnlySpan<IntPtr> messages, Span<long> outMessageNumberOrResult)
     {
-        Native.SteamAPI_ISteamNetworkingSockets_SendMessages(Self, messages.Length, messages, outMessageNumberOrResult);
+        Native.SteamAPI_ISteamNetworkingSockets_SendMessages(this.ptr, messages.Length, messages, outMessageNumberOrResult);
     }
 
     /// <summary>
@@ -566,9 +588,9 @@ public static class ISteamNetworkingSockets
     /// failure codes.
     /// </para>
     /// </summary>
-    public static void SendMessages(ReadOnlySpan<IntPtr> messages)
+    public void SendMessages(ReadOnlySpan<IntPtr> messages)
     {
-        SendMessages(messages, []);
+        this.SendMessages(messages, []);
     }
 
     /// <summary>
@@ -592,9 +614,9 @@ public static class ISteamNetworkingSockets
     /// k_EResultIgnored: We weren't (yet) connected, so this operation has no effect.
     /// </para>
     /// </summary>
-    public static EResult FlushMessagesOnConnection(HSteamNetConnection conn)
+    public EResult FlushMessagesOnConnection(HSteamNetConnection conn)
     {
-        return Native.SteamAPI_ISteamNetworkingSockets_FlushMessagesOnConnection(Self, conn);
+        return Native.SteamAPI_ISteamNetworkingSockets_FlushMessagesOnConnection(this.ptr, conn);
     }
 
     /// <summary>
@@ -622,17 +644,17 @@ public static class ISteamNetworkingSockets
     /// a little while (put it into some queue, etc), and you may call Release() from any thread.
     /// </para>
     /// </summary>
-    public static int ReceiveMessagesOnConnection(HSteamNetConnection conn, Span<IntPtr> outMessages)
+    public int ReceiveMessagesOnConnection(HSteamNetConnection conn, Span<IntPtr> outMessages)
     {
-        return Native.SteamAPI_ISteamNetworkingSockets_ReceiveMessagesOnConnection(Self, conn, outMessages, outMessages.Length);
+        return Native.SteamAPI_ISteamNetworkingSockets_ReceiveMessagesOnConnection(this.ptr, conn, outMessages, outMessages.Length);
     }
 
     /// <summary>
     /// Returns basic information about the high-level state of the connection.
     /// </summary>
-    public static bool GetConnectionInfo(HSteamNetConnection conn, out SteamNetConnectionInfo_t info)
+    public bool GetConnectionInfo(HSteamNetConnection conn, out SteamNetConnectionInfo_t info)
     {
-        return Native.SteamAPI_ISteamNetworkingSockets_GetConnectionInfo(Self, conn, out info);
+        return Native.SteamAPI_ISteamNetworkingSockets_GetConnectionInfo(this.ptr, conn, out info);
     }
 
     /// <summary>
@@ -657,9 +679,9 @@ public static class ISteamNetworkingSockets
     /// - k_EResultInvalidParam - nLanes is bad
     /// </para>
     /// </summary>
-    public static EResult GetConnectionRealTimeStatus(HSteamNetConnection conn, out SteamNetConnectionRealTimeStatus_t status, Span<SteamNetConnectionRealTimeLaneStatus_t> lanes)
+    public EResult GetConnectionRealTimeStatus(HSteamNetConnection conn, out SteamNetConnectionRealTimeStatus_t status, Span<SteamNetConnectionRealTimeLaneStatus_t> lanes)
     {
-        return Native.SteamAPI_ISteamNetworkingSockets_GetConnectionRealTimeStatus(Self, conn, out status, lanes.Length, lanes);
+        return Native.SteamAPI_ISteamNetworkingSockets_GetConnectionRealTimeStatus(this.ptr, conn, out status, lanes.Length, lanes);
     }
 
     /// <summary>
@@ -684,9 +706,9 @@ public static class ISteamNetworkingSockets
     /// - k_EResultInvalidParam - nLanes is bad
     /// </para>
     /// </summary>
-    public static EResult GetConnectionRealTimeStatus(HSteamNetConnection conn, out SteamNetConnectionRealTimeStatus_t status)
+    public EResult GetConnectionRealTimeStatus(HSteamNetConnection conn, out SteamNetConnectionRealTimeStatus_t status)
     {
-        return GetConnectionRealTimeStatus(conn, out status, []);
+        return this.GetConnectionRealTimeStatus(conn, out status, []);
     }
 
     /// <summary>
@@ -711,9 +733,9 @@ public static class ISteamNetworkingSockets
     /// - k_EResultInvalidParam - nLanes is bad
     /// </para>
     /// </summary>
-    public static EResult GetConnectionRealTimeStatus(HSteamNetConnection conn, Span<SteamNetConnectionRealTimeLaneStatus_t> lanes)
+    public EResult GetConnectionRealTimeStatus(HSteamNetConnection conn, Span<SteamNetConnectionRealTimeLaneStatus_t> lanes)
     {
-        return GetConnectionRealTimeStatus(conn, out Unsafe.NullRef<SteamNetConnectionRealTimeStatus_t>(), lanes);
+        return this.GetConnectionRealTimeStatus(conn, out Unsafe.NullRef<SteamNetConnectionRealTimeStatus_t>(), lanes);
     }
 
     /// <summary>
@@ -730,12 +752,12 @@ public static class ISteamNetworkingSockets
     /// Try again with a buffer of at least N bytes.
     /// </para>
     /// </summary>
-    public static int GetDetailedConnectionStatus(HSteamNetConnection conn, out string status)
+    public int GetDetailedConnectionStatus(HSteamNetConnection conn, out string status)
     {
         int result = -1;
         {
             Span<byte> raw = stackalloc byte[MaxUtf8StrBufSize];
-            result = Native.SteamAPI_ISteamNetworkingSockets_GetDetailedConnectionStatus(Self, conn, raw, MaxUtf8StrBufSize);
+            result = Native.SteamAPI_ISteamNetworkingSockets_GetDetailedConnectionStatus(this.ptr, conn, raw, MaxUtf8StrBufSize);
             if (result < 0)
             {
                 status = String.Empty;
@@ -751,7 +773,7 @@ public static class ISteamNetworkingSockets
         // Allocate more space required for the details and retry
         {
             Span<byte> raw = stackalloc byte[result];
-            result = Native.SteamAPI_ISteamNetworkingSockets_GetDetailedConnectionStatus(Self, conn, raw, result);
+            result = Native.SteamAPI_ISteamNetworkingSockets_GetDetailedConnectionStatus(this.ptr, conn, raw, result);
             if (result == 0)
             {
                 status = Utf8StringHelper.NullTerminatedSpanToString(raw);
@@ -775,9 +797,9 @@ public static class ISteamNetworkingSockets
     /// An IPv6 address of ::ffff:0000:0000 means "any IPv4"
     /// </para>
     /// </summary>
-    public static bool GetListenSocketAddress(HSteamListenSocket socket, out SteamNetworkingIPAddr address)
+    public bool GetListenSocketAddress(HSteamListenSocket socket, out SteamNetworkingIPAddr address)
     {
-        return Native.SteamAPI_ISteamNetworkingSockets_GetListenSocketAddress(Self, socket, out address);
+        return Native.SteamAPI_ISteamNetworkingSockets_GetListenSocketAddress(this.ptr, socket, out address);
     }
 
     /// <summary>
@@ -810,9 +832,9 @@ public static class ISteamNetworkingSockets
     /// actual bound loopback port.  Otherwise, the port will be zero.
     /// </para>
     /// </summary>
-    public static bool CreateSocketPair(out HSteamNetConnection outConnection1, out HSteamNetConnection outConnection2, bool useNetworkLoopback, in SteamNetworkingIdentity identity1, in SteamNetworkingIdentity identity2)
+    public bool CreateSocketPair(out HSteamNetConnection outConnection1, out HSteamNetConnection outConnection2, bool useNetworkLoopback, in SteamNetworkingIdentity identity1, in SteamNetworkingIdentity identity2)
     {
-        return Native.SteamAPI_ISteamNetworkingSockets_CreateSocketPair(Self, out outConnection1, out outConnection2, useNetworkLoopback, in identity1, in identity2);
+        return Native.SteamAPI_ISteamNetworkingSockets_CreateSocketPair(this.ptr, out outConnection1, out outConnection2, useNetworkLoopback, in identity1, in identity2);
     }
 
     /// <summary>
@@ -845,9 +867,9 @@ public static class ISteamNetworkingSockets
     /// actual bound loopback port.  Otherwise, the port will be zero.
     /// </para>
     /// </summary>
-    public static bool CreateSocketPair(out HSteamNetConnection outConnection1, out HSteamNetConnection outConnection2, bool useNetworkLoopback, in SteamNetworkingIdentity identity1)
+    public bool CreateSocketPair(out HSteamNetConnection outConnection1, out HSteamNetConnection outConnection2, bool useNetworkLoopback, in SteamNetworkingIdentity identity1)
     {
-        return CreateSocketPair(out outConnection1, out outConnection2, useNetworkLoopback, identity1, in Unsafe.NullRef<SteamNetworkingIdentity>());
+        return this.CreateSocketPair(out outConnection1, out outConnection2, useNetworkLoopback, identity1, in Unsafe.NullRef<SteamNetworkingIdentity>());
     }
 
     /// <summary>
@@ -880,9 +902,9 @@ public static class ISteamNetworkingSockets
     /// actual bound loopback port.  Otherwise, the port will be zero.
     /// </para>
     /// </summary>
-    public static bool CreateSocketPair(out HSteamNetConnection outConnection1, out HSteamNetConnection outConnection2, bool useNetworkLoopback)
+    public bool CreateSocketPair(out HSteamNetConnection outConnection1, out HSteamNetConnection outConnection2, bool useNetworkLoopback)
     {
-        return CreateSocketPair(out outConnection1, out outConnection2, useNetworkLoopback, in Unsafe.NullRef<SteamNetworkingIdentity>(), in Unsafe.NullRef<SteamNetworkingIdentity>());
+        return this.CreateSocketPair(out outConnection1, out outConnection2, useNetworkLoopback, in Unsafe.NullRef<SteamNetworkingIdentity>(), in Unsafe.NullRef<SteamNetworkingIdentity>());
     }
 
     /// <summary>
@@ -968,7 +990,7 @@ public static class ISteamNetworkingSockets
     /// SteamNetworkingMessage_t::m_idxLane
     /// </para>
     /// </summary>
-    public static EResult ConfigureConnectionLanes(HSteamNetConnection conn, ReadOnlySpan<int> lanePriorities, ReadOnlySpan<ushort> laneWeights)
+    public EResult ConfigureConnectionLanes(HSteamNetConnection conn, ReadOnlySpan<int> lanePriorities, ReadOnlySpan<ushort> laneWeights)
     {
         // Both spans are not empty, but lane sizes mismatch?  What number of lanes then?
         if (lanePriorities.Length != 0 && laneWeights.Length != 0 && lanePriorities.Length != laneWeights.Length)
@@ -978,7 +1000,7 @@ public static class ISteamNetworkingSockets
 
         int numLanes = (lanePriorities.Length > laneWeights.Length) ? lanePriorities.Length : laneWeights.Length;
 
-        return Native.SteamAPI_ISteamNetworkingSockets_ConfigureConnectionLanes(Self, conn, numLanes, lanePriorities, laneWeights);
+        return Native.SteamAPI_ISteamNetworkingSockets_ConfigureConnectionLanes(this.ptr, conn, numLanes, lanePriorities, laneWeights);
     }
 
     // Identity and authentication
@@ -990,9 +1012,9 @@ public static class ISteamNetworkingSockets
     /// our identity yet.  (E.g. GameServer has not logged in.  On Steam, the user will know their SteamID<br/>
     /// even if they are not signed into Steam.)
     /// </summary>
-    public static bool GetIdentity(out SteamNetworkingIdentity identity)
+    public bool GetIdentity(out SteamNetworkingIdentity identity)
     {
-        return Native.SteamAPI_ISteamNetworkingSockets_GetIdentity(Self, out identity);
+        return Native.SteamAPI_ISteamNetworkingSockets_GetIdentity(this.ptr, out identity);
     }
 
     /// <summary>
@@ -1030,9 +1052,9 @@ public static class ISteamNetworkingSockets
     /// Returns the current value that would be returned from GetAuthenticationStatus.
     /// </para>
     /// </summary>
-    public static ESteamNetworkingAvailability InitAuthentication()
+    public ESteamNetworkingAvailability InitAuthentication()
     {
-        return Native.SteamAPI_ISteamNetworkingSockets_InitAuthentication(Self);
+        return Native.SteamAPI_ISteamNetworkingSockets_InitAuthentication(this.ptr);
     }
 
     /// <summary>
@@ -1048,9 +1070,9 @@ public static class ISteamNetworkingSockets
     /// details, pass non-NULL to receive them.
     /// </para>
     /// </summary>
-    public static ESteamNetworkingAvailability GetAuthenticationStatus(out SteamNetAuthenticationStatus_t details)
+    public ESteamNetworkingAvailability GetAuthenticationStatus(out SteamNetAuthenticationStatus_t details)
     {
-        return Native.SteamAPI_ISteamNetworkingSockets_GetAuthenticationStatus(Self, out details);
+        return Native.SteamAPI_ISteamNetworkingSockets_GetAuthenticationStatus(this.ptr, out details);
     }
 
     // Poll groups.  A poll group is a set of connections that can be polled efficiently.
@@ -1066,9 +1088,9 @@ public static class ISteamNetworkingSockets
     /// You should destroy the poll group when you are done using DestroyPollGroup
     /// </para>
     /// </summary>
-    public static HSteamNetPollGroup CreatePollGroup()
+    public HSteamNetPollGroup CreatePollGroup()
     {
-        return Native.SteamAPI_ISteamNetworkingSockets_CreatePollGroup(Self);
+        return Native.SteamAPI_ISteamNetworkingSockets_CreatePollGroup(this.ptr);
     }
 
     /// <summary>
@@ -1082,9 +1104,9 @@ public static class ISteamNetworkingSockets
     /// Returns false if passed an invalid poll group handle.
     /// </para>
     /// </summary>
-    public static bool DestroyPollGroup(HSteamNetPollGroup pollGroup)
+    public bool DestroyPollGroup(HSteamNetPollGroup pollGroup)
     {
-        return Native.SteamAPI_ISteamNetworkingSockets_DestroyPollGroup(Self, pollGroup);
+        return Native.SteamAPI_ISteamNetworkingSockets_DestroyPollGroup(this.ptr, pollGroup);
     }
 
     /// <summary>
@@ -1111,9 +1133,9 @@ public static class ISteamNetworkingSockets
     /// is invalid (and not k_HSteamNetPollGroup_Invalid).
     /// </para>
     /// </summary>
-    public static bool SetConnectionPollGroup(HSteamNetConnection conn, HSteamNetPollGroup pollGroup)
+    public bool SetConnectionPollGroup(HSteamNetConnection conn, HSteamNetPollGroup pollGroup)
     {
-        return Native.SteamAPI_ISteamNetworkingSockets_SetConnectionPollGroup(Self, conn, pollGroup);
+        return Native.SteamAPI_ISteamNetworkingSockets_SetConnectionPollGroup(this.ptr, conn, pollGroup);
     }
 
     /// <summary>
@@ -1139,9 +1161,9 @@ public static class ISteamNetworkingSockets
     /// other connections.)
     /// </para>
     /// </summary>
-    public static int ReceiveMessagesOnPollGroup(HSteamNetPollGroup pollGroup, Span<IntPtr> outMessages)
+    public int ReceiveMessagesOnPollGroup(HSteamNetPollGroup pollGroup, Span<IntPtr> outMessages)
     {
-        return Native.SteamAPI_ISteamNetworkingSockets_ReceiveMessagesOnPollGroup(Self, pollGroup, outMessages, outMessages.Length);
+        return Native.SteamAPI_ISteamNetworkingSockets_ReceiveMessagesOnPollGroup(this.ptr, pollGroup, outMessages, outMessages.Length);
     }
 
     // Clients connecting to dedicated servers hosted in a data center,
@@ -1159,9 +1181,9 @@ public static class ISteamNetworkingSockets
     /// See stamdatagram_ticketgen.h for more details.
     /// </para>
     /// </summary>
-    public static bool ReceivedRelayAuthTicket(ReadOnlySpan<byte> ticket, out SteamDatagramRelayAuthTicket outParsedTicket)
+    public bool ReceivedRelayAuthTicket(ReadOnlySpan<byte> ticket, out SteamDatagramRelayAuthTicket outParsedTicket)
     {
-        return Native.SteamAPI_ISteamNetworkingSockets_ReceivedRelayAuthTicket(Self, ticket, ticket.Length, out outParsedTicket);
+        return Native.SteamAPI_ISteamNetworkingSockets_ReceivedRelayAuthTicket(this.ptr, ticket, ticket.Length, out outParsedTicket);
     }
 
     /// <summary>
@@ -1176,9 +1198,9 @@ public static class ISteamNetworkingSockets
     /// call ConnectToHostedDedicatedServer to connect to the server.
     /// </para>
     /// </summary>
-    public static int FindRelayAuthTicketForServer(in SteamNetworkingIdentity identityGameServer, int remoteVirtualPort, out SteamDatagramRelayAuthTicket outParsedTicket)
+    public int FindRelayAuthTicketForServer(in SteamNetworkingIdentity identityGameServer, int remoteVirtualPort, out SteamDatagramRelayAuthTicket outParsedTicket)
     {
-        return Native.SteamAPI_ISteamNetworkingSockets_FindRelayAuthTicketForServer(Self, identityGameServer, remoteVirtualPort, out outParsedTicket);
+        return Native.SteamAPI_ISteamNetworkingSockets_FindRelayAuthTicketForServer(this.ptr, identityGameServer, remoteVirtualPort, out outParsedTicket);
     }
 
     /// <summary>
@@ -1207,9 +1229,9 @@ public static class ISteamNetworkingSockets
     /// setting the options "immediately" after creation.
     /// </para>
     /// </summary>
-    public static HSteamNetConnection ConnectToHostedDedicatedServer(in SteamNetworkingIdentity identityTarget, int remoteVirtualPort, ReadOnlySpan<SteamNetworkingConfigValue_t> options)
+    public HSteamNetConnection ConnectToHostedDedicatedServer(in SteamNetworkingIdentity identityTarget, int remoteVirtualPort, ReadOnlySpan<SteamNetworkingConfigValue_t> options)
     {
-        return Native.SteamAPI_ISteamNetworkingSockets_ConnectToHostedDedicatedServer(Self, in identityTarget, remoteVirtualPort, options.Length, options);
+        return Native.SteamAPI_ISteamNetworkingSockets_ConnectToHostedDedicatedServer(this.ptr, in identityTarget, remoteVirtualPort, options.Length, options);
     }
 
     // Servers hosted in data centers known to the Valve relay network
@@ -1227,18 +1249,18 @@ public static class ISteamNetworkingSockets
     /// for more information on how to configure dev environments.
     /// </para>
     /// </summary>
-    public static ushort GetHostedDedicatedServerPort()
+    public ushort GetHostedDedicatedServerPort()
     {
-        return Native.SteamAPI_ISteamNetworkingSockets_GetHostedDedicatedServerPort(Self);
+        return Native.SteamAPI_ISteamNetworkingSockets_GetHostedDedicatedServerPort(this.ptr);
     }
 
     /// <summary>
     /// Returns 0 if SDR_LISTEN_PORT is not set.  Otherwise, returns the data center the server<br/>
     /// is running in.  This will be k_SteamDatagramPOPID_dev in non-production environment.
     /// </summary>
-    public static SteamNetworkingPOPID GetHostedDedicatedServerPOPID()
+    public SteamNetworkingPOPID GetHostedDedicatedServerPOPID()
     {
-        return Native.SteamAPI_ISteamNetworkingSockets_GetHostedDedicatedServerPOPID(Self);
+        return Native.SteamAPI_ISteamNetworkingSockets_GetHostedDedicatedServerPOPID(this.ptr);
     }
 
     /// <summary>
@@ -1281,9 +1303,9 @@ public static class ISteamNetworkingSockets
     /// directly share it with clients.
     /// </para>
     /// </summary>
-    public static EResult GetHostedDedicatedServerAddress(out SteamDatagramHostedAddress routing)
+    public EResult GetHostedDedicatedServerAddress(out SteamDatagramHostedAddress routing)
     {
-        return Native.SteamAPI_ISteamNetworkingSockets_GetHostedDedicatedServerAddress(Self, out routing);
+        return Native.SteamAPI_ISteamNetworkingSockets_GetHostedDedicatedServerAddress(this.ptr, out routing);
     }
 
     /// <summary>
@@ -1309,9 +1331,9 @@ public static class ISteamNetworkingSockets
     /// setting the options "immediately" after creation.
     /// </para>
     /// </summary>
-    public static HSteamListenSocket CreateHostedDedicatedServerListenSocket(int localVirtualPort, ReadOnlySpan<SteamNetworkingConfigValue_t> options)
+    public HSteamListenSocket CreateHostedDedicatedServerListenSocket(int localVirtualPort, ReadOnlySpan<SteamNetworkingConfigValue_t> options)
     {
-        return Native.SteamAPI_ISteamNetworkingSockets_CreateHostedDedicatedServerListenSocket(Self, localVirtualPort, options.Length, options);
+        return Native.SteamAPI_ISteamNetworkingSockets_CreateHostedDedicatedServerListenSocket(this.ptr, localVirtualPort, options.Length, options);
     }
 
     /// <summary>
@@ -1359,14 +1381,14 @@ public static class ISteamNetworkingSockets
     /// and don't share it directly with clients.
     /// </para>
     /// </summary>
-    public static EResult GetGameCoordinatorServerLogin(ref SteamDatagramGameCoordinatorServerLogin loginInfo, ref int signedBlob, Span<byte> blob)
+    public EResult GetGameCoordinatorServerLogin(ref SteamDatagramGameCoordinatorServerLogin loginInfo, ref int signedBlob, Span<byte> blob)
     {
         if (signedBlob != blob.Length)
         {
             return EResult.InvalidParam;
         }
 
-        return Native.SteamAPI_ISteamNetworkingSockets_GetGameCoordinatorServerLogin(Self, ref loginInfo, ref signedBlob, blob);
+        return Native.SteamAPI_ISteamNetworkingSockets_GetGameCoordinatorServerLogin(this.ptr, ref loginInfo, ref signedBlob, blob);
     }
 
     // Relayed connections using custom signaling protocol
@@ -1423,9 +1445,9 @@ public static class ISteamNetworkingSockets
     /// setting the options "immediately" after creation.
     /// </para>
     /// </summary>
-    public static HSteamNetConnection ConnectP2PCustomSignaling(IntPtr signaling, in SteamNetworkingIdentity peerIdentity, int remoteVirtualPort, ReadOnlySpan<SteamNetworkingConfigValue_t> options)
+    public HSteamNetConnection ConnectP2PCustomSignaling(IntPtr signaling, in SteamNetworkingIdentity peerIdentity, int remoteVirtualPort, ReadOnlySpan<SteamNetworkingConfigValue_t> options)
     {
-        return Native.SteamAPI_ISteamNetworkingSockets_ConnectP2PCustomSignaling(Self, signaling, in peerIdentity, remoteVirtualPort, options.Length, options);
+        return Native.SteamAPI_ISteamNetworkingSockets_ConnectP2PCustomSignaling(this.ptr, signaling, in peerIdentity, remoteVirtualPort, options.Length, options);
     }
 
     /// <summary>
@@ -1471,9 +1493,9 @@ public static class ISteamNetworkingSockets
     /// to call ISteamNetworkingUtils::InitRelayNetworkAccess() when your app initializes
     /// </para>
     /// </summary>
-    public static bool ReceivedP2PCustomSignal(ReadOnlySpan<byte> msg, IntPtr context)
+    public bool ReceivedP2PCustomSignal(ReadOnlySpan<byte> msg, IntPtr context)
     {
-        return Native.SteamAPI_ISteamNetworkingSockets_ReceivedP2PCustomSignal(Self, msg, msg.Length, context);
+        return Native.SteamAPI_ISteamNetworkingSockets_ReceivedP2PCustomSignal(this.ptr, msg, msg.Length, context);
     }
 
     // Certificate provision by the application.  On Steam, we normally handle all this automatically
@@ -1491,9 +1513,9 @@ public static class ISteamNetworkingSockets
     /// Pass this blob to your game coordinator and call SteamDatagram_CreateCert.
     /// </para>
     /// </summary>
-    public static bool GetCertificateRequest(ref int blobSize, Span<byte> blob, out string? errMsg)
+    public bool GetCertificateRequest(ref int blobSize, Span<byte> blob, out string? errMsg)
     {
-        bool result = Native.SteamAPI_ISteamNetworkingSockets_GetCertificateRequest(Self, ref blobSize, blob, out SteamNetworkingErrMsg msg);
+        bool result = Native.SteamAPI_ISteamNetworkingSockets_GetCertificateRequest(this.ptr, ref blobSize, blob, out SteamNetworkingErrMsg msg);
 
         if (!result)
         {
@@ -1512,9 +1534,9 @@ public static class ISteamNetworkingSockets
     /// Set the certificate.  The certificate blob should be the output of<br/>
     /// SteamDatagram_CreateCert.
     /// </summary>
-    public static bool SetCertificate(ReadOnlySpan<byte> certificate, out string? errMsg)
+    public bool SetCertificate(ReadOnlySpan<byte> certificate, out string? errMsg)
     {
-        bool result = Native.SteamAPI_ISteamNetworkingSockets_SetCertificate(Self, certificate, certificate.Length, out SteamNetworkingErrMsg msg);
+        bool result = Native.SteamAPI_ISteamNetworkingSockets_SetCertificate(this.ptr, certificate, certificate.Length, out SteamNetworkingErrMsg msg);
 
         if (!result)
         {
@@ -1543,12 +1565,12 @@ public static class ISteamNetworkingSockets
     /// a new user can sign in.
     /// </para>
     /// </summary>
-    public static void ResetIdentity(in SteamNetworkingIdentity identity)
+    public void ResetIdentity(in SteamNetworkingIdentity identity)
     {
 #if GNS_SHARP_OPENSOURCE_GNS
         throw new NotImplementedException("Stand-alone GNS doesn't expose ISteamNetworkingSockets::ResetIdentity()");
 #elif GNS_SHARP_STEAMWORKS_SDK
-        Native.SteamAPI_ISteamNetworkingSockets_ResetIdentity(Self, in identity);
+        Native.SteamAPI_ISteamNetworkingSockets_ResetIdentity(this.ptr, in identity);
 #endif
     }
 
@@ -1565,9 +1587,9 @@ public static class ISteamNetworkingSockets
     /// mechanism (SteamAPI_RunCallbacks and SteamGameserver_RunCallbacks).
     /// </para>
     /// </summary>
-    public static void RunCallbacks()
+    public void RunCallbacks()
     {
-        Native.SteamAPI_ISteamNetworkingSockets_RunCallbacks(Self);
+        Native.SteamAPI_ISteamNetworkingSockets_RunCallbacks(this.ptr);
     }
 
     // "FakeIP" system.
@@ -1642,13 +1664,13 @@ public static class ISteamNetworkingSockets
     /// use CreateFakeUDPPort.
     /// </para>
     /// </summary>
-    public static bool BeginAsyncRequestFakeIP(int numPorts)
+    public bool BeginAsyncRequestFakeIP(int numPorts)
     {
         // TODO: Maybe change this to C# async-await?
 #if GNS_SHARP_OPENSOURCE_GNS
         throw new NotImplementedException($"FakeIP allocation requires Steam");
 #elif GNS_SHARP_STEAMWORKS_SDK
-        return Native.SteamAPI_ISteamNetworkingSockets_BeginAsyncRequestFakeIP(Self, numPorts);
+        return Native.SteamAPI_ISteamNetworkingSockets_BeginAsyncRequestFakeIP(this.ptr, numPorts);
 #endif
     }
 
@@ -1657,12 +1679,12 @@ public static class ISteamNetworkingSockets
     /// if any.  idxFirstPort is currently reserved and must be zero.<br/>
     /// Make sure and check SteamNetworkingFakeIPResult_t::m_eResult
     /// </summary>
-    public static void GetFakeIP(out SteamNetworkingFakeIPResult_t info)
+    public void GetFakeIP(out SteamNetworkingFakeIPResult_t info)
     {
 #if GNS_SHARP_OPENSOURCE_GNS
         throw new NotImplementedException($"FakeIP allocation requires Steam");
 #elif GNS_SHARP_STEAMWORKS_SDK
-        Native.SteamAPI_ISteamNetworkingSockets_GetFakeIP(Self, 0, out info);
+        Native.SteamAPI_ISteamNetworkingSockets_GetFakeIP(this.ptr, 0, out info);
 #endif
     }
 
@@ -1681,12 +1703,12 @@ public static class ISteamNetworkingSockets
     /// request to complete before creating the listen socket.
     /// </para>
     /// </summary>
-    public static HSteamListenSocket CreateListenSocketP2PFakeIP(int idxFakePort, ReadOnlySpan<SteamNetworkingConfigValue_t> options)
+    public HSteamListenSocket CreateListenSocketP2PFakeIP(int idxFakePort, ReadOnlySpan<SteamNetworkingConfigValue_t> options)
     {
 #if GNS_SHARP_OPENSOURCE_GNS
         throw new NotImplementedException($"FakeIP allocation requires Steam");
 #elif GNS_SHARP_STEAMWORKS_SDK
-        return Native.SteamAPI_ISteamNetworkingSockets_CreateListenSocketP2PFakeIP(Self, idxFakePort, options.Length, options);
+        return Native.SteamAPI_ISteamNetworkingSockets_CreateListenSocketP2PFakeIP(this.ptr, idxFakePort, options.Length, options);
 #endif
     }
 
@@ -1713,12 +1735,12 @@ public static class ISteamNetworkingSockets
     /// - k_EResultIPNotFound: This connection wasn't made using FakeIP system
     /// </para>
     /// </summary>
-    public static EResult GetRemoteFakeIPForConnection(HSteamNetConnection conn, out SteamNetworkingIPAddr outAddr)
+    public EResult GetRemoteFakeIPForConnection(HSteamNetConnection conn, out SteamNetworkingIPAddr outAddr)
     {
 #if GNS_SHARP_OPENSOURCE_GNS
         throw new NotImplementedException($"FakeIP system requires Steam");
 #elif GNS_SHARP_STEAMWORKS_SDK
-        return Native.SteamAPI_ISteamNetworkingSockets_GetRemoteFakeIPForConnection(Self, conn, out outAddr);
+        return Native.SteamAPI_ISteamNetworkingSockets_GetRemoteFakeIPForConnection(this.ptr, conn, out outAddr);
 #endif
     }
 
@@ -1747,21 +1769,12 @@ public static class ISteamNetworkingSockets
     /// assign a FakeIP from its own locally-controlled namespace.
     /// </para>
     /// </summary>
-    public static IntPtr CreateFakeUDPPort(int idxFakeServerPort)
+    public IntPtr CreateFakeUDPPort(int idxFakeServerPort)
     {
 #if GNS_SHARP_OPENSOURCE_GNS
         throw new NotImplementedException($"FakeIP system requires Steam");
 #elif GNS_SHARP_STEAMWORKS_SDK
-        return Native.SteamAPI_ISteamNetworkingSockets_CreateFakeUDPPort(Self, idxFakeServerPort);
-#endif
-    }
-
-    internal static void Setup()
-    {
-#if GNS_SHARP_OPENSOURCE_GNS
-        Self = Native.SteamAPI_SteamNetworkingSockets_v009();
-#elif GNS_SHARP_STEAMWORKS_SDK
-        Self = Native.SteamAPI_SteamNetworkingSockets_SteamAPI_v012();
+        return Native.SteamAPI_ISteamNetworkingSockets_CreateFakeUDPPort(this.ptr, idxFakeServerPort);
 #endif
     }
 }

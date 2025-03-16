@@ -161,6 +161,23 @@ internal static partial class Native
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
     public static partial void SteamAPI_ReleaseCurrentThreadMemory();
 
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial ESteamAPIInitResult SteamInternal_GameServer_Init_V2(uint unIP, ushort usGamePort, ushort usQueryPort, EServerMode eServerMode, [MarshalAs(UnmanagedType.LPUTF8Str)] string pchVersionString, [MarshalAs(UnmanagedType.LPUTF8Str)] string pszInternalCheckInterfaceVersions, out SteamErrMsg pOutErrMsg);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial void SteamGameServer_Shutdown();
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamGameServer_BSecure();
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial ulong SteamGameServer_GetSteamID();
+
     /// <summary>
     /// Inform the API that you wish to use manual event dispatch.  This must be called after SteamAPI_Init, but before<br/>
     /// you use any of the other manual dispatch functions below.
@@ -209,6 +226,10 @@ internal static partial class Native
     [LibraryImport(GnsLibraryName)]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
     public static partial HSteamPipe SteamAPI_GetHSteamPipe();
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial HSteamPipe SteamGameServer_GetHSteamPipe();
 
     [LibraryImport(GnsLibraryName)]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]

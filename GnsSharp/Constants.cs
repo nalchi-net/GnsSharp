@@ -37,4 +37,7 @@ internal static class Constants
     public const string SteamUserStatsInterfaceVersion = "STEAMUSERSTATS_INTERFACE_VERSION013";
     public const string SteamUserInterfaceVersion = "SteamUser023";
     public const string SteamVideoInterfaceVersion = "STEAMVIDEO_INTERFACE_V007";
+
+    public const string SteamGameServerInterfaceVersion = "SteamGameServer015";
+    public const string SteamGameServerStatsInterfaceVersion = "SteamGameServerStats001";
 }

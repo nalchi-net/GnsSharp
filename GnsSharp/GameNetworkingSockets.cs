@@ -36,7 +36,7 @@ public static class GameNetworkingSockets
         {
             errMsg = null;
 
-            GnsSharpCore.SetupInterfaces();
+            GnsSharpCore.Init(isGameServer: false);
         }
 
         return result;
@@ -67,6 +67,7 @@ public static class GameNetworkingSockets
     public static void Kill()
     {
 #if GNS_SHARP_OPENSOURCE_GNS
+        GnsSharpCore.Shutdown(isGameServer: false);
         Native.GameNetworkingSockets_Kill();
 #elif GNS_SHARP_STEAMWORKS_SDK
         throw new NotImplementedException("On Steamworks SDK, use SteamAPI.Shutdown() instead");

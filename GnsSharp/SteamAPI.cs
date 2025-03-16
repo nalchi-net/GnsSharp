@@ -4,9 +4,6 @@
 namespace GnsSharp;
 
 using System;
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using System.Text;
 
 /// <summary>
@@ -18,7 +15,6 @@ using System.Text;
 /// These functions manage loading, initializing and shutdown of the steamclient.dll
 /// </para>
 /// </summary>
-//
 public static class SteamAPI
 {
     // Initializing the Steamworks SDK
@@ -60,7 +56,8 @@ public static class SteamAPI
         throw new NotImplementedException("For open source stand-alone GNS, use GameNetworkingSockets.Init() instead");
 #elif GNS_SHARP_STEAMWORKS_SDK
 
-        int capacity = Constants.SteamNetworkingSocketsInterfaceVersion.Length + 1
+        int capacity =
+              Constants.SteamNetworkingSocketsInterfaceVersion.Length + 1
             + Constants.SteamNetworkingUtilsInterfaceVersion.Length + 1
 
             // + Constants.SteamUtilsInterfaceVersion.Length + 1
@@ -131,7 +128,7 @@ public static class SteamAPI
         {
             outErrMsg = null;
 
-            GnsSharpCore.SetupInterfaces();
+            GnsSharpCore.Init(isGameServer: false);
 
             Native.SteamAPI_ManualDispatch_Init();
         }
@@ -157,6 +154,7 @@ public static class SteamAPI
 #if GNS_SHARP_OPENSOURCE_GNS
         throw new NotImplementedException("For open source stand-alone GNS, use GameNetworkingSockets.Kill() instead");
 #elif GNS_SHARP_STEAMWORKS_SDK
+        GnsSharpCore.Shutdown(isGameServer: false);
         Native.SteamAPI_Shutdown();
 #endif
     }
@@ -184,7 +182,7 @@ public static class SteamAPI
     public static bool RestartAppIfNecessary(uint ownAppID)
     {
 #if GNS_SHARP_OPENSOURCE_GNS
-        throw new NotImplementedException("Open source stand-alone GNS doesn't have RestartAppIfNecessary()");
+        throw new NotImplementedException("Open source GNS doesn't have RestartAppIfNecessary()");
 #elif GNS_SHARP_STEAMWORKS_SDK
         return Native.SteamAPI_RestartAppIfNecessary(ownAppID);
 #endif
@@ -199,7 +197,7 @@ public static class SteamAPI
     public static void ReleaseCurrentThreadMemory()
     {
 #if GNS_SHARP_OPENSOURCE_GNS
-        throw new NotImplementedException("Open source stand-alone GNS doesn't have ReleaseCurrentThreadMemory()");
+        throw new NotImplementedException("Open source GNS doesn't have ReleaseCurrentThreadMemory()");
 #elif GNS_SHARP_STEAMWORKS_SDK
         Native.SteamAPI_ReleaseCurrentThreadMemory();
 #endif
@@ -208,96 +206,9 @@ public static class SteamAPI
     public static void RunCallbacks()
     {
 #if GNS_SHARP_OPENSOURCE_GNS
-        throw new NotImplementedException("For open source stand-alone GNS, use ISteamNetworkingSockets.RunCallbacks() instead");
+        throw new NotImplementedException("For open source stand-alone GNS, use ISteamNetworkingSockets.User.RunCallbacks() instead");
 #elif GNS_SHARP_STEAMWORKS_SDK
-        // Manual callback loop
-        HSteamPipe hSteamPipe = Native.SteamAPI_GetHSteamPipe();
-        Native.SteamAPI_ManualDispatch_RunFrame(hSteamPipe);
-        while (Native.SteamAPI_ManualDispatch_GetNextCallback(hSteamPipe, out CallbackMsg_t callbackMsg))
-        {
-            // Check for dispatching API call results
-            if (callbackMsg.Callback == SteamAPICallCompleted_t.CallbackId)
-            {
-                HandleCallCompletedResult(hSteamPipe, ref callbackMsg);
-            }
-            else if (callbackMsg.Callback == SteamNetConnectionStatusChangedCallback_t.CallbackId)
-            {
-                HandleConnStatusChanged(ref callbackMsg);
-            }
-            else
-            {
-                // TODO:
-                // Look at callback.m_iCallback to see what kind of callback it is,
-                // and dispatch to appropriate handler(s)
-            }
-
-            Native.SteamAPI_ManualDispatch_FreeLastCallback(hSteamPipe);
-        }
+        Dispatcher.RunCallbacks(isGameServer: false);
 #endif
     }
-
-#if GNS_SHARP_STEAMWORKS_SDK
-    private static void HandleCallCompletedResult(HSteamPipe hSteamPipe, ref CallbackMsg_t callbackMsg)
-    {
-        Span<SteamAPICallCompleted_t> callCompleted;
-        unsafe
-        {
-            callCompleted = new Span<SteamAPICallCompleted_t>((void*)callbackMsg.Param, 1);
-        }
-
-        // Get the stackalloc byte span that's aligned to 8 bytes boundary
-        int rawResultSize = (int)callCompleted[0].Param;
-        int alignedElemCount = (rawResultSize + (sizeof(ulong) - 1)) / sizeof(ulong); // ceiled division
-        Span<ulong> callResultAligned = stackalloc ulong[alignedElemCount];
-        Span<byte> callResult = MemoryMarshal.AsBytes(callResultAligned)[..rawResultSize];
-
-        if (Native.SteamAPI_ManualDispatch_GetAPICallResult(hSteamPipe, callCompleted[0].AsyncCall, callResult, callResult.Length, callCompleted[0].Callback, out bool failed))
-        {
-            // TODO:
-            // Dispatch the call result to the registered handler(s) for the
-            // call identified by pCallCompleted->m_hAsyncCall
-        }
-    }
-
-    private static void HandleConnStatusChanged(ref CallbackMsg_t callbackMsg)
-    {
-        Span<SteamNetConnectionStatusChangedCallback_t> connChanged;
-        unsafe
-        {
-            connChanged = new Span<SteamNetConnectionStatusChangedCallback_t>((void*)callbackMsg.Param, 1);
-        }
-
-        // Get the callback function pointer registered for this connection
-        SizeT resultSize;
-        unsafe
-        {
-            resultSize = (SizeT)sizeof(IntPtr);
-        }
-
-        SizeT prevResultSize = resultSize;
-        Span<IntPtr> connChangedCallbackPtr = stackalloc IntPtr[1];
-
-        // This approach has a flaw that:
-        // When the connection is closed, it won't receive status changed callback for `ESteamNetworkingConnectionState.None`.
-        // Because, at that point, the connection handle should be already invalidated,
-        // thus can't get the callback function pointer associated with it.
-        //
-        // But `ESteamNetworkingConnectionState.None` status is rarely useful;
-        // Managing seperate pointer table only for that doesn't look too good.
-        var getConfigValueResult = ISteamNetworkingUtils.GetConfigValue(ESteamNetworkingConfigValue.Callback_ConnectionStatusChanged, ESteamNetworkingConfigScope.Connection, (IntPtr)(uint)connChanged[0].Conn, out ESteamNetworkingConfigDataType outDataType, MemoryMarshal.AsBytes(connChangedCallbackPtr), ref resultSize);
-
-        if (getConfigValueResult == ESteamNetworkingGetConfigValueResult.OK || getConfigValueResult == ESteamNetworkingGetConfigValueResult.OKInherited)
-        {
-            Debug.Assert(prevResultSize == resultSize, $"Config value size expected {prevResultSize}, got {resultSize}");
-
-            // Call the callback if it is set
-            if (connChangedCallbackPtr[0] != IntPtr.Zero)
-            {
-                var connChangedCallback = Marshal.GetDelegateForFunctionPointer<FnSteamNetConnectionStatusChanged>(connChangedCallbackPtr[0]);
-
-                connChangedCallback(ref connChanged[0]);
-            }
-        }
-    }
-#endif
 }

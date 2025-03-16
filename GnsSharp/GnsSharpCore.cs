@@ -3,6 +3,8 @@
 
 namespace GnsSharp;
 
+using System.Diagnostics;
+
 public static class GnsSharpCore
 {
 #if GNS_SHARP_OPENSOURCE_GNS
@@ -28,9 +30,39 @@ public static class GnsSharpCore
         Steamworks,
     }
 
-    public static void SetupInterfaces()
+    internal static void Init(bool isGameServer)
     {
-        ISteamNetworkingSockets.Setup();
-        ISteamNetworkingUtils.Setup();
+#if GNS_SHARP_OPENSOURCE_GNS
+        Debug.Assert(!isGameServer, "Open source GNS doesn't have GameServer API");
+#endif
+
+        if (isGameServer)
+        {
+            ISteamNetworkingSockets.GameServer = new(isGameServer);
+            ISteamNetworkingUtils.GameServer = new();
+        }
+        else
+        {
+            ISteamNetworkingSockets.User = new(isGameServer);
+            ISteamNetworkingUtils.User = new();
+        }
+    }
+
+    internal static void Shutdown(bool isGameServer)
+    {
+#if GNS_SHARP_OPENSOURCE_GNS
+        Debug.Assert(!isGameServer, "Open source GNS doesn't have GameServer API");
+#endif
+
+        if (isGameServer)
+        {
+            ISteamNetworkingSockets.GameServer = null;
+            ISteamNetworkingUtils.GameServer = null;
+        }
+        else
+        {
+            ISteamNetworkingSockets.User = null;
+            ISteamNetworkingUtils.User = null;
+        }
     }
 }
