@@ -4,6 +4,8 @@
 namespace GnsSharp;
 
 using System;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 /// <summary>
@@ -20,7 +22,7 @@ public struct CallbackMsg_t
     /// <summary>
     /// Callback identifier.  (Corresponds to the k_iCallback enum in the callback structure.)
     /// </summary>
-    public int Callback;
+    public int CallbackId;
 
     /// <summary>
     /// Points to the callback structure
@@ -31,4 +33,12 @@ public struct CallbackMsg_t
     /// Size of the data pointed to by <see cref="Param"/>
     /// </summary>
     public int ParamSize;
+
+    public unsafe ref T GetCallbackParamAs<T>()
+        where T : unmanaged
+    {
+        Debug.Assert(sizeof(T) == this.ParamSize, $"Param size was {this.ParamSize}, yet tried to get as {typeof(T)} whose size is {sizeof(T)}");
+
+        return ref Unsafe.AsRef<T>((void*)this.Param);
+    }
 }

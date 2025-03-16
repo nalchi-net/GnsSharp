@@ -6,6 +6,7 @@ namespace GnsSharp;
 using System;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 /// <summary>
 /// <para>
@@ -64,6 +65,14 @@ public class ISteamNetworkingSockets
         }
 #endif
     }
+
+#pragma warning disable CS0067 // The event is never used
+
+    public event FnSteamNetAuthenticationStatusChanged? SteamNetAuthenticationStatusChanged;
+
+    public event FnSteamNetworkingFakeIPResult? SteamNetworkingFakeIPRequestCompleted;
+
+#pragma warning restore CS0067
 
     public static ISteamNetworkingSockets? User { get; internal set; }
 
@@ -1777,4 +1786,85 @@ public class ISteamNetworkingSockets
         return Native.SteamAPI_ISteamNetworkingSockets_CreateFakeUDPPort(this.ptr, idxFakeServerPort);
 #endif
     }
+
+#if GNS_SHARP_STEAMWORKS_SDK
+
+    internal void OnDispatch(ref CallbackMsg_t msg)
+    {
+        switch (msg.CallbackId)
+        {
+            case SteamNetConnectionStatusChangedCallback_t.CallbackId:
+                {
+                    // This one should match the usage pattern of open source GNS.
+                    // So, it's not exposed as an event.
+                    HandleConnectionStatusChanged(ref msg);
+                    break;
+                }
+
+            case SteamNetAuthenticationStatus_t.CallbackId:
+                {
+                    ref var data = ref msg.GetCallbackParamAs<SteamNetAuthenticationStatus_t>();
+                    this.SteamNetAuthenticationStatusChanged?.Invoke(ref data);
+                    break;
+                }
+
+            case SteamNetworkingFakeIPResult_t.CallbackId:
+                {
+                    ref var data = ref msg.GetCallbackParamAs<SteamNetworkingFakeIPResult_t>();
+                    this.SteamNetworkingFakeIPRequestCompleted?.Invoke(ref data);
+                    break;
+                }
+
+            default:
+                Debug.WriteLine($"Unsupported callback = {msg.CallbackId} on ISteamNetworkingSockets.OnDispatch()");
+                break;
+        }
+    }
+
+    /// <summary>
+    /// <para>
+    /// Handles connection status changed callback.
+    /// </para>
+    ///
+    /// <para>
+    /// This is a pretty hacky solution to support the same usage on both the open source GNS and Steamworks.
+    /// </para>
+    /// </summary>
+    private static void HandleConnectionStatusChanged(ref CallbackMsg_t msg)
+    {
+        ref var connChanged = ref msg.GetCallbackParamAs<SteamNetConnectionStatusChangedCallback_t>();
+
+        // Get the callback function pointer registered for this connection
+        SizeT resultSize;
+        unsafe
+        {
+            resultSize = (SizeT)sizeof(IntPtr);
+        }
+
+        SizeT prevResultSize = resultSize;
+        Span<IntPtr> connChangedCallbackPtr = stackalloc IntPtr[1];
+
+        // This approach has a flaw that:
+        // When the connection is closed, it won't receive status changed callback for `ESteamNetworkingConnectionState.None`.
+        // Because, at that point, the connection handle should be already invalidated,
+        // thus can't get the callback function pointer associated with it.
+        //
+        // But `ESteamNetworkingConnectionState.None` status is rarely useful;
+        // Managing seperate pointer table only for that doesn't look too good.
+        var getConfigValueResult = ISteamNetworkingUtils.User!.GetConfigValue(ESteamNetworkingConfigValue.Callback_ConnectionStatusChanged, ESteamNetworkingConfigScope.Connection, (IntPtr)(uint)connChanged.Conn, out ESteamNetworkingConfigDataType outDataType, MemoryMarshal.AsBytes(connChangedCallbackPtr), ref resultSize);
+
+        if (getConfigValueResult == ESteamNetworkingGetConfigValueResult.OK || getConfigValueResult == ESteamNetworkingGetConfigValueResult.OKInherited)
+        {
+            Debug.Assert(prevResultSize == resultSize, $"Config value size expected {prevResultSize}, got {resultSize}");
+
+            // Call the callback if it is set
+            if (connChangedCallbackPtr[0] != IntPtr.Zero)
+            {
+                var connChangedCallback = Marshal.GetDelegateForFunctionPointer<FnSteamNetConnectionStatusChanged>(connChangedCallbackPtr[0]);
+
+                connChangedCallback(ref connChanged);
+            }
+        }
+    }
+#endif
 }

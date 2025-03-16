@@ -4,6 +4,7 @@
 namespace GnsSharp;
 
 using System;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -33,6 +34,12 @@ public class ISteamNetworkingUtils
         this.ptr = Native.SteamAPI_SteamNetworkingUtils_SteamAPI_v004();
 #endif
     }
+
+#pragma warning disable CS0067 // The event is never used
+
+    public event FnSteamRelayNetworkStatusChanged? SteamRelayNetworkStatusChanged;
+
+#pragma warning restore CS0067
 
     /// <summary>
     /// For <see cref="ISteamNetworkingUtils"/>, the native pointer is actually the same with the <see cref="GameServer"/><br/>
@@ -883,4 +890,25 @@ public class ISteamNetworkingUtils
         return Native.SteamAPI_ISteamNetworkingUtils_SteamNetworkingIdentity_ParseString(this.ptr, ref identity, str);
 #endif
     }
+
+#if GNS_SHARP_STEAMWORKS_SDK
+
+    internal void OnDispatch(ref CallbackMsg_t msg)
+    {
+        switch (msg.CallbackId)
+        {
+            case SteamRelayNetworkStatus_t.CallbackId:
+                {
+                    ref var data = ref msg.GetCallbackParamAs<SteamRelayNetworkStatus_t>();
+                    this.SteamRelayNetworkStatusChanged?.Invoke(ref data);
+                    break;
+                }
+
+            default:
+                Debug.WriteLine($"Unsupported callback = {msg.CallbackId} on ISteamNetworkingUtils.OnDispatch()");
+                break;
+        }
+    }
+
+#endif
 }

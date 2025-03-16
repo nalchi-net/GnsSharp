@@ -17,88 +17,51 @@ internal class Dispatcher
 
         // Manual callback loop
         Native.SteamAPI_ManualDispatch_RunFrame(pipe);
-        while (Native.SteamAPI_ManualDispatch_GetNextCallback(pipe, out CallbackMsg_t callbackMsg))
+        while (Native.SteamAPI_ManualDispatch_GetNextCallback(pipe, out CallbackMsg_t msg))
         {
-            // Check for dispatching API call results
-            if (callbackMsg.Callback == SteamAPICallCompleted_t.CallbackId)
+            // The primary callback switch-case
+            switch (msg.CallbackId)
             {
-                HandleCallCompletedResult(pipe, ref callbackMsg);
-            }
-            else if (callbackMsg.Callback == SteamNetConnectionStatusChangedCallback_t.CallbackId)
-            {
-                HandleConnStatusChanged(ref callbackMsg);
-            }
-            else
-            {
-                // TODO:
-                // Look at callback.m_iCallback to see what kind of callback it is,
-                // and dispatch to appropriate handler(s)
+                // Check for dispatching API call results
+                case SteamAPICallCompleted_t.CallbackId:
+                    HandleCallCompletedResult(pipe, ref msg);
+                    break;
+
+                case >= Constants.SteamNetworkingSocketsCallbacks and < Constants.SteamNetworkingMessagesCallbacks:
+                    var networkingSockets = isGameServer ? ISteamNetworkingSockets.GameServer : ISteamNetworkingSockets.User;
+                    networkingSockets!.OnDispatch(ref msg);
+                    break;
+
+                case >= Constants.SteamNetworkingUtilsCallbacks and < Constants.SteamRemoteStorageCallbacks:
+                    var networkingUtils = isGameServer ? ISteamNetworkingUtils.GameServer : ISteamNetworkingUtils.User;
+                    networkingUtils!.OnDispatch(ref msg);
+                    break;
+
+                // TODO: Add all the other callbacks
+                default:
+                    Debug.WriteLine($"Unsupported callback = {msg.CallbackId} on Dispatcher.RunCallbacks()");
+                    break;
             }
 
             Native.SteamAPI_ManualDispatch_FreeLastCallback(pipe);
         }
     }
 
-    private static void HandleCallCompletedResult(HSteamPipe hSteamPipe, ref CallbackMsg_t callbackMsg)
+    private static void HandleCallCompletedResult(HSteamPipe pipe, ref CallbackMsg_t msg)
     {
-        Span<SteamAPICallCompleted_t> callCompleted;
-        unsafe
-        {
-            callCompleted = new Span<SteamAPICallCompleted_t>((void*)callbackMsg.Param, 1);
-        }
+        ref var callCompleted = ref msg.GetCallbackParamAs<SteamAPICallCompleted_t>();
 
         // Get the stackalloc byte span that's aligned to 8 bytes boundary
-        int rawResultSize = (int)callCompleted[0].Param;
+        int rawResultSize = (int)callCompleted.Param;
         int alignedElemCount = (rawResultSize + (sizeof(ulong) - 1)) / sizeof(ulong); // ceiled division
         Span<ulong> callResultAligned = stackalloc ulong[alignedElemCount];
         Span<byte> callResult = MemoryMarshal.AsBytes(callResultAligned)[..rawResultSize];
 
-        if (Native.SteamAPI_ManualDispatch_GetAPICallResult(hSteamPipe, callCompleted[0].AsyncCall, callResult, callResult.Length, callCompleted[0].Callback, out bool failed))
+        if (Native.SteamAPI_ManualDispatch_GetAPICallResult(pipe, callCompleted.AsyncCall, callResult, callResult.Length, callCompleted.Callback, out bool failed))
         {
             // TODO:
             // Dispatch the call result to the registered handler(s) for the
             // call identified by pCallCompleted->m_hAsyncCall
-        }
-    }
-
-    private static void HandleConnStatusChanged(ref CallbackMsg_t callbackMsg)
-    {
-        Span<SteamNetConnectionStatusChangedCallback_t> connChanged;
-        unsafe
-        {
-            connChanged = new Span<SteamNetConnectionStatusChangedCallback_t>((void*)callbackMsg.Param, 1);
-        }
-
-        // Get the callback function pointer registered for this connection
-        SizeT resultSize;
-        unsafe
-        {
-            resultSize = (SizeT)sizeof(IntPtr);
-        }
-
-        SizeT prevResultSize = resultSize;
-        Span<IntPtr> connChangedCallbackPtr = stackalloc IntPtr[1];
-
-        // This approach has a flaw that:
-        // When the connection is closed, it won't receive status changed callback for `ESteamNetworkingConnectionState.None`.
-        // Because, at that point, the connection handle should be already invalidated,
-        // thus can't get the callback function pointer associated with it.
-        //
-        // But `ESteamNetworkingConnectionState.None` status is rarely useful;
-        // Managing seperate pointer table only for that doesn't look too good.
-        var getConfigValueResult = ISteamNetworkingUtils.User!.GetConfigValue(ESteamNetworkingConfigValue.Callback_ConnectionStatusChanged, ESteamNetworkingConfigScope.Connection, (IntPtr)(uint)connChanged[0].Conn, out ESteamNetworkingConfigDataType outDataType, MemoryMarshal.AsBytes(connChangedCallbackPtr), ref resultSize);
-
-        if (getConfigValueResult == ESteamNetworkingGetConfigValueResult.OK || getConfigValueResult == ESteamNetworkingGetConfigValueResult.OKInherited)
-        {
-            Debug.Assert(prevResultSize == resultSize, $"Config value size expected {prevResultSize}, got {resultSize}");
-
-            // Call the callback if it is set
-            if (connChangedCallbackPtr[0] != IntPtr.Zero)
-            {
-                var connChangedCallback = Marshal.GetDelegateForFunctionPointer<FnSteamNetConnectionStatusChanged>(connChangedCallbackPtr[0]);
-
-                connChangedCallback(ref connChanged[0]);
-            }
         }
     }
 }

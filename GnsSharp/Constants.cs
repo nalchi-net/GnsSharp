@@ -5,10 +5,27 @@ namespace GnsSharp;
 
 internal static class Constants
 {
+    public const int SteamUserCallbacks = 100;
+    public const int SteamGameServerCallbacks = 200;
+    public const int SteamFriendsCallbacks = 300;
+    public const int SteamBillingCallbacks = 400;
+    public const int SteamMatchmakingCallbacks = 500;
+    public const int SteamContentServerCallbacks = 600;
     public const int SteamUtilsCallbacks = 700;
+    public const int SteamAppsCallbacks = 1000;
+    public const int SteamUserStatsCallbacks = 1100;
+    public const int SteamNetworkingCallbacks = 1200;
     public const int SteamNetworkingSocketsCallbacks = 1220;
     public const int SteamNetworkingMessagesCallbacks = 1250;
     public const int SteamNetworkingUtilsCallbacks = 1280;
+    public const int SteamRemoteStorageCallbacks = 1300;
+    public const int SteamGameServerItemsCallbacks = 1500;
+    public const int SteamGameCoordinatorCallbacks = 1700;
+    public const int SteamGameServerStatsCallbacks = 1800;
+    public const int Steam2AsyncCallbacks = 1900;
+    public const int SteamGameStatsCallbacks = 2000;
+    public const int SteamHTTPCallbacks = 2100;
+    public const int SteamScreenshotsCallbacks = 2300;
 
     public const string SteamNetworkingSocketsInterfaceVersion = "SteamNetworkingSockets012";
     public const string SteamNetworkingUtilsInterfaceVersion = "SteamNetworkingUtils004";
