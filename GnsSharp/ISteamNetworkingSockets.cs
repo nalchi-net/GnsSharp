@@ -497,7 +497,7 @@ public class ISteamNetworkingSockets
     /// </summary>
     public EResult SendMessageToConnection(HSteamNetConnection conn, ReadOnlySpan<byte> data, ESteamNetworkingSendType sendFlags)
     {
-        return this.SendMessageToConnection(conn, data, sendFlags, out Unsafe.NullRef<long>());
+        return Native.SteamAPI_ISteamNetworkingSockets_SendMessageToConnection(this.ptr, conn, data, (uint)data.Length, sendFlags, IntPtr.Zero);
     }
 
     /// <summary>
@@ -744,7 +744,7 @@ public class ISteamNetworkingSockets
     /// </summary>
     public EResult GetConnectionRealTimeStatus(HSteamNetConnection conn, Span<SteamNetConnectionRealTimeLaneStatus_t> lanes)
     {
-        return this.GetConnectionRealTimeStatus(conn, out Unsafe.NullRef<SteamNetConnectionRealTimeStatus_t>(), lanes);
+        return Native.SteamAPI_ISteamNetworkingSockets_GetConnectionRealTimeStatus(this.ptr, conn, IntPtr.Zero, lanes.Length, lanes);
     }
 
     /// <summary>

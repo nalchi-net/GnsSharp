@@ -534,6 +534,10 @@ internal static partial class Native
 
     [LibraryImport(GnsLibraryName)]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial EResult SteamAPI_ISteamNetworkingSockets_SendMessageToConnection(IntPtr self, HSteamNetConnection hConn, ReadOnlySpan<byte> pData, uint cbData, ESteamNetworkingSendType nSendFlags, IntPtr pOutMessageNumber);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
     public static partial void SteamAPI_ISteamNetworkingSockets_SendMessages(IntPtr self, int nMessages, ReadOnlySpan<IntPtr> pMessages, Span<long> pOutMessageNumberOrResult);
 
     [LibraryImport(GnsLibraryName)]
@@ -552,6 +556,10 @@ internal static partial class Native
     [LibraryImport(GnsLibraryName)]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
     public static partial EResult SteamAPI_ISteamNetworkingSockets_GetConnectionRealTimeStatus(IntPtr self, HSteamNetConnection hConn, out SteamNetConnectionRealTimeStatus_t pStatus, int nLanes, Span<SteamNetConnectionRealTimeLaneStatus_t> pLanes);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial EResult SteamAPI_ISteamNetworkingSockets_GetConnectionRealTimeStatus(IntPtr self, HSteamNetConnection hConn, IntPtr pStatus, int nLanes, Span<SteamNetConnectionRealTimeLaneStatus_t> pLanes);
 
     [LibraryImport(GnsLibraryName)]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
@@ -669,6 +677,10 @@ internal static partial class Native
     [LibraryImport(GnsLibraryName)]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
     public static partial ESteamNetworkingAvailability SteamAPI_ISteamNetworkingUtils_GetRelayNetworkStatus(IntPtr self, out SteamRelayNetworkStatus_t pDetails);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial ESteamNetworkingAvailability SteamAPI_ISteamNetworkingUtils_GetRelayNetworkStatus(IntPtr self, IntPtr pDetails);
 
     [LibraryImport(GnsLibraryName)]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]

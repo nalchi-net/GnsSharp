@@ -160,7 +160,7 @@ public class ISteamNetworkingUtils
     /// </summary>
     public ESteamNetworkingAvailability GetRelayNetworkStatus()
     {
-        return this.GetRelayNetworkStatus(out Unsafe.NullRef<SteamRelayNetworkStatus_t>());
+        return Native.SteamAPI_ISteamNetworkingUtils_GetRelayNetworkStatus(this.ptr, IntPtr.Zero);
     }
 
     // "Ping location" functions
