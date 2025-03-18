@@ -51,7 +51,7 @@ using System.Runtime.InteropServices;
 /// </para>
 /// </summary>
 [StructLayout(LayoutKind.Sequential, Pack = Native.PackSize)]
-public struct SteamNetConnectionStatusChangedCallback_t
+public struct SteamNetConnectionStatusChangedCallback_t : ICallbackParam
 {
     public const int CallbackId = Constants.SteamNetworkingSocketsCallbacks + 1;
 
@@ -69,4 +69,6 @@ public struct SteamNetConnectionStatusChangedCallback_t
     /// Previous state.  (Current state is in m_info.m_eState)
     /// </summary>
     public ESteamNetworkingConnectionState OldState;
+
+    public static int CallbackParamId => CallbackId;
 }

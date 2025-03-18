@@ -12,7 +12,7 @@ using System.Runtime.InteropServices;
 /// See also ISteamNetworkingSockets::GetFakeIP
 /// </summary>
 [StructLayout(LayoutKind.Sequential, Pack = Native.PackSize)]
-public struct SteamNetworkingFakeIPResult_t
+public struct SteamNetworkingFakeIPResult_t : ICallbackParam
 {
     public const int CallbackId = Constants.SteamNetworkingSocketsCallbacks + 3;
 
@@ -65,4 +65,6 @@ public struct SteamNetworkingFakeIPResult_t
     /// </para>
     /// </summary>
     public Array8<ushort> Ports;
+
+    public static int CallbackParamId => CallbackId;
 }

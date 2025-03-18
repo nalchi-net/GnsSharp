@@ -18,7 +18,7 @@
     <Company>nalchi-net</Company>
     <Authors>copyrat90</Authors>
     <Description>Valve's GameNetworkingSockets binding for C#</Description>
-    <Version>0.1.0-alpha.4</Version>
+    <Version>0.1.0-alpha.5</Version>
     <PackageTags>GameNetworkingSockets;Steamworks</PackageTags>
   </PropertyGroup>
 

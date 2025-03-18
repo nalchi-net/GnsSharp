@@ -25,7 +25,7 @@ using System.Runtime.InteropServices;
 /// </para>
 /// </summary>
 [StructLayout(LayoutKind.Sequential, Pack = 1)]
-public struct SteamNetworkingMessagesSessionFailed_t
+public struct SteamNetworkingMessagesSessionFailed_t : ICallbackParam
 {
     public const int CallbackId = Constants.SteamNetworkingMessagesCallbacks + 2;
 
@@ -35,4 +35,6 @@ public struct SteamNetworkingMessagesSessionFailed_t
     /// was with.
     /// </summary>
     public SteamNetConnectionInfo_t Info;
+
+    public static int CallbackParamId => CallbackId;
 }

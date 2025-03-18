@@ -22,7 +22,7 @@ using System.Runtime.InteropServices;
 /// </para>
 /// </summary>
 [StructLayout(LayoutKind.Sequential, Pack = Native.PackSize)]
-public struct SteamNetAuthenticationStatus_t
+public struct SteamNetAuthenticationStatus_t : ICallbackParam
 {
     public const int CallbackId = Constants.SteamNetworkingSocketsCallbacks + 2;
 
@@ -32,6 +32,8 @@ public struct SteamNetAuthenticationStatus_t
     public ESteamNetworkingAvailability Avail;
 
     private Array256<byte> debugMsg;
+
+    public static int CallbackParamId => CallbackId;
 
     /// <summary>
     /// Non-localized English language status.  For diagnostic/debugging

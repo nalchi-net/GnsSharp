@@ -11,6 +11,9 @@ using System.Runtime.InteropServices;
 
 internal class Dispatcher
 {
+    private const int CallbackBigGroupSize = 100;
+    private const int CallbackSmallGroupSize = 10;
+
     public static void RunCallbacks(bool isGameServer)
     {
         HSteamPipe pipe = isGameServer ? Native.SteamGameServer_GetHSteamPipe() : Native.SteamAPI_GetHSteamPipe();
@@ -20,21 +23,33 @@ internal class Dispatcher
         while (Native.SteamAPI_ManualDispatch_GetNextCallback(pipe, out CallbackMsg_t msg))
         {
             // The primary callback switch-case
-            switch (msg.CallbackId)
+            //
+            // This should generate jump tables when every callback groups are ported
+            switch (msg.CallbackId / CallbackBigGroupSize)
             {
-                // Check for dispatching API call results
-                case SteamAPICallCompleted_t.CallbackId:
-                    HandleCallCompletedResult(pipe, ref msg);
+                case Constants.SteamUtilsCallbacks / CallbackBigGroupSize:
+                    var utils = isGameServer ? ISteamUtils.GameServer : ISteamUtils.User;
+                    utils!.OnDispatch(pipe, ref msg);
                     break;
 
-                case >= Constants.SteamNetworkingSocketsCallbacks and < Constants.SteamNetworkingMessagesCallbacks:
-                    var networkingSockets = isGameServer ? ISteamNetworkingSockets.GameServer : ISteamNetworkingSockets.User;
-                    networkingSockets!.OnDispatch(ref msg);
-                    break;
+                case Constants.SteamNetworkingSocketsCallbacks / CallbackBigGroupSize:
+                    switch ((msg.CallbackId % CallbackBigGroupSize) / CallbackSmallGroupSize)
+                    {
+                        case (Constants.SteamNetworkingSocketsCallbacks % CallbackBigGroupSize) / CallbackSmallGroupSize:
+                            var networkingSockets = isGameServer ? ISteamNetworkingSockets.GameServer : ISteamNetworkingSockets.User;
+                            networkingSockets!.OnDispatch(ref msg);
+                            break;
 
-                case >= Constants.SteamNetworkingUtilsCallbacks and < Constants.SteamRemoteStorageCallbacks:
-                    var networkingUtils = isGameServer ? ISteamNetworkingUtils.GameServer : ISteamNetworkingUtils.User;
-                    networkingUtils!.OnDispatch(ref msg);
+                        case (Constants.SteamNetworkingUtilsCallbacks % CallbackBigGroupSize) / CallbackSmallGroupSize:
+                            var networkingUtils = isGameServer ? ISteamNetworkingUtils.GameServer : ISteamNetworkingUtils.User;
+                            networkingUtils!.OnDispatch(ref msg);
+                            break;
+
+                        default:
+                            Debug.WriteLine($"Unsupported callback = {msg.CallbackId} on Dispatcher.RunCallbacks()");
+                            break;
+                    }
+
                     break;
 
                 // TODO: Add all the other callbacks
@@ -44,24 +59,6 @@ internal class Dispatcher
             }
 
             Native.SteamAPI_ManualDispatch_FreeLastCallback(pipe);
-        }
-    }
-
-    private static void HandleCallCompletedResult(HSteamPipe pipe, ref CallbackMsg_t msg)
-    {
-        ref var callCompleted = ref msg.GetCallbackParamAs<SteamAPICallCompleted_t>();
-
-        // Get the stackalloc byte span that's aligned to 8 bytes boundary
-        int rawResultSize = (int)callCompleted.Param;
-        int alignedElemCount = (rawResultSize + (sizeof(ulong) - 1)) / sizeof(ulong); // ceiled division
-        Span<ulong> callResultAligned = stackalloc ulong[alignedElemCount];
-        Span<byte> callResult = MemoryMarshal.AsBytes(callResultAligned)[..rawResultSize];
-
-        if (Native.SteamAPI_ManualDispatch_GetAPICallResult(pipe, callCompleted.AsyncCall, callResult, callResult.Length, callCompleted.Callback, out bool failed))
-        {
-            // TODO:
-            // Dispatch the call result to the registered handler(s) for the
-            // call identified by pCallCompleted->m_hAsyncCall
         }
     }
 }

@@ -176,7 +176,7 @@ internal static partial class Native
 
     [LibraryImport(GnsLibraryName)]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
-    public static partial ulong SteamGameServer_GetSteamID();
+    public static partial CSteamID SteamGameServer_GetSteamID();
 
     /// <summary>
     /// Inform the API that you wish to use manual event dispatch.  This must be called after SteamAPI_Init, but before<br/>
@@ -355,6 +355,179 @@ internal static partial class Native
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool SteamAPI_ISteamNetworkingUtils_SteamNetworkingIdentity_ParseString(IntPtr self, ref SteamNetworkingIdentity pIdentity, [MarshalAs(UnmanagedType.LPUTF8Str)] string pszStr);
 
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial IntPtr SteamAPI_SteamUtils_v010();
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial IntPtr SteamAPI_SteamGameServerUtils_v010();
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial uint SteamAPI_ISteamUtils_GetSecondsSinceAppActive(IntPtr self);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial uint SteamAPI_ISteamUtils_GetSecondsSinceComputerActive(IntPtr self);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial EUniverse SteamAPI_ISteamUtils_GetConnectedUniverse(IntPtr self);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial uint SteamAPI_ISteamUtils_GetServerRealTime(IntPtr self);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial IntPtr SteamAPI_ISteamUtils_GetIPCountry(IntPtr self);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamUtils_GetImageSize(IntPtr self, int iImage, out uint pnWidth, out uint pnHeight);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamUtils_GetImageRGBA(IntPtr self, int iImage, Span<byte> pubDest, int nDestBufferSize);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial byte SteamAPI_ISteamUtils_GetCurrentBatteryPower(IntPtr self);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial uint SteamAPI_ISteamUtils_GetAppID(IntPtr self);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial void SteamAPI_ISteamUtils_SetOverlayNotificationPosition(IntPtr self, ENotificationPosition eNotificationPosition);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamUtils_IsAPICallCompleted(IntPtr self, SteamAPICall_t hSteamAPICall, [MarshalAs(UnmanagedType.I1)] out bool pbFailed);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial ESteamAPICallFailure SteamAPI_ISteamUtils_GetAPICallFailureReason(IntPtr self, SteamAPICall_t hSteamAPICall);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamUtils_GetAPICallResult(IntPtr self, SteamAPICall_t hSteamAPICall, Span<byte> pCallback, int cubCallback, int iCallbackExpected, [MarshalAs(UnmanagedType.I1)] out bool pbFailed);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial uint SteamAPI_ISteamUtils_GetIPCCallCount(IntPtr self);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial void SteamAPI_ISteamUtils_SetWarningMessageHook(IntPtr self, SteamAPIWarningMessageHook_t pFunction);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamUtils_IsOverlayEnabled(IntPtr self);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamUtils_BOverlayNeedsPresent(IntPtr self);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial SteamAPICall_t SteamAPI_ISteamUtils_CheckFileSignature(IntPtr self, [MarshalAs(UnmanagedType.LPUTF8Str)] string szFileName);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamUtils_ShowGamepadTextInput(IntPtr self, EGamepadTextInputMode eInputMode, EGamepadTextInputLineMode eLineInputMode, [MarshalAs(UnmanagedType.LPUTF8Str)] string pchDescription, uint unCharMax, [MarshalAs(UnmanagedType.LPUTF8Str)] string pchExistingText);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial uint SteamAPI_ISteamUtils_GetEnteredGamepadTextLength(IntPtr self);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamUtils_GetEnteredGamepadTextInput(IntPtr self, Span<byte> pchText, uint cchText);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial IntPtr SteamAPI_ISteamUtils_GetSteamUILanguage(IntPtr self);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamUtils_IsSteamRunningInVR(IntPtr self);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial void SteamAPI_ISteamUtils_SetOverlayNotificationInset(IntPtr self, int nHorizontalInset, int nVerticalInset);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamUtils_IsSteamInBigPictureMode(IntPtr self);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial void SteamAPI_ISteamUtils_StartVRDashboard(IntPtr self);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamUtils_IsVRHeadsetStreamingEnabled(IntPtr self);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial void SteamAPI_ISteamUtils_SetVRHeadsetStreamingEnabled(IntPtr self, [MarshalAs(UnmanagedType.I1)] bool bEnabled);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamUtils_IsSteamChinaLauncher(IntPtr self);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamUtils_InitFilterText(IntPtr self, uint unFilterOptions);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial int SteamAPI_ISteamUtils_FilterText(IntPtr self, ETextFilteringContext eContext, CSteamID sourceSteamID, [MarshalAs(UnmanagedType.LPUTF8Str)] string pchInputMessage, Span<byte> pchOutFilteredText, uint nByteSizeOutFilteredText);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial ESteamIPv6ConnectivityState SteamAPI_ISteamUtils_GetIPv6ConnectivityState(IntPtr self, ESteamIPv6ConnectivityProtocol eProtocol);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamUtils_IsSteamRunningOnSteamDeck(IntPtr self);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamUtils_ShowFloatingGamepadTextInput(IntPtr self, EFloatingGamepadTextInputMode eKeyboardMode, int nTextFieldXPosition, int nTextFieldYPosition, int nTextFieldWidth, int nTextFieldHeight);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial void SteamAPI_ISteamUtils_SetGameLauncherMode(IntPtr self, [MarshalAs(UnmanagedType.I1)] bool bLauncherMode);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamUtils_DismissFloatingGamepadTextInput(IntPtr self);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamUtils_DismissGamepadTextInput(IntPtr self);
+
 #endif // Common API
 
     [LibraryImport(GnsLibraryName)]
@@ -368,11 +541,11 @@ internal static partial class Native
 
     [LibraryImport(GnsLibraryName)]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
-    public static partial void SteamAPI_SteamNetworkingIdentity_SetSteamID(ref SteamNetworkingIdentity self, ulong steamID);
+    public static partial void SteamAPI_SteamNetworkingIdentity_SetSteamID(ref SteamNetworkingIdentity self, CSteamID steamID);
 
     [LibraryImport(GnsLibraryName)]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
-    public static partial ulong SteamAPI_SteamNetworkingIdentity_GetSteamID(ref SteamNetworkingIdentity self);
+    public static partial CSteamID SteamAPI_SteamNetworkingIdentity_GetSteamID(ref SteamNetworkingIdentity self);
 
     [LibraryImport(GnsLibraryName)]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]

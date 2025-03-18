@@ -36,7 +36,7 @@ This might change in the future if I need those.
 | ISteamGameServerStats    | ❌ | ISteamUGC               | ❌ |
 | ISteamHTMLSurface        | ❌ | ISteamUser              | ❌ |
 | ISteamHTTP               | ❌ | ISteamUserStats         | ❌ |
-| ISteamInput              | ❌ | ISteamUtils             | ❌ |
+| ISteamInput              | ❌ | ISteamUtils             | ✔ |
 | ISteamInventory          | ❌ | ISteamVideo             | ❌ |
 | ISteamMatchmaking        | ❌ | SteamEncryptedAppTicket | ❌ |
 | ISteamMatchmakingServers | ❌ | steam_api               | ✔ |

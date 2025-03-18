@@ -37,4 +37,9 @@ public delegate void FnSteamNetworkingMessagesSessionFailed(ref SteamNetworkingM
 [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 public delegate void FnSteamNetworkingFakeIPResult(ref SteamNetworkingFakeIPResult_t callback);
 
+[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+public delegate void SteamAPIWarningMessageHook_t(ESteamWarningSeverity severity, [MarshalAs(UnmanagedType.LPUTF8Str)] string msg);
+
+public delegate void Callback<T>(ref T param);
+
 #pragma warning restore SA1649

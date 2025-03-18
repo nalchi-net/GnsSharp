@@ -11,7 +11,7 @@ using System.Runtime.InteropServices;
 /// which describes what POPs are available.
 /// </summary>
 [StructLayout(LayoutKind.Sequential)]
-public struct SteamRelayNetworkStatus_t
+public struct SteamRelayNetworkStatus_t : ICallbackParam
 {
     public const int CallbackId = Constants.SteamNetworkingUtilsCallbacks + 1;
 
@@ -55,4 +55,6 @@ public struct SteamRelayNetworkStatus_t
     /// purposes only.
     /// </summary>
     public Array256<byte> DebugMsg;
+
+    public static int CallbackParamId => CallbackId;
 }

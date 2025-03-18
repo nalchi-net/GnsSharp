@@ -383,11 +383,11 @@ public class ISteamNetworkingSockets
     /// <summary>
     /// Fetch connection name.  Returns false if handle is invalid
     /// </summary>
-    public bool GetConnectionName(HSteamNetConnection hPeer, out string name)
+    public bool GetConnectionName(HSteamNetConnection hPeer, out string? name, int utf8StringSize = MaxUtf8StrBufSize)
     {
-        Span<byte> raw = stackalloc byte[MaxUtf8StrBufSize];
-        bool success = Native.SteamAPI_ISteamNetworkingSockets_GetConnectionName(this.ptr, hPeer, raw, MaxUtf8StrBufSize);
-        name = success ? Utf8StringHelper.NullTerminatedSpanToString(raw) : String.Empty;
+        Span<byte> raw = stackalloc byte[utf8StringSize];
+        bool success = Native.SteamAPI_ISteamNetworkingSockets_GetConnectionName(this.ptr, hPeer, raw, utf8StringSize);
+        name = success ? Utf8StringHelper.NullTerminatedSpanToString(raw) : null;
 
         return success;
     }
@@ -761,15 +761,15 @@ public class ISteamNetworkingSockets
     /// Try again with a buffer of at least N bytes.
     /// </para>
     /// </summary>
-    public int GetDetailedConnectionStatus(HSteamNetConnection conn, out string status)
+    public int GetDetailedConnectionStatus(HSteamNetConnection conn, out string? status, int utf8InitialStrSize = MaxUtf8StrBufSize)
     {
         int result = -1;
         {
-            Span<byte> raw = stackalloc byte[MaxUtf8StrBufSize];
-            result = Native.SteamAPI_ISteamNetworkingSockets_GetDetailedConnectionStatus(this.ptr, conn, raw, MaxUtf8StrBufSize);
+            Span<byte> raw = stackalloc byte[utf8InitialStrSize];
+            result = Native.SteamAPI_ISteamNetworkingSockets_GetDetailedConnectionStatus(this.ptr, conn, raw, utf8InitialStrSize);
             if (result < 0)
             {
-                status = String.Empty;
+                status = null;
                 return result;
             }
             else if (result == 0)
@@ -789,7 +789,7 @@ public class ISteamNetworkingSockets
             }
             else
             {
-                status = String.Empty;
+                status = null;
             }
         }
 
@@ -1675,7 +1675,6 @@ public class ISteamNetworkingSockets
     /// </summary>
     public bool BeginAsyncRequestFakeIP(int numPorts)
     {
-        // TODO: Maybe change this to C# async-await?
 #if GNS_SHARP_OPENSOURCE_GNS
         throw new NotImplementedException($"FakeIP allocation requires Steam");
 #elif GNS_SHARP_STEAMWORKS_SDK

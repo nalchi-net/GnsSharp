@@ -59,8 +59,8 @@ public static class SteamAPI
         int capacity =
               Constants.SteamNetworkingSocketsInterfaceVersion.Length + 1
             + Constants.SteamNetworkingUtilsInterfaceVersion.Length + 1
+            + Constants.SteamUtilsInterfaceVersion.Length + 1
 
-            // + Constants.SteamUtilsInterfaceVersion.Length + 1
             // + Constants.SteamAppsInterfaceVersion.Length + 1
             // + Constants.SteamControllerInterfaceVersion.Length + 1
             // + Constants.SteamFriendsInterfaceVersion.Length + 1
@@ -90,8 +90,8 @@ public static class SteamAPI
 
         versions.Append(Constants.SteamNetworkingSocketsInterfaceVersion).Append('\0');
         versions.Append(Constants.SteamNetworkingUtilsInterfaceVersion).Append('\0');
+        versions.Append(Constants.SteamUtilsInterfaceVersion).Append('\0');
 
-        // versions.Append(Constants.SteamUtilsInterfaceVersion).Append('\0');
         // versions.Append(Constants.SteamAppsInterfaceVersion).Append('\0');
         // versions.Append(Constants.SteamControllerInterfaceVersion).Append('\0');
         // versions.Append(Constants.SteamFriendsInterfaceVersion).Append('\0');

@@ -40,11 +40,19 @@ public static class GnsSharpCore
         {
             ISteamNetworkingSockets.GameServer = new(isGameServer);
             ISteamNetworkingUtils.GameServer = new();
+
+#if GNS_SHARP_STEAMWORKS_SDK
+            ISteamUtils.GameServer = new(isGameServer);
+#endif
         }
         else
         {
             ISteamNetworkingSockets.User = new(isGameServer);
             ISteamNetworkingUtils.User = new();
+
+#if GNS_SHARP_STEAMWORKS_SDK
+            ISteamUtils.User = new(isGameServer);
+#endif
         }
     }
 
@@ -58,11 +66,19 @@ public static class GnsSharpCore
         {
             ISteamNetworkingSockets.GameServer = null;
             ISteamNetworkingUtils.GameServer = null;
+
+#if GNS_SHARP_STEAMWORKS_SDK
+            ISteamUtils.GameServer = null;
+#endif
         }
         else
         {
             ISteamNetworkingSockets.User = null;
             ISteamNetworkingUtils.User = null;
+
+#if GNS_SHARP_STEAMWORKS_SDK
+            ISteamUtils.User = null;
+#endif
         }
     }
 }

@@ -5,6 +5,8 @@
 
 global using AppId_t = uint;
 
+global using CSteamID = ulong;
+
 global using unsafe FnPtrSteamNetAuthenticationStatusChanged = delegate* unmanaged[Cdecl]<GnsSharp.SteamNetAuthenticationStatus_t*, void>;
 global using unsafe FnPtrSteamNetConnectionStatusChanged = delegate* unmanaged[Cdecl]<GnsSharp.SteamNetConnectionStatusChangedCallback_t*, void>;
 
@@ -24,6 +26,8 @@ global using unsafe FPtrSteamNetworkingSocketsLockWaitedFor = delegate* unmanage
 global using unsafe FPtrSteamNetworkingSocketsServiceThreadInit = delegate* unmanaged[Cdecl]<void>;
 
 global using PsnIdType = System.UInt64;
+
+global using unsafe PtrSteamAPIWarningMessageHook_t = delegate* unmanaged[Cdecl]<GnsSharp.ESteamWarningSeverity, byte*, void>;
 
 #if GNS_SHARP_PLATFORM_WIN64 || GNS_SHARP_PLATFORM_POSIX64
 global using SizeT = System.UInt64;
