@@ -8,11 +8,28 @@ namespace GnsSharp;
 /// </summary>
 public enum EUniverse : int
 {
+    /// <summary>
+    /// Invalid.
+    /// </summary>
     Invalid = 0,
-    Public = 1,
-    Beta = 2,
-    Internal = 3,
-    Dev = 4,
 
-    Max,
+    /// <summary>
+    /// The standard public universe.
+    /// </summary>
+    Public = 1,
+
+    /// <summary>
+    /// Beta universe used inside Valve.
+    /// </summary>
+    Beta = 2,
+
+    /// <summary>
+    /// Internal universe used inside Valve.
+    /// </summary>
+    Internal = 3,
+
+    /// <summary>
+    /// Dev universe used inside Valve.
+    /// </summary>
+    Dev = 4,
 }

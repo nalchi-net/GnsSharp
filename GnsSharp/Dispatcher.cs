@@ -56,6 +56,10 @@ internal class Dispatcher
                     ISteamMatchmaking.User!.OnDispatch(ref msg);
                     break;
 
+                case Constants.SteamFriendsCallbacks / CallbackBigGroupSize:
+                    ISteamFriends.User!.OnDispatch(ref msg);
+                    break;
+
                 // TODO: Add all the other callbacks
                 default:
                     Debug.WriteLine($"Unsupported callback = {msg.CallbackId} on Dispatcher.RunCallbacks()");

@@ -89,6 +89,16 @@ public class ISteamUtils
     /// </summary>
     public event Callback<SteamShutdown_t>? SteamShutdown;
 
+    /// <summary>
+    /// callback for CheckFileSignature
+    /// </summary>
+    public event Callback<CheckFileSignature_t>? CheckFileSignatureCallback;
+
+    /// <summary>
+    /// The text filtering dictionary has changed
+    /// </summary>
+    public event Callback<FilterTextDictionaryChanged_t>? FilterTextDictionaryChanged;
+
 #pragma warning restore CS0067
 
     public static ISteamUtils? User { get; internal set; }
@@ -340,7 +350,7 @@ public class ISteamUtils
 #if GNS_SHARP_OPENSOURCE_GNS
         throw new NotImplementedException("Open source GNS doesn't have ISteamUtils");
 #elif GNS_SHARP_STEAMWORKS_SDK
-        var task = this.SafeSteamAPICall<CheckFileSignature_t>(() => Native.SteamAPI_ISteamUtils_CheckFileSignature(this.ptr, fileName));
+        var task = this.SafeSteamAPICall<IntPtr, string, CheckFileSignature_t>(Native.SteamAPI_ISteamUtils_CheckFileSignature, this.ptr, fileName);
 
         return task;
 #endif
@@ -622,18 +632,91 @@ public class ISteamUtils
 
 #if GNS_SHARP_STEAMWORKS_SDK
 
-    internal CallTask<T> SafeSteamAPICall<T>(Func<SteamAPICall_t> nativeCall)
-        where T : unmanaged, ICallbackParam
+    /* No variadic generics in C#?  Meh... */
+
+    internal CallTask<TResult> SafeSteamAPICall<T, TResult>(Func<T, SteamAPICall_t> nativeCall, T param)
+            where TResult : unmanaged, ICallbackParam
+            where T : allows ref struct
     {
-        var task = new CallTask<T>();
+        var task = new CallTask<TResult>();
 
         lock (this.asyncCallTasksLock)
         {
-            // Native call inside tasks lock.
-            //
-            // This avoids call result dispatcher thread not finding associated call task
-            // because it's not registered to `asyncCallTasks` yet
-            SteamAPICall_t handle = nativeCall();
+            SteamAPICall_t handle = nativeCall(param);
+
+            this.asyncCallTasks.Add(handle, task);
+        }
+
+        return task;
+    }
+
+    internal CallTask<TResult> SafeSteamAPICall<T1, T2, TResult>(Func<T1, T2, SteamAPICall_t> nativeCall, T1 param1, T2 param2)
+            where TResult : unmanaged, ICallbackParam
+            where T1 : allows ref struct
+            where T2 : allows ref struct
+    {
+        var task = new CallTask<TResult>();
+
+        lock (this.asyncCallTasksLock)
+        {
+            SteamAPICall_t handle = nativeCall(param1, param2);
+
+            this.asyncCallTasks.Add(handle, task);
+        }
+
+        return task;
+    }
+
+    internal CallTask<TResult> SafeSteamAPICall<T1, T2, T3, TResult>(Func<T1, T2, T3, SteamAPICall_t> nativeCall, T1 param1, T2 param2, T3 param3)
+            where TResult : unmanaged, ICallbackParam
+            where T1 : allows ref struct
+            where T2 : allows ref struct
+            where T3 : allows ref struct
+    {
+        var task = new CallTask<TResult>();
+
+        lock (this.asyncCallTasksLock)
+        {
+            SteamAPICall_t handle = nativeCall(param1, param2, param3);
+
+            this.asyncCallTasks.Add(handle, task);
+        }
+
+        return task;
+    }
+
+    internal CallTask<TResult> SafeSteamAPICall<T1, T2, T3, T4, TResult>(Func<T1, T2, T3, T4, SteamAPICall_t> nativeCall, T1 param1, T2 param2, T3 param3, T4 param4)
+            where TResult : unmanaged, ICallbackParam
+            where T1 : allows ref struct
+            where T2 : allows ref struct
+            where T3 : allows ref struct
+            where T4 : allows ref struct
+    {
+        var task = new CallTask<TResult>();
+
+        lock (this.asyncCallTasksLock)
+        {
+            SteamAPICall_t handle = nativeCall(param1, param2, param3, param4);
+
+            this.asyncCallTasks.Add(handle, task);
+        }
+
+        return task;
+    }
+
+    internal CallTask<TResult> SafeSteamAPICall<T1, T2, T3, T4, T5, TResult>(Func<T1, T2, T3, T4, T5, SteamAPICall_t> nativeCall, T1 param1, T2 param2, T3 param3, T4 param4, T5 param5)
+            where TResult : unmanaged, ICallbackParam
+            where T1 : allows ref struct
+            where T2 : allows ref struct
+            where T3 : allows ref struct
+            where T4 : allows ref struct
+            where T5 : allows ref struct
+    {
+        var task = new CallTask<TResult>();
+
+        lock (this.asyncCallTasksLock)
+        {
+            SteamAPICall_t handle = nativeCall(param1, param2, param3, param4, param5);
 
             this.asyncCallTasks.Add(handle, task);
         }
@@ -688,6 +771,20 @@ public class ISteamUtils
                 {
                     ref var data = ref msg.GetCallbackParamAs<SteamShutdown_t>();
                     this.SteamShutdown?.Invoke(ref data);
+                    break;
+                }
+
+            case CheckFileSignature_t.CallbackId:
+                {
+                    ref var data = ref msg.GetCallbackParamAs<CheckFileSignature_t>();
+                    this.CheckFileSignatureCallback?.Invoke(ref data);
+                    break;
+                }
+
+            case FilterTextDictionaryChanged_t.CallbackId:
+                {
+                    ref var data = ref msg.GetCallbackParamAs<FilterTextDictionaryChanged_t>();
+                    this.FilterTextDictionaryChanged?.Invoke(ref data);
                     break;
                 }
 

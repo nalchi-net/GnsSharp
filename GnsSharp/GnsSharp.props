@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <RootNamespace>GnsSharp</RootNamespace>
-    <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
-    <LangVersion>12</LangVersion>
+    <TargetFramework>net9.0</TargetFramework>
+    <LangVersion>13</LangVersion>
     <Nullable>enable</Nullable>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>

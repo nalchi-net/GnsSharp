@@ -742,6 +742,341 @@ internal static partial class Native
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
     public static partial void SteamAPI_ISteamMatchmakingRulesResponse_RulesRefreshComplete(IntPtr self);
 
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial IntPtr SteamAPI_SteamFriends_v018();
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial IntPtr SteamAPI_ISteamFriends_GetPersonaName(IntPtr self);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial EPersonaState SteamAPI_ISteamFriends_GetPersonaState(IntPtr self);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial int SteamAPI_ISteamFriends_GetFriendCount(IntPtr self, EFriendFlags iFriendFlags);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial CSteamID SteamAPI_ISteamFriends_GetFriendByIndex(IntPtr self, int iFriend, EFriendFlags iFriendFlags);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial EFriendRelationship SteamAPI_ISteamFriends_GetFriendRelationship(IntPtr self, CSteamID steamIDFriend);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial EPersonaState SteamAPI_ISteamFriends_GetFriendPersonaState(IntPtr self, CSteamID steamIDFriend);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial IntPtr SteamAPI_ISteamFriends_GetFriendPersonaName(IntPtr self, CSteamID steamIDFriend);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamFriends_GetFriendGamePlayed(IntPtr self, CSteamID steamIDFriend, out FriendGameInfo_t pFriendGameInfo);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial IntPtr SteamAPI_ISteamFriends_GetFriendPersonaNameHistory(IntPtr self, CSteamID steamIDFriend, int iPersonaName);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial int SteamAPI_ISteamFriends_GetFriendSteamLevel(IntPtr self, CSteamID steamIDFriend);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial IntPtr SteamAPI_ISteamFriends_GetPlayerNickname(IntPtr self, CSteamID steamIDPlayer);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial int SteamAPI_ISteamFriends_GetFriendsGroupCount(IntPtr self);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial FriendsGroupID_t SteamAPI_ISteamFriends_GetFriendsGroupIDByIndex(IntPtr self, int iFG);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial IntPtr SteamAPI_ISteamFriends_GetFriendsGroupName(IntPtr self, FriendsGroupID_t friendsGroupID);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial int SteamAPI_ISteamFriends_GetFriendsGroupMembersCount(IntPtr self, FriendsGroupID_t friendsGroupID);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial void SteamAPI_ISteamFriends_GetFriendsGroupMembersList(IntPtr self, FriendsGroupID_t friendsGroupID, Span<CSteamID> pOutSteamIDMembers, int nMembersCount);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamFriends_HasFriend(IntPtr self, CSteamID steamIDFriend, EFriendFlags iFriendFlags);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial int SteamAPI_ISteamFriends_GetClanCount(IntPtr self);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial CSteamID SteamAPI_ISteamFriends_GetClanByIndex(IntPtr self, int iClan);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial IntPtr SteamAPI_ISteamFriends_GetClanName(IntPtr self, CSteamID steamIDClan);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial IntPtr SteamAPI_ISteamFriends_GetClanTag(IntPtr self, CSteamID steamIDClan);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamFriends_GetClanActivityCounts(IntPtr self, CSteamID steamIDClan, out int pnOnline, out int pnInGame, out int pnChatting);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial SteamAPICall_t SteamAPI_ISteamFriends_DownloadClanActivityCounts(IntPtr self, Span<CSteamID> psteamIDClans, int cClansToRequest);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial int SteamAPI_ISteamFriends_GetFriendCountFromSource(IntPtr self, CSteamID steamIDSource);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial CSteamID SteamAPI_ISteamFriends_GetFriendFromSourceByIndex(IntPtr self, CSteamID steamIDSource, int iFriend);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamFriends_IsUserInSource(IntPtr self, CSteamID steamIDUser, CSteamID steamIDSource);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial void SteamAPI_ISteamFriends_SetInGameVoiceSpeaking(IntPtr self, CSteamID steamIDUser, [MarshalAs(UnmanagedType.I1)] bool bSpeaking);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial void SteamAPI_ISteamFriends_ActivateGameOverlay(IntPtr self, [MarshalAs(UnmanagedType.LPUTF8Str)] string pchDialog);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial void SteamAPI_ISteamFriends_ActivateGameOverlayToUser(IntPtr self, [MarshalAs(UnmanagedType.LPUTF8Str)] string pchDialog, CSteamID steamID);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial void SteamAPI_ISteamFriends_ActivateGameOverlayToWebPage(IntPtr self, [MarshalAs(UnmanagedType.LPUTF8Str)] string pchURL, EActivateGameOverlayToWebPageMode eMode);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial void SteamAPI_ISteamFriends_ActivateGameOverlayToStore(IntPtr self, AppId_t nAppID, EOverlayToStoreFlag eFlag);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial void SteamAPI_ISteamFriends_SetPlayedWith(IntPtr self, CSteamID steamIDUserPlayedWith);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial void SteamAPI_ISteamFriends_ActivateGameOverlayInviteDialog(IntPtr self, CSteamID steamIDLobby);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial int SteamAPI_ISteamFriends_GetSmallFriendAvatar(IntPtr self, CSteamID steamIDFriend);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial int SteamAPI_ISteamFriends_GetMediumFriendAvatar(IntPtr self, CSteamID steamIDFriend);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial int SteamAPI_ISteamFriends_GetLargeFriendAvatar(IntPtr self, CSteamID steamIDFriend);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamFriends_RequestUserInformation(IntPtr self, CSteamID steamIDUser, [MarshalAs(UnmanagedType.I1)] bool bRequireNameOnly);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial SteamAPICall_t SteamAPI_ISteamFriends_RequestClanOfficerList(IntPtr self, CSteamID steamIDClan);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial CSteamID SteamAPI_ISteamFriends_GetClanOwner(IntPtr self, CSteamID steamIDClan);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial int SteamAPI_ISteamFriends_GetClanOfficerCount(IntPtr self, CSteamID steamIDClan);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial CSteamID SteamAPI_ISteamFriends_GetClanOfficerByIndex(IntPtr self, CSteamID steamIDClan, int iOfficer);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamFriends_SetRichPresence(IntPtr self, [MarshalAs(UnmanagedType.LPUTF8Str)] string pchKey, [MarshalAs(UnmanagedType.LPUTF8Str)] string pchValue);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial void SteamAPI_ISteamFriends_ClearRichPresence(IntPtr self);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial IntPtr SteamAPI_ISteamFriends_GetFriendRichPresence(IntPtr self, CSteamID steamIDFriend, [MarshalAs(UnmanagedType.LPUTF8Str)] string pchKey);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial int SteamAPI_ISteamFriends_GetFriendRichPresenceKeyCount(IntPtr self, CSteamID steamIDFriend);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial IntPtr SteamAPI_ISteamFriends_GetFriendRichPresenceKeyByIndex(IntPtr self, CSteamID steamIDFriend, int iKey);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial void SteamAPI_ISteamFriends_RequestFriendRichPresence(IntPtr self, CSteamID steamIDFriend);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamFriends_InviteUserToGame(IntPtr self, CSteamID steamIDFriend, [MarshalAs(UnmanagedType.LPUTF8Str)] string pchConnectString);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial int SteamAPI_ISteamFriends_GetCoplayFriendCount(IntPtr self);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial CSteamID SteamAPI_ISteamFriends_GetCoplayFriend(IntPtr self, int iCoplayFriend);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial int SteamAPI_ISteamFriends_GetFriendCoplayTime(IntPtr self, CSteamID steamIDFriend);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial AppId_t SteamAPI_ISteamFriends_GetFriendCoplayGame(IntPtr self, CSteamID steamIDFriend);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial SteamAPICall_t SteamAPI_ISteamFriends_JoinClanChatRoom(IntPtr self, CSteamID steamIDClan);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamFriends_LeaveClanChatRoom(IntPtr self, CSteamID steamIDClan);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial int SteamAPI_ISteamFriends_GetClanChatMemberCount(IntPtr self, CSteamID steamIDClan);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial CSteamID SteamAPI_ISteamFriends_GetChatMemberByIndex(IntPtr self, CSteamID steamIDClan, int iUser);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamFriends_SendClanChatMessage(IntPtr self, CSteamID steamIDClanChat, [MarshalAs(UnmanagedType.LPUTF8Str)] string pchText);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial int SteamAPI_ISteamFriends_GetClanChatMessage(IntPtr self, CSteamID steamIDClanChat, int iMessage, Span<byte> prgchText, int cchTextMax, out EChatEntryType peChatEntryType, out CSteamID psteamidChatter);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamFriends_IsClanChatAdmin(IntPtr self, CSteamID steamIDClanChat, CSteamID steamIDUser);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamFriends_IsClanChatWindowOpenInSteam(IntPtr self, CSteamID steamIDClanChat);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamFriends_OpenClanChatWindowInSteam(IntPtr self, CSteamID steamIDClanChat);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamFriends_CloseClanChatWindowInSteam(IntPtr self, CSteamID steamIDClanChat);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamFriends_SetListenForFriendsMessages(IntPtr self, [MarshalAs(UnmanagedType.I1)] bool bInterceptEnabled);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamFriends_ReplyToFriendMessage(IntPtr self, CSteamID steamIDFriend, [MarshalAs(UnmanagedType.LPUTF8Str)] string pchMsgToSend);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial int SteamAPI_ISteamFriends_GetFriendMessage(IntPtr self, CSteamID steamIDFriend, int iMessageID, Span<byte> pvData, int cubData, out EChatEntryType peChatEntryType);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial SteamAPICall_t SteamAPI_ISteamFriends_GetFollowerCount(IntPtr self, CSteamID steamID);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial SteamAPICall_t SteamAPI_ISteamFriends_IsFollowing(IntPtr self, CSteamID steamID);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial SteamAPICall_t SteamAPI_ISteamFriends_EnumerateFollowingList(IntPtr self, uint unStartIndex);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamFriends_IsClanPublic(IntPtr self, CSteamID steamIDClan);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamFriends_IsClanOfficialGameGroup(IntPtr self, CSteamID steamIDClan);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial int SteamAPI_ISteamFriends_GetNumChatsWithUnreadPriorityMessages(IntPtr self);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial void SteamAPI_ISteamFriends_ActivateGameOverlayRemotePlayTogetherInviteDialog(IntPtr self, CSteamID steamIDLobby);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamFriends_RegisterProtocolInOverlayBrowser(IntPtr self, [MarshalAs(UnmanagedType.LPUTF8Str)] string pchProtocol);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial void SteamAPI_ISteamFriends_ActivateGameOverlayInviteDialogConnectString(IntPtr self, [MarshalAs(UnmanagedType.LPUTF8Str)] string pchConnectString);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial SteamAPICall_t SteamAPI_ISteamFriends_RequestEquippedProfileItems(IntPtr self, CSteamID steamID);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamFriends_BHasEquippedProfileItem(IntPtr self, CSteamID steamID, ECommunityProfileItemType itemType);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial IntPtr SteamAPI_ISteamFriends_GetProfileItemPropertyString(IntPtr self, CSteamID steamID, ECommunityProfileItemType itemType, ECommunityProfileItemProperty prop);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial uint SteamAPI_ISteamFriends_GetProfileItemPropertyUint(IntPtr self, CSteamID steamID, ECommunityProfileItemType itemType, ECommunityProfileItemProperty prop);
+
 #endif // Common API
 
     [LibraryImport(GnsLibraryName)]

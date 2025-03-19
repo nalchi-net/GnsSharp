@@ -4,9 +4,8 @@
 #pragma warning disable SA1200 // Using directives should be placed correctly
 
 global using AccountID_t = uint;
-global using AppId_t = uint;
 
-global using CSteamID = ulong;
+global using CGameID = ulong;
 
 global using unsafe FnPtrSteamNetAuthenticationStatusChanged = delegate* unmanaged[Cdecl]<GnsSharp.SteamNetAuthenticationStatus_t*, void>;
 global using unsafe FnPtrSteamNetConnectionStatusChanged = delegate* unmanaged[Cdecl]<GnsSharp.SteamNetConnectionStatusChangedCallback_t*, void>;

@@ -33,7 +33,7 @@ public struct LobbyDataUpdate_t : ICallbackParam
     /// <summary>
     /// <c>true</c> if the lobby data was successfully changed, otherwise <c>false</c>.
     /// </summary>
-    public byte Success;
+    public bool Success;
 
     public static int CallbackParamId => CallbackId;
 }

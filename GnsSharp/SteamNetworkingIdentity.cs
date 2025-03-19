@@ -105,13 +105,13 @@ public struct SteamNetworkingIdentity : IEquatable<SteamNetworkingIdentity>
         return Native.SteamAPI_SteamNetworkingIdentity_IsInvalid(ref this);
     }
 
-    public void SetSteamID(ulong steamID)
+    public void SetSteamID(CSteamID steamID)
     {
         Native.SteamAPI_SteamNetworkingIdentity_SetSteamID(ref this, steamID);
     }
 
     /// <returns>Returns Black CSteamID (!IsValid()) if identity is not a SteamID.</returns>
-    public ulong GetSteamID()
+    public CSteamID GetSteamID()
     {
         return Native.SteamAPI_SteamNetworkingIdentity_GetSteamID(ref this);
     }

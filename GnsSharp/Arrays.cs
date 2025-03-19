@@ -56,8 +56,22 @@ public struct Array33<T>
     private T elem;
 }
 
+[InlineArray(50)]
+public struct Array50<T>
+    where T : unmanaged
+{
+    private T elem;
+}
+
 [InlineArray(63)]
 public struct Array63<T>
+    where T : unmanaged
+{
+    private T elem;
+}
+
+[InlineArray(64)]
+public struct Array64<T>
     where T : unmanaged
 {
     private T elem;

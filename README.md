@@ -30,7 +30,7 @@ This might change in the future if I need those.
 | ISteamAppTicket          | ❌ | ISteamNetworkingSockets | ✔ |
 | ISteamClient             | ❌ | ISteamNetworkingUtils   | ✔ |
 | ISteamController         | ❌ | ISteamRemotePlay        | ❌ |
-| ISteamFriends            | ❌ | ISteamRemoteStorage     | ❌ |
+| ISteamFriends            | ✔ | ISteamRemoteStorage     | ❌ |
 | ISteamGameCoordinator    | ❌ | ISteamScreenshots       | ❌ |
 | ISteamGameServer         | ❌ | ISteamTimeline          | ❌ |
 | ISteamGameServerStats    | ❌ | ISteamUGC               | ❌ |
@@ -38,7 +38,7 @@ This might change in the future if I need those.
 | ISteamHTTP               | ❌ | ISteamUserStats         | ❌ |
 | ISteamInput              | ❌ | ISteamUtils             | ✔ |
 | ISteamInventory          | ❌ | ISteamVideo             | ❌ |
-| ISteamMatchmaking        | ❌ | SteamEncryptedAppTicket | ❌ |
+| ISteamMatchmaking        | ✔ | SteamEncryptedAppTicket | ❌ |
 | ISteamMatchmakingServers | ❌ | steam_api               | ✔ |
 | ISteamMusic              | ❌ | steam_gameserver        | ✔ |
 | ISteamMusicRemote        | ❌ | GameNetworkingSockets   | ✔ |

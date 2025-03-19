@@ -27,7 +27,7 @@ public struct LobbyKicked_t : ICallbackParam
     /// <summary>
     /// true if you were kicked from the lobby due to the user losing connection to Steam (currently always true)
     /// </summary>
-    public byte KickedDueToDisconnect;
+    public bool KickedDueToDisconnect;
 
     public static int CallbackParamId => CallbackId;
 }

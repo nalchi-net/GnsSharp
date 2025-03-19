@@ -157,7 +157,7 @@ public static class SteamGameServer
 #endif
     }
 
-    public static ulong GetSteamID()
+    public static CSteamID GetSteamID()
     {
 #if GNS_SHARP_OPENSOURCE_GNS
         throw new NotImplementedException("Open source GNS doesn't have GameServer API");

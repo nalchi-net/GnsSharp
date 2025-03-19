@@ -227,7 +227,7 @@ public class ISteamMatchmaking
 #if GNS_SHARP_OPENSOURCE_GNS
         throw new NotImplementedException("Open source GNS doesn't have ISteamMatchmaking");
 #elif GNS_SHARP_STEAMWORKS_SDK
-        var task = ISteamUtils.User!.SafeSteamAPICall<LobbyMatchList_t>(() => Native.SteamAPI_ISteamMatchmaking_RequestLobbyList(this.ptr));
+        var task = ISteamUtils.User!.SafeSteamAPICall<IntPtr, LobbyMatchList_t>(Native.SteamAPI_ISteamMatchmaking_RequestLobbyList, this.ptr);
 
         return task;
 #endif
@@ -339,7 +339,7 @@ public class ISteamMatchmaking
     /// Gets the Steam ID of the lobby at the specified index after receiving the <see cref="RequestLobbyList"/> results.
     /// </summary>
     /// <param name="lobbyIndex">The index of the lobby to get the Steam ID of, from 0 to <see cref="LobbyMatchList_t.LobbiesMatching"/>.</param>
-    /// <returns><see cref="CSteamID"/> Returns k_steamIDNil if the provided index is invalid or there are no lobbies found.</returns>
+    /// <returns><see cref="CSteamID"/> Returns <see cref="CSteamID.Nil"/> if the provided index is invalid or there are no lobbies found.</returns>
     public CSteamID GetLobbyByIndex(int lobbyIndex)
     {
 #if GNS_SHARP_OPENSOURCE_GNS
@@ -359,14 +359,14 @@ public class ISteamMatchmaking
     /// The <see cref="CSteamID"/> of the lobby will need to be communicated via game channels or via InviteUserToLobby().
     /// </para>
     ///
-    /// The <see cref="LobbyEnter_t"/> callback is also received since the local user has joined their own lobby.
+    /// The <see cref="LobbyEnter"/> callback is also received since the local user has joined their own lobby.
     /// </summary>
     /// <param name="lobbyType">The type and visibility of this lobby. This can be changed later via <see cref="SetLobbyType"/>.</param>
     /// <param name="maxMembers">The maximum number of players that can join this lobby. This can not be above 250.</param>
     /// <returns>
     /// <see cref="CallTask&lt;LobbyCreated_t&gt;"/> that will return <see cref="LobbyCreated_t"/> when awaited.<br/>
-    /// Triggers a <see cref="LobbyEnter_t"/> callback.<br/>
-    /// Triggers a <see cref="LobbyDataUpdate_t"/> callback.<br/>
+    /// Triggers a <see cref="LobbyEnter"/> callback.<br/>
+    /// Triggers a <see cref="LobbyDataUpdate"/> callback.<br/>
     /// If the results returned via the LobbyCreated_t call result indicate success then the lobby is joined &amp; ready to use at this point.
     /// </returns>
     public CallTask<LobbyCreated_t> CreateLobby(ELobbyType lobbyType, int maxMembers)
@@ -374,7 +374,7 @@ public class ISteamMatchmaking
 #if GNS_SHARP_OPENSOURCE_GNS
         throw new NotImplementedException("Open source GNS doesn't have ISteamMatchmaking");
 #elif GNS_SHARP_STEAMWORKS_SDK
-        var task = ISteamUtils.User!.SafeSteamAPICall<LobbyCreated_t>(() => Native.SteamAPI_ISteamMatchmaking_CreateLobby(this.ptr, lobbyType, maxMembers));
+        var task = ISteamUtils.User!.SafeSteamAPICall<IntPtr, ELobbyType, int, LobbyCreated_t>(Native.SteamAPI_ISteamMatchmaking_CreateLobby, this.ptr, lobbyType, maxMembers);
 
         return task;
 #endif
@@ -394,14 +394,14 @@ public class ISteamMatchmaking
     /// <see cref="CallTask&lt;LobbyEnter_t&gt;"/> that will return <see cref="LobbyEnter_t"/> when awaited.<br/>
     /// Check <see cref="LobbyEnter_t.ChatRoomEnterResponse"/> to see if was successful.<br/>
     /// Lobby metadata is available to use immediately on this call completing.<br/>
-    /// Triggers a <see cref="LobbyDataUpdate_t"/> callback.
+    /// Triggers a <see cref="LobbyDataUpdate"/> callback.
     /// </returns>
     public CallTask<LobbyEnter_t> JoinLobby(CSteamID steamIDLobby)
     {
 #if GNS_SHARP_OPENSOURCE_GNS
         throw new NotImplementedException("Open source GNS doesn't have ISteamMatchmaking");
 #elif GNS_SHARP_STEAMWORKS_SDK
-        var task = ISteamUtils.User!.SafeSteamAPICall<LobbyEnter_t>(() => Native.SteamAPI_ISteamMatchmaking_JoinLobby(this.ptr, steamIDLobby));
+        var task = ISteamUtils.User!.SafeSteamAPICall<IntPtr, CSteamID, LobbyEnter_t>(Native.SteamAPI_ISteamMatchmaking_JoinLobby, this.ptr, steamIDLobby);
 
         return task;
 #endif
@@ -488,7 +488,7 @@ public class ISteamMatchmaking
     /// </remarks>
     /// <param name="steamIDLobby">This MUST be the same lobby used in the previous call to <see cref="GetNumLobbyMembers"/>!</param>
     /// <param name="memberIndex">An index between 0 and <see cref="GetNumLobbyMembers"/>.</param>
-    /// <returns><see cref="CSteamID"/> Invalid indices return k_steamIDNil.</returns>
+    /// <returns><see cref="CSteamID"/> Invalid indices return <see cref="CSteamID.Nil"/>.</returns>
     public CSteamID GetLobbyMemberByIndex(CSteamID steamIDLobby, int memberIndex)
     {
 #if GNS_SHARP_OPENSOURCE_GNS
@@ -685,13 +685,13 @@ public class ISteamMatchmaking
     /// Sets per-user metadata for the local user.
     /// </para>
     /// <para>
-    /// Each user in the lobby will be receive notification of the lobby data change via a <see cref="LobbyDataUpdate_t"/> callback, and any new users joining will receive any existing data.
+    /// Each user in the lobby will be receive notification of the lobby data change via a <see cref="LobbyDataUpdate"/> callback, and any new users joining will receive any existing data.
     /// </para>
     /// <para>
     /// There is a slight delay before sending the data so you can call this repeatedly to set all the data you need to and it will automatically be batched up and sent after the last sequential call.
     /// </para>
     /// <para>
-    /// Triggers a <see cref="LobbyDataUpdate_t"/> callback.
+    /// Triggers a <see cref="LobbyDataUpdate"/> callback.
     /// </para>
     /// </summary>
     /// <param name="steamIDLobby">The Steam ID of the lobby to set our metadata in.</param>
@@ -711,7 +711,7 @@ public class ISteamMatchmaking
     /// Broadcasts a chat (text or binary data) message to the all of the users in the lobby.
     /// </para>
     /// <para>
-    /// All users in the lobby (including the local user) will receive a <see cref="LobbyChatMsg_t"/> callback with the message.
+    /// All users in the lobby (including the local user) will receive a <see cref="LobbyChatMsg"/> callback with the message.
     /// </para>
     /// <para>
     /// If you're sending binary data, you should prefix a header to the message so that you know to treat it as your custom data rather than a plain old text message.
@@ -729,7 +729,7 @@ public class ISteamMatchmaking
     /// <param name="msgBody">This can be text or binary data, up to 4 Kilobytes in size. If it's a text message then this should be strlen( text ) + 1 to include the null terminator.</param>
     /// <returns>
     /// <see cref="bool"/> <c>true</c> if the message was successfully sent. <c>false</c> if the message is too small or too large, or no connection to Steam could be made.
-    /// Triggers a <see cref="LobbyChatMsg_t"/> callback.
+    /// Triggers a <see cref="LobbyChatMsg"/> callback.
     /// </returns>
     public bool SendLobbyChatMsg(CSteamID steamIDLobby, ReadOnlySpan<byte> msgBody)
     {
@@ -745,7 +745,7 @@ public class ISteamMatchmaking
     /// Broadcasts a chat (text or binary data) message to the all of the users in the lobby.
     /// </para>
     /// <para>
-    /// All users in the lobby (including the local user) will receive a <see cref="LobbyChatMsg_t"/> callback with the message.
+    /// All users in the lobby (including the local user) will receive a <see cref="LobbyChatMsg"/> callback with the message.
     /// </para>
     /// <para>
     /// If you're sending binary data, you should prefix a header to the message so that you know to treat it as your custom data rather than a plain old text message.
@@ -763,7 +763,7 @@ public class ISteamMatchmaking
     /// <param name="msgBody">This can be text or binary data, up to 4 Kilobytes in size. If it's a text message then this should be strlen( text ) + 1 to include the null terminator.</param>
     /// <returns>
     /// <see cref="bool"/> <c>true</c> if the message was successfully sent. <c>false</c> if the message is too small or too large, or no connection to Steam could be made.
-    /// Triggers a <see cref="LobbyChatMsg_t"/> callback.
+    /// Triggers a <see cref="LobbyChatMsg"/> callback.
     /// </returns>
     public bool SendLobbyChatMsg(CSteamID steamIDLobby, string msgBody)
     {
@@ -809,7 +809,7 @@ public class ISteamMatchmaking
     /// <returns>
     /// <para>
     /// <see cref="bool"/> <c>true</c> if the request was successfully sent to the server. <c>false</c> if no connection to Steam could be made, or <paramref name="steamIDLobby"/> is invalid.<br/>
-    /// Triggers a <see cref="LobbyDataUpdate_t"/> callback.
+    /// Triggers a <see cref="LobbyDataUpdate"/> callback.
     /// </para>
     /// <para>
     /// If the specified lobby doesn't exist, <see cref="LobbyDataUpdate_t.Success"/> will be set to <c>false</c>.
@@ -833,19 +833,19 @@ public class ISteamMatchmaking
     /// Either the IP/Port or the Steam ID of the game server must be valid, depending on how you want the clients to be able to connect.
     /// </para>
     /// <para>
-    /// A <see cref="LobbyGameCreated_t"/> callback will be sent to all players in the lobby, usually at this point, the users will join the specified game server.
+    /// A <see cref="LobbyGameCreated"/> callback will be sent to all players in the lobby, usually at this point, the users will join the specified game server.
     /// </para>
     /// <para>
     /// Usually at this point, the users will join the specified game server.
     /// </para>
     /// <para>
-    /// Triggers a <see cref="LobbyGameCreated_t"/> callback.
+    /// Triggers a <see cref="LobbyGameCreated"/> callback.
     /// </para>
     /// </summary>
     /// <param name="steamIDLobby">The Steam ID of the lobby to set the game server information for.</param>
     /// <param name="gameServerIP">Sets the IP address of the game server, in host order, i.e 127.0.0.1 == 0x7f000001.</param>
     /// <param name="gameServerPort">Sets the connection port of the game server, in host order.</param>
-    /// <param name="steamIDGameServer">Sets the Steam ID of the game server. Use k_steamIDNil if you're not setting this.</param>
+    /// <param name="steamIDGameServer">Sets the Steam ID of the game server. Use <see cref="CSteamID.Nil"/> if you're not setting this.</param>
     public void SetLobbyGameServer(CSteamID steamIDLobby, uint gameServerIP, ushort gameServerPort, CSteamID steamIDGameServer)
     {
 #if GNS_SHARP_OPENSOURCE_GNS
@@ -979,7 +979,7 @@ public class ISteamMatchmaking
     /// NOTE: You must be a member of the lobby to access this.
     /// </remarks>
     /// <param name="steamIDLobby">The Steam ID of the lobby to get the owner of.</param>
-    /// <returns><see cref="CSteamID"/> Returns k_steamIDNil if you're not in the lobby.</returns>
+    /// <returns><see cref="CSteamID"/> Returns <see cref="CSteamID.Nil"/> if you're not in the lobby.</returns>
     public CSteamID GetLobbyOwner(CSteamID steamIDLobby)
     {
 #if GNS_SHARP_OPENSOURCE_GNS
@@ -996,7 +996,7 @@ public class ISteamMatchmaking
     ///
     /// <para>
     /// This can only be set by the owner of the lobby.<br/>
-    /// This will trigger a <see cref="LobbyDataUpdate_t"/> for all of the users in the lobby, each user should update their local state to reflect the new owner.<br/>
+    /// This will trigger a <see cref="LobbyDataUpdate"/> for all of the users in the lobby, each user should update their local state to reflect the new owner.<br/>
     /// This is typically accomplished by displaying a crown icon next to the owners name.
     /// </para>
     /// </summary>
@@ -1005,7 +1005,7 @@ public class ISteamMatchmaking
     /// <returns>
     /// <see cref="bool"/> <c>true</c> if the owner was successfully changed.<br/>
     /// <c>false</c> if you're not the current owner of the lobby, <paramref name="steamIDNewOwner"/> is not a member in the lobby, or if no connection to Steam could be made.<br/>
-    /// Triggers a <see cref="LobbyDataUpdate_t"/> callback.
+    /// Triggers a <see cref="LobbyDataUpdate"/> callback.
     /// </returns>
     public bool SetLobbyOwner(CSteamID steamIDLobby, CSteamID steamIDNewOwner)
     {
