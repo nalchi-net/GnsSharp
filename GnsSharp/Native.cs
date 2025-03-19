@@ -528,6 +528,220 @@ internal static partial class Native
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool SteamAPI_ISteamUtils_DismissGamepadTextInput(IntPtr self);
 
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial IntPtr SteamAPI_SteamMatchmaking_v009();
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial int SteamAPI_ISteamMatchmaking_GetFavoriteGameCount(IntPtr self);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamMatchmaking_GetFavoriteGame(IntPtr self, int iGame, out AppId_t pnAppID, out uint pnIP, out ushort pnConnPort, out ushort pnQueryPort, out uint punFlags, out RTime32 pRTime32LastPlayedOnServer);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial int SteamAPI_ISteamMatchmaking_AddFavoriteGame(IntPtr self, AppId_t nAppID, uint nIP, ushort nConnPort, ushort nQueryPort, uint unFlags, RTime32 rTime32LastPlayedOnServer);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamMatchmaking_RemoveFavoriteGame(IntPtr self, AppId_t nAppID, uint nIP, ushort nConnPort, ushort nQueryPort, uint unFlags);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial SteamAPICall_t SteamAPI_ISteamMatchmaking_RequestLobbyList(IntPtr self);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial void SteamAPI_ISteamMatchmaking_AddRequestLobbyListStringFilter(IntPtr self, [MarshalAs(UnmanagedType.LPUTF8Str)] string pchKeyToMatch, [MarshalAs(UnmanagedType.LPUTF8Str)] string pchValueToMatch, ELobbyComparison eComparisonType);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial void SteamAPI_ISteamMatchmaking_AddRequestLobbyListNumericalFilter(IntPtr self, [MarshalAs(UnmanagedType.LPUTF8Str)] string pchKeyToMatch, int nValueToMatch, ELobbyComparison eComparisonType);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial void SteamAPI_ISteamMatchmaking_AddRequestLobbyListNearValueFilter(IntPtr self, [MarshalAs(UnmanagedType.LPUTF8Str)] string pchKeyToMatch, int nValueToBeCloseTo);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial void SteamAPI_ISteamMatchmaking_AddRequestLobbyListFilterSlotsAvailable(IntPtr self, int nSlotsAvailable);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial void SteamAPI_ISteamMatchmaking_AddRequestLobbyListDistanceFilter(IntPtr self, ELobbyDistanceFilter eLobbyDistanceFilter);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial void SteamAPI_ISteamMatchmaking_AddRequestLobbyListResultCountFilter(IntPtr self, int cMaxResults);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial void SteamAPI_ISteamMatchmaking_AddRequestLobbyListCompatibleMembersFilter(IntPtr self, CSteamID steamIDLobby);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial CSteamID SteamAPI_ISteamMatchmaking_GetLobbyByIndex(IntPtr self, int iLobby);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial SteamAPICall_t SteamAPI_ISteamMatchmaking_CreateLobby(IntPtr self, ELobbyType eLobbyType, int cMaxMembers);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial SteamAPICall_t SteamAPI_ISteamMatchmaking_JoinLobby(IntPtr self, CSteamID steamIDLobby);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial void SteamAPI_ISteamMatchmaking_LeaveLobby(IntPtr self, CSteamID steamIDLobby);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamMatchmaking_InviteUserToLobby(IntPtr self, CSteamID steamIDLobby, CSteamID steamIDInvitee);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial int SteamAPI_ISteamMatchmaking_GetNumLobbyMembers(IntPtr self, CSteamID steamIDLobby);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial CSteamID SteamAPI_ISteamMatchmaking_GetLobbyMemberByIndex(IntPtr self, CSteamID steamIDLobby, int iMember);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial IntPtr SteamAPI_ISteamMatchmaking_GetLobbyData(IntPtr self, CSteamID steamIDLobby, [MarshalAs(UnmanagedType.LPUTF8Str)] string pchKey);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamMatchmaking_SetLobbyData(IntPtr self, CSteamID steamIDLobby, [MarshalAs(UnmanagedType.LPUTF8Str)] string pchKey, [MarshalAs(UnmanagedType.LPUTF8Str)] string pchValue);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial int SteamAPI_ISteamMatchmaking_GetLobbyDataCount(IntPtr self, CSteamID steamIDLobby);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamMatchmaking_GetLobbyDataByIndex(IntPtr self, CSteamID steamIDLobby, int iLobbyData, Span<byte> pchKey, int cchKeyBufferSize, Span<byte> pchValue, int cchValueBufferSize);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamMatchmaking_DeleteLobbyData(IntPtr self, CSteamID steamIDLobby, [MarshalAs(UnmanagedType.LPUTF8Str)] string pchKey);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial IntPtr SteamAPI_ISteamMatchmaking_GetLobbyMemberData(IntPtr self, CSteamID steamIDLobby, CSteamID steamIDUser, [MarshalAs(UnmanagedType.LPUTF8Str)] string pchKey);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial void SteamAPI_ISteamMatchmaking_SetLobbyMemberData(IntPtr self, CSteamID steamIDLobby, [MarshalAs(UnmanagedType.LPUTF8Str)] string pchKey, [MarshalAs(UnmanagedType.LPUTF8Str)] string pchValue);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamMatchmaking_SendLobbyChatMsg(IntPtr self, CSteamID steamIDLobby, ReadOnlySpan<byte> pvMsgBody, int cubMsgBody);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial int SteamAPI_ISteamMatchmaking_GetLobbyChatEntry(IntPtr self, CSteamID steamIDLobby, int iChatID, IntPtr pSteamIDUser, Span<byte> pvData, int cubData, IntPtr peChatEntryType);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamMatchmaking_RequestLobbyData(IntPtr self, CSteamID steamIDLobby);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial void SteamAPI_ISteamMatchmaking_SetLobbyGameServer(IntPtr self, CSteamID steamIDLobby, uint unGameServerIP, ushort unGameServerPort, CSteamID steamIDGameServer);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamMatchmaking_GetLobbyGameServer(IntPtr self, CSteamID steamIDLobby, out uint punGameServerIP, out ushort punGameServerPort, out CSteamID psteamIDGameServer);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamMatchmaking_SetLobbyMemberLimit(IntPtr self, CSteamID steamIDLobby, int cMaxMembers);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial int SteamAPI_ISteamMatchmaking_GetLobbyMemberLimit(IntPtr self, CSteamID steamIDLobby);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamMatchmaking_SetLobbyType(IntPtr self, CSteamID steamIDLobby, ELobbyType eLobbyType);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamMatchmaking_SetLobbyJoinable(IntPtr self, CSteamID steamIDLobby, [MarshalAs(UnmanagedType.I1)] bool bLobbyJoinable);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial CSteamID SteamAPI_ISteamMatchmaking_GetLobbyOwner(IntPtr self, CSteamID steamIDLobby);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamMatchmaking_SetLobbyOwner(IntPtr self, CSteamID steamIDLobby, CSteamID steamIDNewOwner);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamMatchmaking_SetLinkedLobby(IntPtr self, CSteamID steamIDLobby, CSteamID steamIDLobbyDependent);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial void SteamAPI_ISteamMatchmakingServerListResponse_ServerResponded(IntPtr self, HServerListRequest hRequest, int iServer);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial void SteamAPI_ISteamMatchmakingServerListResponse_ServerFailedToRespond(IntPtr self, HServerListRequest hRequest, int iServer);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial void SteamAPI_ISteamMatchmakingServerListResponse_RefreshComplete(IntPtr self, HServerListRequest hRequest, EMatchMakingServerResponse response);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial void SteamAPI_ISteamMatchmakingPingResponse_ServerResponded(IntPtr self, IntPtr server);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial void SteamAPI_ISteamMatchmakingPingResponse_ServerFailedToRespond(IntPtr self);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial void SteamAPI_ISteamMatchmakingPlayersResponse_AddPlayerToList(IntPtr self, [MarshalAs(UnmanagedType.LPUTF8Str)] string pchName, int nScore, float flTimePlayed);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial void SteamAPI_ISteamMatchmakingPlayersResponse_PlayersFailedToRespond(IntPtr self);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial void SteamAPI_ISteamMatchmakingPlayersResponse_PlayersRefreshComplete(IntPtr self);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial void SteamAPI_ISteamMatchmakingRulesResponse_RulesResponded(IntPtr self, [MarshalAs(UnmanagedType.LPUTF8Str)] string pchRule, [MarshalAs(UnmanagedType.LPUTF8Str)] string pchValue);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial void SteamAPI_ISteamMatchmakingRulesResponse_RulesFailedToRespond(IntPtr self);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial void SteamAPI_ISteamMatchmakingRulesResponse_RulesRefreshComplete(IntPtr self);
+
 #endif // Common API
 
     [LibraryImport(GnsLibraryName)]

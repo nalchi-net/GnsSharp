@@ -60,6 +60,7 @@ public static class SteamAPI
               Constants.SteamNetworkingSocketsInterfaceVersion.Length + 1
             + Constants.SteamNetworkingUtilsInterfaceVersion.Length + 1
             + Constants.SteamUtilsInterfaceVersion.Length + 1
+            + Constants.SteamMatchmakingInterfaceVersion.Length + 1
 
             // + Constants.SteamAppsInterfaceVersion.Length + 1
             // + Constants.SteamControllerInterfaceVersion.Length + 1
@@ -70,7 +71,6 @@ public static class SteamAPI
             // + Constants.SteamInputInterfaceVersion.Length + 1
             // + Constants.SteamInventoryInterfaceVersion.Length + 1
             // + Constants.SteamMatchmakingServersInterfaceVersion.Length + 1
-            // + Constants.SteamMatchmakingInterfaceVersion.Length + 1
             // + Constants.SteamMusicRemoteInterfaceVersion.Length + 1
             // + Constants.SteamMusicInterfaceVersion.Length + 1
             // + Constants.SteamNetworkingMessagesInterfaceVersion.Length + 1
@@ -91,6 +91,7 @@ public static class SteamAPI
         versions.Append(Constants.SteamNetworkingSocketsInterfaceVersion).Append('\0');
         versions.Append(Constants.SteamNetworkingUtilsInterfaceVersion).Append('\0');
         versions.Append(Constants.SteamUtilsInterfaceVersion).Append('\0');
+        versions.Append(Constants.SteamMatchmakingInterfaceVersion).Append('\0');
 
         // versions.Append(Constants.SteamAppsInterfaceVersion).Append('\0');
         // versions.Append(Constants.SteamControllerInterfaceVersion).Append('\0');
@@ -101,7 +102,6 @@ public static class SteamAPI
         // versions.Append(Constants.SteamInputInterfaceVersion).Append('\0');
         // versions.Append(Constants.SteamInventoryInterfaceVersion).Append('\0');
         // versions.Append(Constants.SteamMatchmakingServersInterfaceVersion).Append('\0');
-        // versions.Append(Constants.SteamMatchmakingInterfaceVersion).Append('\0');
         // versions.Append(Constants.SteamMusicRemoteInterfaceVersion).Append('\0');
         // versions.Append(Constants.SteamMusicInterfaceVersion).Append('\0');
         // versions.Append(Constants.SteamNetworkingMessagesInterfaceVersion).Append('\0');

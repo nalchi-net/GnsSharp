@@ -49,6 +49,7 @@ public static class GnsSharpCore
         {
             ISteamNetworkingSockets.User = new(isGameServer);
             ISteamNetworkingUtils.User = new();
+            ISteamMatchmaking.User = new();
 
 #if GNS_SHARP_STEAMWORKS_SDK
             ISteamUtils.User = new(isGameServer);
@@ -75,6 +76,7 @@ public static class GnsSharpCore
         {
             ISteamNetworkingSockets.User = null;
             ISteamNetworkingUtils.User = null;
+            ISteamMatchmaking.User = null;
 
 #if GNS_SHARP_STEAMWORKS_SDK
             ISteamUtils.User = null;

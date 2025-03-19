@@ -3,6 +3,7 @@
 
 #pragma warning disable SA1200 // Using directives should be placed correctly
 
+global using AccountID_t = uint;
 global using AppId_t = uint;
 
 global using CSteamID = ulong;
@@ -24,6 +25,8 @@ global using unsafe FPtrSteamNetworkingSocketsDebugOutput = delegate* unmanaged[
 
 global using unsafe FPtrSteamNetworkingSocketsLockWaitedFor = delegate* unmanaged[Cdecl]<byte*, System.Int64, void>;
 global using unsafe FPtrSteamNetworkingSocketsServiceThreadInit = delegate* unmanaged[Cdecl]<void>;
+
+global using HServerListRequest = System.IntPtr;
 
 global using PsnIdType = System.UInt64;
 
