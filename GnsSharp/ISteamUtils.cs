@@ -701,15 +701,24 @@ public class ISteamUtils
     {
         ref var callCompleted = ref msg.GetCallbackParamAs<SteamAPICallCompleted_t>();
 
-        ICallTask task;
+        ICallTask? task;
 
         lock (this.asyncCallTasksLock)
         {
-            task = this.asyncCallTasks[callCompleted.AsyncCall];
-            this.asyncCallTasks.Remove(callCompleted.AsyncCall);
+            if (this.asyncCallTasks.TryGetValue(callCompleted.AsyncCall, out task))
+            {
+                this.asyncCallTasks.Remove(callCompleted.AsyncCall);
+            }
         }
 
-        task.SetResultFrom(pipe, ref callCompleted);
+        if (task != null)
+        {
+            task.SetResultFrom(pipe, ref callCompleted);
+        }
+        else
+        {
+            Debug.WriteLine($"Got unexpected call result #{callCompleted.AsyncCall}, Id = {callCompleted.AsyncCallbackId}");
+        }
     }
 
 #endif
