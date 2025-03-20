@@ -19,9 +19,9 @@ public struct FriendsGroupID_t(short id) : IEquatable<FriendsGroupID_t>, ICompar
 
     public short Id = id;
 
-    public static explicit operator FriendsGroupID_t(short handle) => new(handle);
+    public static implicit operator FriendsGroupID_t(short handle) => new(handle);
 
-    public static explicit operator short(FriendsGroupID_t socket) => socket.Id;
+    public static implicit operator short(FriendsGroupID_t socket) => socket.Id;
 
     public static bool operator ==(FriendsGroupID_t conn1, FriendsGroupID_t conn2) => conn1.Id == conn2.Id;
 

@@ -15,9 +15,9 @@ public struct SteamNetworkingPOPID(uint id) : IEquatable<SteamNetworkingPOPID>, 
 {
     public uint Id = id;
 
-    public static explicit operator SteamNetworkingPOPID(uint id) => new(id);
+    public static implicit operator SteamNetworkingPOPID(uint id) => new(id);
 
-    public static explicit operator uint(SteamNetworkingPOPID socket) => socket.Id;
+    public static implicit operator uint(SteamNetworkingPOPID socket) => socket.Id;
 
     public static bool operator ==(SteamNetworkingPOPID conn1, SteamNetworkingPOPID conn2) => conn1.Id == conn2.Id;
 

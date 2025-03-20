@@ -16,9 +16,9 @@ public struct SteamAPICall_t(ulong handle) : IEquatable<SteamAPICall_t>, ICompar
 
     public ulong Handle = handle;
 
-    public static explicit operator SteamAPICall_t(ulong handle) => new(handle);
+    public static implicit operator SteamAPICall_t(ulong handle) => new(handle);
 
-    public static explicit operator ulong(SteamAPICall_t socket) => socket.Handle;
+    public static implicit operator ulong(SteamAPICall_t socket) => socket.Handle;
 
     public static bool operator ==(SteamAPICall_t conn1, SteamAPICall_t conn2) => conn1.Handle == conn2.Handle;
 

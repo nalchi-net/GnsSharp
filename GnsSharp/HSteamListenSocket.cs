@@ -18,9 +18,9 @@ public struct HSteamListenSocket(uint handle) : IEquatable<HSteamListenSocket>, 
 
     public uint Handle = handle;
 
-    public static explicit operator HSteamListenSocket(uint handle) => new(handle);
+    public static implicit operator HSteamListenSocket(uint handle) => new(handle);
 
-    public static explicit operator uint(HSteamListenSocket socket) => socket.Handle;
+    public static implicit operator uint(HSteamListenSocket socket) => socket.Handle;
 
     public static bool operator ==(HSteamListenSocket conn1, HSteamListenSocket conn2) => conn1.Handle == conn2.Handle;
 

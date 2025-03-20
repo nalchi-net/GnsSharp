@@ -14,9 +14,9 @@ public struct HSteamUser(int handle) : IEquatable<HSteamUser>, IComparable<HStea
 {
     public int Handle = handle;
 
-    public static explicit operator HSteamUser(int handle) => new(handle);
+    public static implicit operator HSteamUser(int handle) => new(handle);
 
-    public static explicit operator int(HSteamUser socket) => socket.Handle;
+    public static implicit operator int(HSteamUser socket) => socket.Handle;
 
     public static bool operator ==(HSteamUser conn1, HSteamUser conn2) => conn1.Handle == conn2.Handle;
 

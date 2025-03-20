@@ -15,9 +15,9 @@ public struct RTime32(uint seconds) : IEquatable<RTime32>, IComparable<RTime32>
 {
     public uint Seconds = seconds;
 
-    public static explicit operator RTime32(uint seconds) => new(seconds);
+    public static implicit operator RTime32(uint seconds) => new(seconds);
 
-    public static explicit operator uint(RTime32 socket) => socket.Seconds;
+    public static implicit operator uint(RTime32 socket) => socket.Seconds;
 
     public static bool operator ==(RTime32 conn1, RTime32 conn2) => conn1.Seconds == conn2.Seconds;
 

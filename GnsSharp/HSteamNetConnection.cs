@@ -16,9 +16,9 @@ public struct HSteamNetConnection(uint handle) : IEquatable<HSteamNetConnection>
 
     public uint Handle = handle;
 
-    public static explicit operator HSteamNetConnection(uint handle) => new(handle);
+    public static implicit operator HSteamNetConnection(uint handle) => new(handle);
 
-    public static explicit operator uint(HSteamNetConnection socket) => socket.Handle;
+    public static implicit operator uint(HSteamNetConnection socket) => socket.Handle;
 
     public static bool operator ==(HSteamNetConnection conn1, HSteamNetConnection conn2) => conn1.Handle == conn2.Handle;
 

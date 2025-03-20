@@ -14,9 +14,9 @@ public struct HSteamPipe(int handle) : IEquatable<HSteamPipe>, IComparable<HStea
 {
     public int Handle = handle;
 
-    public static explicit operator HSteamPipe(int handle) => new(handle);
+    public static implicit operator HSteamPipe(int handle) => new(handle);
 
-    public static explicit operator int(HSteamPipe socket) => socket.Handle;
+    public static implicit operator int(HSteamPipe socket) => socket.Handle;
 
     public static bool operator ==(HSteamPipe conn1, HSteamPipe conn2) => conn1.Handle == conn2.Handle;
 

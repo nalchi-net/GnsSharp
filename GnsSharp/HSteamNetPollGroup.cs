@@ -17,9 +17,9 @@ public struct HSteamNetPollGroup(uint handle) : IEquatable<HSteamNetPollGroup>, 
 
     public uint Handle = handle;
 
-    public static explicit operator HSteamNetPollGroup(uint handle) => new(handle);
+    public static implicit operator HSteamNetPollGroup(uint handle) => new(handle);
 
-    public static explicit operator uint(HSteamNetPollGroup socket) => socket.Handle;
+    public static implicit operator uint(HSteamNetPollGroup socket) => socket.Handle;
 
     public static bool operator ==(HSteamNetPollGroup conn1, HSteamNetPollGroup conn2) => conn1.Handle == conn2.Handle;
 

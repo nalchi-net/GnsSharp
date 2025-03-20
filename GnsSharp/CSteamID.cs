@@ -17,9 +17,9 @@ public struct CSteamID(ulong id) : IEquatable<CSteamID>, IComparable<CSteamID>
 
     public ulong Id = id;
 
-    public static explicit operator CSteamID(ulong handle) => new(handle);
+    public static implicit operator CSteamID(ulong handle) => new(handle);
 
-    public static explicit operator ulong(CSteamID socket) => socket.Id;
+    public static implicit operator ulong(CSteamID socket) => socket.Id;
 
     public static bool operator ==(CSteamID conn1, CSteamID conn2) => conn1.Id == conn2.Id;
 

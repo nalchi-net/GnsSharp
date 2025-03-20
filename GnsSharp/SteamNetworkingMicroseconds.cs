@@ -18,9 +18,9 @@ public struct SteamNetworkingMicroseconds(long usec) : IEquatable<SteamNetworkin
 {
     public long Usec = usec;
 
-    public static explicit operator SteamNetworkingMicroseconds(long usec) => new(usec);
+    public static implicit operator SteamNetworkingMicroseconds(long usec) => new(usec);
 
-    public static explicit operator long(SteamNetworkingMicroseconds socket) => socket.Usec;
+    public static implicit operator long(SteamNetworkingMicroseconds socket) => socket.Usec;
 
     public static bool operator ==(SteamNetworkingMicroseconds conn1, SteamNetworkingMicroseconds conn2) => conn1.Usec == conn2.Usec;
 

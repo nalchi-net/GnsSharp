@@ -20,9 +20,9 @@ public struct AppId_t(uint id) : IEquatable<AppId_t>, IComparable<AppId_t>
 
     public uint Id = id;
 
-    public static explicit operator AppId_t(uint handle) => new(handle);
+    public static implicit operator AppId_t(uint handle) => new(handle);
 
-    public static explicit operator uint(AppId_t socket) => socket.Id;
+    public static implicit operator uint(AppId_t socket) => socket.Id;
 
     public static bool operator ==(AppId_t conn1, AppId_t conn2) => conn1.Id == conn2.Id;
 
