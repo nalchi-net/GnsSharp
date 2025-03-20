@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 /// <summary>
 /// Called when chat message has been received from a friend.
 /// </summary>
-[StructLayout(LayoutKind.Sequential, Pack = Native.PackSize)]
+[StructLayout(LayoutKind.Sequential, Pack = 4)]
 public struct GameConnectedFriendChatMsg_t : ICallbackParam
 {
     public const int CallbackId = Constants.SteamFriendsCallbacks + 43;

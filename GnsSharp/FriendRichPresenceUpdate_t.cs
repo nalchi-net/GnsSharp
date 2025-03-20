@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 /// Called when Rich Presence data has been updated for a user,<br/>
 /// this can happen automatically when friends in the same game update their rich presence, or after a call to <see cref="ISteamFriends.RequestFriendRichPresence"/>.
 /// </summary>
-[StructLayout(LayoutKind.Sequential, Pack = Native.PackSize)]
+[StructLayout(LayoutKind.Sequential, Pack = 4)]
 public struct FriendRichPresenceUpdate_t : ICallbackParam
 {
     public const int CallbackId = Constants.SteamFriendsCallbacks + 36;

@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 /// <summary>
 /// Posted when the user has attempted to join a Steam group chat via <see cref="ISteamFriends.JoinClanChatRoom"/>
 /// </summary>
-[StructLayout(LayoutKind.Sequential, Pack = Native.PackSize)]
+[StructLayout(LayoutKind.Sequential, Pack = 4)]
 public struct JoinClanChatRoomCompletionResult_t : ICallbackParam
 {
     public const int CallbackId = Constants.SteamFriendsCallbacks + 42;

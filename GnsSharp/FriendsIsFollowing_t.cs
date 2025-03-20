@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 /// <summary>
 /// Returns the result of <see cref="ISteamFriends.IsFollowing"/>.
 /// </summary>
-[StructLayout(LayoutKind.Sequential, Pack = Native.PackSize)]
+[StructLayout(LayoutKind.Sequential, Pack = 4)]
 public struct FriendsIsFollowing_t : ICallbackParam
 {
     public const int CallbackId = Constants.SteamFriendsCallbacks + 45;

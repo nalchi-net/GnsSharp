@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 /// <summary>
 /// Called when a chat message has been received in a Steam group chat that we are in.
 /// </summary>
-[StructLayout(LayoutKind.Sequential, Pack = Native.PackSize)]
+[StructLayout(LayoutKind.Sequential, Pack = 4)]
 public struct GameConnectedClanChatMsg_t : ICallbackParam
 {
     public const int CallbackId = Constants.SteamFriendsCallbacks + 38;

@@ -75,10 +75,10 @@ public class CallTask<T> : ICallTask, INotifyCompletion
 
     public void SetResultFrom(HSteamPipe pipe, ref SteamAPICallCompleted_t callCompleted)
     {
-        Debug.Assert(T.CallbackParamId == callCompleted.AsyncCallbackId, $"Callback id mismatch (expected {T.CallbackParamId}, got {callCompleted.AsyncCallbackId})");
+        Debug.Assert(T.CallbackParamId == callCompleted.AsyncCallbackId, $"Callback id mismatch (expected {T.CallbackParamId} for {typeof(T)}, got {callCompleted.AsyncCallbackId})");
         unsafe
         {
-            Debug.Assert(sizeof(T) == callCompleted.ParamSize, $"Callback param size mismatch (expected {sizeof(T)}, got {callCompleted.ParamSize})");
+            Debug.Assert(sizeof(T) == callCompleted.ParamSize, $"Callback param size mismatch (expected {sizeof(T)} for {typeof(T)}, got {callCompleted.ParamSize})");
         }
 
         bool lockTaken = false;

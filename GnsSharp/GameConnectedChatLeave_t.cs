@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 /// <summary>
 /// Called when a user has left a Steam group chat that the we are in.
 /// </summary>
-[StructLayout(LayoutKind.Sequential, Pack = Native.PackSize)]
+[StructLayout(LayoutKind.Sequential, Pack = 1)]
 public struct GameConnectedChatLeave_t : ICallbackParam
 {
     public const int CallbackId = Constants.SteamFriendsCallbacks + 40;

@@ -11,7 +11,7 @@ using System.Runtime.InteropServices;
 /// <summary>
 /// Returns the result of EnumerateFollowingList.
 /// </summary>
-[StructLayout(LayoutKind.Sequential, Pack = Native.PackSize)]
+[StructLayout(LayoutKind.Sequential, Pack = 4)]
 public struct FriendsEnumerateFollowingList_t : ICallbackParam
 {
     public const int CallbackId = Constants.SteamFriendsCallbacks + 46;

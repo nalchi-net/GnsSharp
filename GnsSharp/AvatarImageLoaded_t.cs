@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 /// Called when a large avatar is loaded in from a previous <see cref="ISteamFriends.GetLargeFriendAvatar"/> call<br/>
 /// if you have tried requesting it when it was unavailable.
 /// </summary>
-[StructLayout(LayoutKind.Sequential, Pack = Native.PackSize)]
+[StructLayout(LayoutKind.Sequential, Pack = 4)]
 public struct AvatarImageLoaded_t : ICallbackParam
 {
     public const int CallbackId = Constants.SteamFriendsCallbacks + 34;
