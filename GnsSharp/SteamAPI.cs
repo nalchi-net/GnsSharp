@@ -63,6 +63,7 @@ public static class SteamAPI
             + Constants.SteamMatchmakingInterfaceVersion.Length + 1
             + Constants.SteamFriendsInterfaceVersion.Length + 1
             + Constants.SteamUserInterfaceVersion.Length + 1
+            + Constants.SteamRemoteStorageInterfaceVersion.Length + 1
 
             // + Constants.SteamAppsInterfaceVersion.Length + 1
             // + Constants.SteamControllerInterfaceVersion.Length + 1
@@ -79,7 +80,6 @@ public static class SteamAPI
             // + Constants.SteamParentalSettingsInterfaceVersion.Length + 1
             // + Constants.SteamPartiesInterfaceVersion.Length + 1
             // + Constants.SteamRemotePlayInterfaceVersion.Length + 1
-            // + Constants.SteamRemoteStorageInterfaceVersion.Length + 1
             // + Constants.SteamScreenshotsInterfaceVersion.Length + 1
             // + Constants.SteamUgcInterfaceVersion.Length + 1
             // + Constants.SteamUserStatsInterfaceVersion.Length + 1
@@ -94,6 +94,7 @@ public static class SteamAPI
         versions.Append(Constants.SteamMatchmakingInterfaceVersion).Append('\0');
         versions.Append(Constants.SteamFriendsInterfaceVersion).Append('\0');
         versions.Append(Constants.SteamUserInterfaceVersion).Append('\0');
+        versions.Append(Constants.SteamRemoteStorageInterfaceVersion).Append('\0');
 
         // versions.Append(Constants.SteamAppsInterfaceVersion).Append('\0');
         // versions.Append(Constants.SteamControllerInterfaceVersion).Append('\0');
@@ -110,7 +111,6 @@ public static class SteamAPI
         // versions.Append(Constants.SteamParentalSettingsInterfaceVersion).Append('\0');
         // versions.Append(Constants.SteamPartiesInterfaceVersion).Append('\0');
         // versions.Append(Constants.SteamRemotePlayInterfaceVersion).Append('\0');
-        // versions.Append(Constants.SteamRemoteStorageInterfaceVersion).Append('\0');
         // versions.Append(Constants.SteamScreenshotsInterfaceVersion).Append('\0');
         // versions.Append(Constants.SteamUgcInterfaceVersion).Append('\0');
         // versions.Append(Constants.SteamUserStatsInterfaceVersion).Append('\0');

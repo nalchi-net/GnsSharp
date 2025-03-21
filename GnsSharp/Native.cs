@@ -1227,6 +1227,167 @@ pUncompressedDestBuffer_Deprecated, uint cbUncompressedDestBufferSize_Deprecated
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool SteamAPI_ISteamUser_BSetDurationControlOnlineState(IntPtr self, EDurationControlOnlineState eNewState);
 
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial IntPtr SteamAPI_SteamRemoteStorage_v016();
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamRemoteStorage_FileWrite(IntPtr self, [MarshalAs(UnmanagedType.LPUTF8Str)] string pchFile, ReadOnlySpan<byte> pvData, int cubData);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial int SteamAPI_ISteamRemoteStorage_FileRead(IntPtr self, [MarshalAs(UnmanagedType.LPUTF8Str)] string pchFile, Span<byte> pvData, int cubDataToRead);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial SteamAPICall_t SteamAPI_ISteamRemoteStorage_FileWriteAsync(IntPtr self, [MarshalAs(UnmanagedType.LPUTF8Str)] string pchFile, ReadOnlySpan<byte> pvData, uint cubData);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial SteamAPICall_t SteamAPI_ISteamRemoteStorage_FileReadAsync(IntPtr self, [MarshalAs(UnmanagedType.LPUTF8Str)] string pchFile, uint nOffset, uint cubToRead);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamRemoteStorage_FileReadAsyncComplete(IntPtr self, SteamAPICall_t hReadCall, Span<byte> pvBuffer, uint cubToRead);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamRemoteStorage_FileForget(IntPtr self, [MarshalAs(UnmanagedType.LPUTF8Str)] string pchFile);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamRemoteStorage_FileDelete(IntPtr self, [MarshalAs(UnmanagedType.LPUTF8Str)] string pchFile);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial SteamAPICall_t SteamAPI_ISteamRemoteStorage_FileShare(IntPtr self, [MarshalAs(UnmanagedType.LPUTF8Str)] string pchFile);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamRemoteStorage_SetSyncPlatforms(IntPtr self, [MarshalAs(UnmanagedType.LPUTF8Str)] string pchFile, ERemoteStoragePlatform eRemoteStoragePlatform);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial UGCFileWriteStreamHandle_t SteamAPI_ISteamRemoteStorage_FileWriteStreamOpen(IntPtr self, [MarshalAs(UnmanagedType.LPUTF8Str)] string pchFile);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamRemoteStorage_FileWriteStreamWriteChunk(IntPtr self, UGCFileWriteStreamHandle_t writeHandle, ReadOnlySpan<byte> pvData, int cubData);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamRemoteStorage_FileWriteStreamClose(IntPtr self, UGCFileWriteStreamHandle_t writeHandle);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamRemoteStorage_FileWriteStreamCancel(IntPtr self, UGCFileWriteStreamHandle_t writeHandle);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamRemoteStorage_FileExists(IntPtr self, [MarshalAs(UnmanagedType.LPUTF8Str)] string pchFile);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamRemoteStorage_FilePersisted(IntPtr self, [MarshalAs(UnmanagedType.LPUTF8Str)] string pchFile);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial int SteamAPI_ISteamRemoteStorage_GetFileSize(IntPtr self, [MarshalAs(UnmanagedType.LPUTF8Str)] string pchFile);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial long SteamAPI_ISteamRemoteStorage_GetFileTimestamp(IntPtr self, [MarshalAs(UnmanagedType.LPUTF8Str)] string pchFile);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial ERemoteStoragePlatform SteamAPI_ISteamRemoteStorage_GetSyncPlatforms(IntPtr self, [MarshalAs(UnmanagedType.LPUTF8Str)] string pchFile);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial int SteamAPI_ISteamRemoteStorage_GetFileCount(IntPtr self);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial IntPtr SteamAPI_ISteamRemoteStorage_GetFileNameAndSize(IntPtr self, int iFile, out int pnFileSizeInBytes);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamRemoteStorage_GetQuota(IntPtr self, out ulong pnTotalBytes, out ulong puAvailableBytes);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamRemoteStorage_IsCloudEnabledForAccount(IntPtr self);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamRemoteStorage_IsCloudEnabledForApp(IntPtr self);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial void SteamAPI_ISteamRemoteStorage_SetCloudEnabledForApp(IntPtr self, [MarshalAs(UnmanagedType.I1)] bool bEnabled);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial SteamAPICall_t SteamAPI_ISteamRemoteStorage_UGCDownload(IntPtr self, UGCHandle_t hContent, uint unPriority);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamRemoteStorage_GetUGCDownloadProgress(IntPtr self, UGCHandle_t hContent, out int pnBytesDownloaded, out int pnBytesExpected);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamRemoteStorage_GetUGCDetails(IntPtr self, UGCHandle_t hContent, out AppId_t pnAppID, Span<IntPtr> ppchName, out int pnFileSizeInBytes, out CSteamID pSteamIDOwner);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial int SteamAPI_ISteamRemoteStorage_UGCRead(IntPtr self, UGCHandle_t hContent, Span<byte> pvData, int cubDataToRead, uint cOffset, EUGCReadAction eAction);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial int SteamAPI_ISteamRemoteStorage_GetCachedUGCCount(IntPtr self);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial UGCHandle_t SteamAPI_ISteamRemoteStorage_GetCachedUGCHandle(IntPtr self, int iCachedContent);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial SteamAPICall_t SteamAPI_ISteamRemoteStorage_UGCDownloadToLocation(IntPtr self, UGCHandle_t hContent, [MarshalAs(UnmanagedType.LPUTF8Str)] string pchLocation, uint unPriority);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial int SteamAPI_ISteamRemoteStorage_GetLocalFileChangeCount(IntPtr self);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial IntPtr SteamAPI_ISteamRemoteStorage_GetLocalFileChange(IntPtr self, int iFile, out ERemoteStorageLocalFileChange pEChangeType, out ERemoteStorageFilePathType pEFilePathType);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamRemoteStorage_BeginFileWriteBatch(IntPtr self);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamRemoteStorage_EndFileWriteBatch(IntPtr self);
+
 #endif // Common API
 
     [LibraryImport(GnsLibraryName)]

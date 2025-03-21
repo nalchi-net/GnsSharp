@@ -91,6 +91,13 @@ public struct Array256<T>
     private T elem;
 }
 
+[InlineArray(260)]
+public struct Array260<T>
+    where T : unmanaged
+{
+    private T elem;
+}
+
 [InlineArray(512)]
 public struct Array512<T>
     where T : unmanaged

@@ -31,6 +31,8 @@ global using PsnIdType = System.UInt64;
 
 global using unsafe PtrSteamAPIWarningMessageHook_t = delegate* unmanaged[Cdecl]<GnsSharp.ESteamWarningSeverity, byte*, void>;
 
+global using PublishedFileId_t = System.UInt64;
+
 #if GNS_SHARP_PLATFORM_WIN64 || GNS_SHARP_PLATFORM_POSIX64
 global using SizeT = System.UInt64;
 #elif GNS_SHARP_PLATFORM_WIN32 || GNS_SHARP_PLATFORM_POSIX32

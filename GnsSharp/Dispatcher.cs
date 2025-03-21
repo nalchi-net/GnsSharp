@@ -64,6 +64,10 @@ internal class Dispatcher
                     ISteamUser.User!.OnDispatch(ref msg);
                     break;
 
+                case Constants.SteamRemoteStorageCallbacks / CallbackBigGroupSize:
+                    ISteamRemoteStorage.User!.OnDispatch(ref msg);
+                    break;
+
                 // TODO: Add all the other callbacks
                 default:
                     Debug.WriteLine($"Unsupported callback = {msg.CallbackId} on Dispatcher.RunCallbacks()");

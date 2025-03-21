@@ -30,7 +30,7 @@ This might change in the future if I need those.
 | ISteamAppTicket          | ❌ | ISteamNetworkingSockets | ✔ |
 | ISteamClient             | ❌ | ISteamNetworkingUtils   | ✔ |
 | ISteamController         | ❌ | ISteamRemotePlay        | ❌ |
-| ISteamFriends            | ✔ | ISteamRemoteStorage     | ❌ |
+| ISteamFriends            | ✔ | ISteamRemoteStorage     | ✔ |
 | ISteamGameCoordinator    | ❌ | ISteamScreenshots       | ❌ |
 | ISteamGameServer         | ❌ | ISteamTimeline          | ❌ |
 | ISteamGameServerStats    | ❌ | ISteamUGC               | ❌ |
@@ -82,9 +82,72 @@ This is to allow the listen socket and the client connections to have a differen
 
 ### Steam CallResults
 
-Steam CallResults will be implemented with C# async-await pattern.
+Steam CallResults are implemented with custom awaitable `CallTask<T>`.
 
-It's not implemented yet, so no example for now.
+<details>
+    <summary>Read spacewar cloud file async example</summary>
+
+```cs
+async Task ReadSpacewarCloudFileAsync()
+{
+    string fileName = "message.dat";
+
+    // Assuming properly initialized, and running callback seperately
+    var storage = ISteamRemoteStorage.User!;
+
+    // Get the file size first.
+    int size = storage.GetFileSize(fileName);
+    if (size == 0)
+    {
+        Console.WriteLine($"File '{fileName}' doesn't exist");
+        return;
+    }
+
+    Console.WriteLine($"Size of '{fileName}' was {size}");
+
+    // Start reading file asynchronously.
+    CallTask<RemoteStorageFileReadAsyncComplete_t>? readTask
+        = storage.FileReadAsync(fileName, 0, (uint)size);
+
+    // Skip if failed to start reading file.
+    if (readTask == null)
+    {
+        Console.WriteLine("File read not initiated");
+        return;
+    }
+
+    // Await for reading to complete.
+    RemoteStorageFileReadAsyncComplete_t? complete = await readTask;
+
+    // Skip if reading failed.
+    if (!complete.HasValue)
+    {
+        Console.WriteLine("File read not complete");
+        return;
+    }
+    if (complete.Value.Result != EResult.OK)
+    {
+        Console.WriteLine($"File read not complete: {complete.Value.Result}");
+        return;
+    }
+
+    // Allocate buffer to copy the read bytes.
+    Span<byte> raw = stackalloc byte[(int)complete.Value.ReadSize];
+
+    // Copy the result to this buffer.
+    if (storage.FileReadAsyncComplete(complete.Value.FileReadAsync, raw))
+    {
+        // Assuming it's a UTF-8 string, print it.
+        string str = Encoding.UTF8.GetString(raw);
+        Console.WriteLine($"Read string: {str}");
+    }
+    else
+    {
+        Console.WriteLine("FileReadAsyncComplete() failed");
+    }
+}
+```
+</details>
 
 ## Build
 
