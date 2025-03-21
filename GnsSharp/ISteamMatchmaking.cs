@@ -222,7 +222,7 @@ public class ISteamMatchmaking
     /// NOTE: This also returns as a callback for compatibility with older applications, but you should use the call result if possible.
     /// </para>
     /// </remarks>
-    public CallTask<LobbyMatchList_t> RequestLobbyList()
+    public CallTask<LobbyMatchList_t>? RequestLobbyList()
     {
 #if GNS_SHARP_OPENSOURCE_GNS
         throw new NotImplementedException("Open source GNS doesn't have ISteamMatchmaking");
@@ -369,7 +369,7 @@ public class ISteamMatchmaking
     /// Triggers a <see cref="LobbyDataUpdate"/> callback.<br/>
     /// If the results returned via the LobbyCreated_t call result indicate success then the lobby is joined &amp; ready to use at this point.
     /// </returns>
-    public CallTask<LobbyCreated_t> CreateLobby(ELobbyType lobbyType, int maxMembers)
+    public CallTask<LobbyCreated_t>? CreateLobby(ELobbyType lobbyType, int maxMembers)
     {
 #if GNS_SHARP_OPENSOURCE_GNS
         throw new NotImplementedException("Open source GNS doesn't have ISteamMatchmaking");
@@ -396,7 +396,7 @@ public class ISteamMatchmaking
     /// Lobby metadata is available to use immediately on this call completing.<br/>
     /// Triggers a <see cref="LobbyDataUpdate"/> callback.
     /// </returns>
-    public CallTask<LobbyEnter_t> JoinLobby(CSteamID steamIDLobby)
+    public CallTask<LobbyEnter_t>? JoinLobby(CSteamID steamIDLobby)
     {
 #if GNS_SHARP_OPENSOURCE_GNS
         throw new NotImplementedException("Open source GNS doesn't have ISteamMatchmaking");

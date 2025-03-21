@@ -34,7 +34,7 @@ This might change in the future if I need those.
 | ISteamGameCoordinator    | ❌ | ISteamScreenshots       | ❌ |
 | ISteamGameServer         | ❌ | ISteamTimeline          | ❌ |
 | ISteamGameServerStats    | ❌ | ISteamUGC               | ❌ |
-| ISteamHTMLSurface        | ❌ | ISteamUser              | ❌ |
+| ISteamHTMLSurface        | ❌ | ISteamUser              | ✔ |
 | ISteamHTTP               | ❌ | ISteamUserStats         | ❌ |
 | ISteamInput              | ❌ | ISteamUtils             | ✔ |
 | ISteamInventory          | ❌ | ISteamVideo             | ❌ |

@@ -14,6 +14,8 @@ using System.Runtime.InteropServices;
 public struct CSteamID(ulong id) : IEquatable<CSteamID>, IComparable<CSteamID>
 {
     public static readonly CSteamID Nil = new(0);
+    public static readonly CSteamID NotInitYetGS = new(1);
+    public static readonly CSteamID NonSteamGS = new(2);
 
     public ulong Id = id;
 

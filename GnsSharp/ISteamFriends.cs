@@ -689,7 +689,7 @@ public class ISteamFriends
     /// </summary>
     /// <param name="steamIDClans">A list of steam groups to get the updated data for.</param>
     /// <returns><see cref="CallTask&lt;DownloadClanActivityCountsResult_t&gt;"/> that will return <see cref="DownloadClanActivityCountsResult_t"/> when awaited.</returns>
-    public CallTask<DownloadClanActivityCountsResult_t> DownloadClanActivityCounts(Span<CSteamID> steamIDClans)
+    public CallTask<DownloadClanActivityCountsResult_t>? DownloadClanActivityCounts(Span<CSteamID> steamIDClans)
     {
 #if GNS_SHARP_OPENSOURCE_GNS
         throw new NotImplementedException("Open source GNS doesn't have ISteamFriends");
@@ -1024,7 +1024,7 @@ public class ISteamFriends
     /// </remarks>
     /// <param name="steamIDClan">The Steam group to get the officers list for.</param>
     /// <returns><see cref="CallTask&lt;ClanOfficerListResponse_t&gt;"/> that will return <see cref="ClanOfficerListResponse_t"/> when awaited.</returns>
-    public CallTask<ClanOfficerListResponse_t> RequestClanOfficerList(CSteamID steamIDClan)
+    public CallTask<ClanOfficerListResponse_t>? RequestClanOfficerList(CSteamID steamIDClan)
     {
 #if GNS_SHARP_OPENSOURCE_GNS
         throw new NotImplementedException("Open source GNS doesn't have ISteamFriends");
@@ -1380,7 +1380,7 @@ public class ISteamFriends
     /// Triggers a <see cref="GameConnectedChatJoin"/> callback.<br/>
     /// Triggers a <see cref="GameConnectedClanChatMsg"/> callback.
     /// </returns>
-    public CallTask<JoinClanChatRoomCompletionResult_t> JoinClanChatRoom(CSteamID steamIDClan)
+    public CallTask<JoinClanChatRoomCompletionResult_t>? JoinClanChatRoom(CSteamID steamIDClan)
     {
 #if GNS_SHARP_OPENSOURCE_GNS
         throw new NotImplementedException("Open source GNS doesn't have ISteamFriends");
@@ -1662,7 +1662,7 @@ public class ISteamFriends
     /// </summary>
     /// <param name="steamID">The user to get the follower count for.</param>
     /// <returns><see cref="CallTask&lt;FriendsGetFollowerCount_t&gt;"/> that will return <see cref="FriendsGetFollowerCount_t"/> when awaited.</returns>
-    public CallTask<FriendsGetFollowerCount_t> GetFollowerCount(CSteamID steamID)
+    public CallTask<FriendsGetFollowerCount_t>? GetFollowerCount(CSteamID steamID)
     {
 #if GNS_SHARP_OPENSOURCE_GNS
         throw new NotImplementedException("Open source GNS doesn't have ISteamFriends");
@@ -1679,7 +1679,7 @@ public class ISteamFriends
     /// </summary>
     /// <param name="steamID">The Steam ID of the check if we are following.</param>
     /// <returns><see cref="CallTask&lt;FriendsIsFollowing_t&gt;"/> that will return <see cref="FriendsIsFollowing_t"/> when awaited.</returns>
-    public CallTask<FriendsIsFollowing_t> IsFollowing(CSteamID steamID)
+    public CallTask<FriendsIsFollowing_t>? IsFollowing(CSteamID steamID)
     {
 #if GNS_SHARP_OPENSOURCE_GNS
         throw new NotImplementedException("Open source GNS doesn't have ISteamFriends");
@@ -1707,7 +1707,7 @@ public class ISteamFriends
     /// </summary>
     /// <param name="unStartIndex">The index to start receiving followers from. This should be 0 on the initial call.</param>
     /// <returns><see cref="CallTask&lt;FriendsEnumerateFollowingList_t&gt;"/> that will return <see cref="FriendsEnumerateFollowingList_t"/> when awaited.</returns>
-    public CallTask<FriendsEnumerateFollowingList_t> EnumerateFollowingList(uint unStartIndex)
+    public CallTask<FriendsEnumerateFollowingList_t>? EnumerateFollowingList(uint unStartIndex)
     {
 #if GNS_SHARP_OPENSOURCE_GNS
         throw new NotImplementedException("Open source GNS doesn't have ISteamFriends");
@@ -1824,7 +1824,7 @@ public class ISteamFriends
     /// </summary>
     /// <param name="steamID">The user that you want to retrieve equipped items for.</param>
     /// <returns><see cref="CallTask&lt;EquippedProfileItems_t&gt;"/> that will return <see cref="EquippedProfileItems_t"/> when awaited.</returns>
-    public CallTask<EquippedProfileItems_t> RequestEquippedProfileItems(CSteamID steamID)
+    public CallTask<EquippedProfileItems_t>? RequestEquippedProfileItems(CSteamID steamID)
     {
 #if GNS_SHARP_OPENSOURCE_GNS
         throw new NotImplementedException("Open source GNS doesn't have ISteamFriends");

@@ -112,4 +112,11 @@ public struct Array2048<T>
     private T elem;
 }
 
+[InlineArray(2560)]
+public struct Array2560<T>
+    where T : unmanaged
+{
+    private T elem;
+}
+
 #pragma warning restore SA1649
