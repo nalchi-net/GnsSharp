@@ -1388,6 +1388,160 @@ pUncompressedDestBuffer_Deprecated, uint cbUncompressedDestBufferSize_Deprecated
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool SteamAPI_ISteamRemoteStorage_EndFileWriteBatch(IntPtr self);
 
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial IntPtr SteamAPI_SteamApps_v008();
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamApps_BIsSubscribed(IntPtr self);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamApps_BIsLowViolence(IntPtr self);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamApps_BIsCybercafe(IntPtr self);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamApps_BIsVACBanned(IntPtr self);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial IntPtr SteamAPI_ISteamApps_GetCurrentGameLanguage(IntPtr self);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial IntPtr SteamAPI_ISteamApps_GetAvailableGameLanguages(IntPtr self);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamApps_BIsSubscribedApp(IntPtr self, AppId_t appID);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamApps_BIsDlcInstalled(IntPtr self, AppId_t appID);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial uint SteamAPI_ISteamApps_GetEarliestPurchaseUnixTime(IntPtr self, AppId_t nAppID);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamApps_BIsSubscribedFromFreeWeekend(IntPtr self);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial int SteamAPI_ISteamApps_GetDLCCount(IntPtr self);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamApps_BGetDLCDataByIndex(IntPtr self, int iDLC, out AppId_t pAppID, [MarshalAs(UnmanagedType.I1)] out bool pbAvailable, Span<byte> pchName, int cchNameBufferSize);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial void SteamAPI_ISteamApps_InstallDLC(IntPtr self, AppId_t nAppID);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial void SteamAPI_ISteamApps_UninstallDLC(IntPtr self, AppId_t nAppID);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial void SteamAPI_ISteamApps_RequestAppProofOfPurchaseKey(IntPtr self, AppId_t nAppID);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamApps_GetCurrentBetaName(IntPtr self, Span<byte> pchName, int cchNameBufferSize);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamApps_MarkContentCorrupt(IntPtr self, [MarshalAs(UnmanagedType.I1)] bool bMissingFilesOnly);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial uint SteamAPI_ISteamApps_GetInstalledDepots(IntPtr self, AppId_t appID, out DepotId_t pvecDepots, uint cMaxDepots);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial uint SteamAPI_ISteamApps_GetAppInstallDir(IntPtr self, AppId_t appID, Span<byte> pchFolder, uint cchFolderBufferSize);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamApps_BIsAppInstalled(IntPtr self, AppId_t appID);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial CSteamID SteamAPI_ISteamApps_GetAppOwner(IntPtr self);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial IntPtr SteamAPI_ISteamApps_GetLaunchQueryParam(IntPtr self, [MarshalAs(UnmanagedType.LPUTF8Str)] string pchKey);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamApps_GetDlcDownloadProgress(IntPtr self, AppId_t nAppID, out ulong punBytesDownloaded, out ulong punBytesTotal);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial int SteamAPI_ISteamApps_GetAppBuildId(IntPtr self);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial void SteamAPI_ISteamApps_RequestAllProofOfPurchaseKeys(IntPtr self);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial SteamAPICall_t SteamAPI_ISteamApps_GetFileDetails(IntPtr self, [MarshalAs(UnmanagedType.LPUTF8Str)] string pszFileName);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial int SteamAPI_ISteamApps_GetLaunchCommandLine(IntPtr self, Span<byte> pszCommandLine, int cubCommandLine);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamApps_BIsSubscribedFromFamilySharing(IntPtr self);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamApps_BIsTimedTrial(IntPtr self, out uint punSecondsAllowed, out uint punSecondsPlayed);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamApps_SetDlcContext(IntPtr self, AppId_t nAppID);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial int SteamAPI_ISteamApps_GetNumBetas(IntPtr self, out int pnAvailable, out int pnPrivate);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamApps_GetBetaInfo(IntPtr self, int iBetaIndex, out uint punFlags, out uint punBuildID, Span<byte> pchBetaName, int cchBetaName, Span<byte>
+pchDescription, int cchDescription);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamApps_SetActiveBeta(IntPtr self, [MarshalAs(UnmanagedType.LPUTF8Str)] string pchBetaName);
+
 #endif // Common API
 
     [LibraryImport(GnsLibraryName)]

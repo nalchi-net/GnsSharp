@@ -53,6 +53,7 @@ public static class GnsSharpCore
             ISteamFriends.User = new();
             ISteamUser.User = new();
             ISteamRemoteStorage.User = new();
+            ISteamApps.User = new();
 
 #if GNS_SHARP_STEAMWORKS_SDK
             ISteamUtils.User = new(isGameServer);
@@ -83,6 +84,7 @@ public static class GnsSharpCore
             ISteamFriends.User = null;
             ISteamUser.User = null;
             ISteamRemoteStorage.User = null;
+            ISteamApps.User = null;
 
 #if GNS_SHARP_STEAMWORKS_SDK
             ISteamUtils.User = null;

@@ -7,6 +7,8 @@ global using AccountID_t = uint;
 
 global using CGameID = ulong;
 
+global using DepotId_t = uint;
+
 global using unsafe FnPtrSteamNetAuthenticationStatusChanged = delegate* unmanaged[Cdecl]<GnsSharp.SteamNetAuthenticationStatus_t*, void>;
 global using unsafe FnPtrSteamNetConnectionStatusChanged = delegate* unmanaged[Cdecl]<GnsSharp.SteamNetConnectionStatusChangedCallback_t*, void>;
 

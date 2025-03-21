@@ -35,6 +35,13 @@ public struct Array16<T>
     private T elem;
 }
 
+[InlineArray(20)]
+public struct Array20<T>
+    where T : unmanaged
+{
+    private T elem;
+}
+
 [InlineArray(28)]
 public struct Array28<T>
     where T : unmanaged
@@ -79,6 +86,13 @@ public struct Array64<T>
 
 [InlineArray(128)]
 public struct Array128<T>
+    where T : unmanaged
+{
+    private T elem;
+}
+
+[InlineArray(240)]
+public struct Array240<T>
     where T : unmanaged
 {
     private T elem;

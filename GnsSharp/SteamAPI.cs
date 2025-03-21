@@ -64,8 +64,8 @@ public static class SteamAPI
             + Constants.SteamFriendsInterfaceVersion.Length + 1
             + Constants.SteamUserInterfaceVersion.Length + 1
             + Constants.SteamRemoteStorageInterfaceVersion.Length + 1
+            + Constants.SteamAppsInterfaceVersion.Length + 1
 
-            // + Constants.SteamAppsInterfaceVersion.Length + 1
             // + Constants.SteamControllerInterfaceVersion.Length + 1
             // + Constants.SteamGameSearchInterfaceVersion.Length + 1
             // + Constants.SteamHtmlSurfaceInterfaceVersion.Length + 1
@@ -95,8 +95,8 @@ public static class SteamAPI
         versions.Append(Constants.SteamFriendsInterfaceVersion).Append('\0');
         versions.Append(Constants.SteamUserInterfaceVersion).Append('\0');
         versions.Append(Constants.SteamRemoteStorageInterfaceVersion).Append('\0');
+        versions.Append(Constants.SteamAppsInterfaceVersion).Append('\0');
 
-        // versions.Append(Constants.SteamAppsInterfaceVersion).Append('\0');
         // versions.Append(Constants.SteamControllerInterfaceVersion).Append('\0');
         // versions.Append(Constants.SteamGameSearchInterfaceVersion).Append('\0');
         // versions.Append(Constants.SteamHtmlSurfaceInterfaceVersion).Append('\0');
