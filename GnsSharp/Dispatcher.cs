@@ -22,67 +22,77 @@ internal class Dispatcher
         Native.SteamAPI_ManualDispatch_RunFrame(pipe);
         while (Native.SteamAPI_ManualDispatch_GetNextCallback(pipe, out CallbackMsg_t msg))
         {
-            // The primary callback switch-case
-            //
-            // This should generate jump tables when every callback groups are ported
-            switch (msg.CallbackId / CallbackBigGroupSize)
+            try
             {
-                case Constants.SteamUtilsCallbacks / CallbackBigGroupSize:
-                    var utils = isGameServer ? ISteamUtils.GameServer : ISteamUtils.User;
-                    utils!.OnDispatch(pipe, ref msg);
-                    break;
+                // The primary callback switch-case
+                //
+                // This should generate jump tables when every callback groups are ported
+                switch (msg.CallbackId / CallbackBigGroupSize)
+                {
+                    case Constants.SteamUtilsCallbacks / CallbackBigGroupSize:
+                        var utils = isGameServer ? ISteamUtils.GameServer : ISteamUtils.User;
+                        utils!.OnDispatch(pipe, ref msg);
+                        break;
 
-                case Constants.SteamNetworkingSocketsCallbacks / CallbackBigGroupSize:
-                    switch ((msg.CallbackId % CallbackBigGroupSize) / CallbackSmallGroupSize)
-                    {
-                        case (Constants.SteamNetworkingSocketsCallbacks % CallbackBigGroupSize) / CallbackSmallGroupSize:
-                            var networkingSockets = isGameServer ? ISteamNetworkingSockets.GameServer : ISteamNetworkingSockets.User;
-                            networkingSockets!.OnDispatch(ref msg);
-                            break;
+                    case Constants.SteamNetworkingSocketsCallbacks / CallbackBigGroupSize:
+                        switch ((msg.CallbackId % CallbackBigGroupSize) / CallbackSmallGroupSize)
+                        {
+                            case (Constants.SteamNetworkingSocketsCallbacks % CallbackBigGroupSize) / CallbackSmallGroupSize:
+                                var networkingSockets = isGameServer ? ISteamNetworkingSockets.GameServer : ISteamNetworkingSockets.User;
+                                networkingSockets!.OnDispatch(ref msg);
+                                break;
 
-                        case (Constants.SteamNetworkingUtilsCallbacks % CallbackBigGroupSize) / CallbackSmallGroupSize:
-                            var networkingUtils = isGameServer ? ISteamNetworkingUtils.GameServer : ISteamNetworkingUtils.User;
-                            networkingUtils!.OnDispatch(ref msg);
-                            break;
+                            case (Constants.SteamNetworkingUtilsCallbacks % CallbackBigGroupSize) / CallbackSmallGroupSize:
+                                var networkingUtils = isGameServer ? ISteamNetworkingUtils.GameServer : ISteamNetworkingUtils.User;
+                                networkingUtils!.OnDispatch(ref msg);
+                                break;
 
-                        default:
-                            Debug.WriteLine($"Unsupported callback = {msg.CallbackId} on Dispatcher.RunCallbacks()");
-                            break;
-                    }
+                            default:
+                                Debug.WriteLine($"Unsupported callback = {msg.CallbackId} on Dispatcher.RunCallbacks()");
+                                break;
+                        }
 
-                    break;
+                        break;
 
-                case Constants.SteamMatchmakingCallbacks / CallbackBigGroupSize:
-                    ISteamMatchmaking.User!.OnDispatch(ref msg);
-                    break;
+                    case Constants.SteamMatchmakingCallbacks / CallbackBigGroupSize:
+                        ISteamMatchmaking.User!.OnDispatch(ref msg);
+                        break;
 
-                case Constants.SteamFriendsCallbacks / CallbackBigGroupSize:
-                    ISteamFriends.User!.OnDispatch(ref msg);
-                    break;
+                    case Constants.SteamFriendsCallbacks / CallbackBigGroupSize:
+                        ISteamFriends.User!.OnDispatch(ref msg);
+                        break;
 
-                case Constants.SteamUserCallbacks / CallbackBigGroupSize:
-                    ISteamUser.User!.OnDispatch(ref msg);
-                    break;
+                    case Constants.SteamUserCallbacks / CallbackBigGroupSize:
+                        ISteamUser.User!.OnDispatch(ref msg);
+                        break;
 
-                case Constants.SteamRemoteStorageCallbacks / CallbackBigGroupSize:
-                    ISteamRemoteStorage.User!.OnDispatch(ref msg);
-                    break;
+                    case Constants.SteamRemoteStorageCallbacks / CallbackBigGroupSize:
+                        ISteamRemoteStorage.User!.OnDispatch(ref msg);
+                        break;
 
-                case Constants.SteamAppsCallbacks / CallbackBigGroupSize:
-                    ISteamApps.User!.OnDispatch(ref msg);
-                    break;
+                    case Constants.SteamAppsCallbacks / CallbackBigGroupSize:
+                        ISteamApps.User!.OnDispatch(ref msg);
+                        break;
 
-                case Constants.SteamUserStatsCallbacks / CallbackBigGroupSize:
-                    ISteamUserStats.User!.OnDispatch(ref msg);
-                    break;
+                    case Constants.SteamUserStatsCallbacks / CallbackBigGroupSize:
+                        ISteamUserStats.User!.OnDispatch(ref msg);
+                        break;
 
-                // TODO: Add all the other callbacks
-                default:
-                    Debug.WriteLine($"Unsupported callback = {msg.CallbackId} on Dispatcher.RunCallbacks()");
-                    break;
+                    // TODO: Add all the other callbacks
+                    default:
+                        Debug.WriteLine($"Unsupported callback = {msg.CallbackId} on Dispatcher.RunCallbacks()");
+                        break;
+                }
             }
-
-            Native.SteamAPI_ManualDispatch_FreeLastCallback(pipe);
+            catch (Exception ex)
+            {
+                Trace.WriteLine($"FATAL: Exception in Dispatcher.RunCallbacks({isGameServer})\n{ex}");
+                throw;
+            }
+            finally
+            {
+                Native.SteamAPI_ManualDispatch_FreeLastCallback(pipe);
+            }
         }
     }
 }
