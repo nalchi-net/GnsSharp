@@ -72,6 +72,10 @@ internal class Dispatcher
                     ISteamApps.User!.OnDispatch(ref msg);
                     break;
 
+                case Constants.SteamUserStatsCallbacks / CallbackBigGroupSize:
+                    ISteamUserStats.User!.OnDispatch(ref msg);
+                    break;
+
                 // TODO: Add all the other callbacks
                 default:
                     Debug.WriteLine($"Unsupported callback = {msg.CallbackId} on Dispatcher.RunCallbacks()");

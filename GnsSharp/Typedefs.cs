@@ -42,4 +42,8 @@ global using SizeT = System.UInt32;
 #endif
 
 global using SteamErrMsg = GnsSharp.Array1024<byte>;
+
+global using SteamLeaderboard_t = ulong;
+global using SteamLeaderboardEntries_t = ulong;
+
 global using SteamNetworkingErrMsg = GnsSharp.Array1024<byte>;

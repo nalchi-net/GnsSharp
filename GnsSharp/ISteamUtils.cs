@@ -749,6 +749,32 @@ public class ISteamUtils
         return task;
     }
 
+    internal CallTask<TResult>? SafeSteamAPICall<T1, T2, T3, T4, T5, T6, TResult>(Func<T1, T2, T3, T4, T5, T6, SteamAPICall_t> nativeCall, T1 param1, T2 param2, T3 param3, T4 param4, T5 param5, T6 param6)
+            where TResult : unmanaged, ICallbackParam
+            where T1 : allows ref struct
+            where T2 : allows ref struct
+            where T3 : allows ref struct
+            where T4 : allows ref struct
+            where T5 : allows ref struct
+            where T6 : allows ref struct
+    {
+        var task = new CallTask<TResult>();
+
+        lock (this.asyncCallTasksLock)
+        {
+            SteamAPICall_t handle = nativeCall(param1, param2, param3, param4, param5, param6);
+
+            if (handle == SteamAPICall_t.Invalid)
+            {
+                return null;
+            }
+
+            this.asyncCallTasks.Add(handle, task);
+        }
+
+        return task;
+    }
+
     internal void OnDispatch(HSteamPipe pipe, ref CallbackMsg_t msg)
     {
         switch (msg.CallbackId)

@@ -65,6 +65,7 @@ public static class SteamAPI
             + Constants.SteamUserInterfaceVersion.Length + 1
             + Constants.SteamRemoteStorageInterfaceVersion.Length + 1
             + Constants.SteamAppsInterfaceVersion.Length + 1
+            + Constants.SteamUserStatsInterfaceVersion.Length + 1
 
             // + Constants.SteamControllerInterfaceVersion.Length + 1
             // + Constants.SteamGameSearchInterfaceVersion.Length + 1
@@ -82,7 +83,6 @@ public static class SteamAPI
             // + Constants.SteamRemotePlayInterfaceVersion.Length + 1
             // + Constants.SteamScreenshotsInterfaceVersion.Length + 1
             // + Constants.SteamUgcInterfaceVersion.Length + 1
-            // + Constants.SteamUserStatsInterfaceVersion.Length + 1
             // + Constants.SteamVideoInterfaceVersion.Length + 1
             + 1;
 
@@ -96,6 +96,7 @@ public static class SteamAPI
         versions.Append(Constants.SteamUserInterfaceVersion).Append('\0');
         versions.Append(Constants.SteamRemoteStorageInterfaceVersion).Append('\0');
         versions.Append(Constants.SteamAppsInterfaceVersion).Append('\0');
+        versions.Append(Constants.SteamUserStatsInterfaceVersion).Append('\0');
 
         // versions.Append(Constants.SteamControllerInterfaceVersion).Append('\0');
         // versions.Append(Constants.SteamGameSearchInterfaceVersion).Append('\0');
@@ -113,7 +114,6 @@ public static class SteamAPI
         // versions.Append(Constants.SteamRemotePlayInterfaceVersion).Append('\0');
         // versions.Append(Constants.SteamScreenshotsInterfaceVersion).Append('\0');
         // versions.Append(Constants.SteamUgcInterfaceVersion).Append('\0');
-        // versions.Append(Constants.SteamUserStatsInterfaceVersion).Append('\0');
         // versions.Append(Constants.SteamVideoInterfaceVersion).Append('\0');
         versions.Append('\0');
 

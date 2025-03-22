@@ -1542,6 +1542,211 @@ pchDescription, int cchDescription);
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool SteamAPI_ISteamApps_SetActiveBeta(IntPtr self, [MarshalAs(UnmanagedType.LPUTF8Str)] string pchBetaName);
 
+    // A versioned accessor is exported by the library
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial IntPtr SteamAPI_SteamUserStats_v013();
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamUserStats_GetStatInt32(IntPtr self, [MarshalAs(UnmanagedType.LPUTF8Str)] string pchName, out int pData);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamUserStats_GetStatFloat(IntPtr self, [MarshalAs(UnmanagedType.LPUTF8Str)] string pchName, out float pData);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamUserStats_SetStatInt32(IntPtr self, [MarshalAs(UnmanagedType.LPUTF8Str)] string pchName, int nData);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamUserStats_SetStatFloat(IntPtr self, [MarshalAs(UnmanagedType.LPUTF8Str)] string pchName, float fData);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamUserStats_UpdateAvgRateStat(IntPtr self, [MarshalAs(UnmanagedType.LPUTF8Str)] string pchName, float flCountThisSession, double dSessionLength);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamUserStats_GetAchievement(IntPtr self, [MarshalAs(UnmanagedType.LPUTF8Str)] string pchName, [MarshalAs(UnmanagedType.I1)] out bool pbAchieved);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamUserStats_SetAchievement(IntPtr self, [MarshalAs(UnmanagedType.LPUTF8Str)] string pchName);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamUserStats_ClearAchievement(IntPtr self, [MarshalAs(UnmanagedType.LPUTF8Str)] string pchName);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamUserStats_GetAchievementAndUnlockTime(IntPtr self, [MarshalAs(UnmanagedType.LPUTF8Str)] string pchName, [MarshalAs(UnmanagedType.I1)] out bool pbAchieved, out uint punUnlockTime);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamUserStats_StoreStats(IntPtr self);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial int SteamAPI_ISteamUserStats_GetAchievementIcon(IntPtr self, [MarshalAs(UnmanagedType.LPUTF8Str)] string pchName);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial IntPtr SteamAPI_ISteamUserStats_GetAchievementDisplayAttribute(IntPtr self, [MarshalAs(UnmanagedType.LPUTF8Str)] string pchName, [MarshalAs(UnmanagedType.LPUTF8Str)] string pchKey);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamUserStats_IndicateAchievementProgress(IntPtr self, [MarshalAs(UnmanagedType.LPUTF8Str)] string pchName, uint nCurProgress, uint nMaxProgress);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial uint SteamAPI_ISteamUserStats_GetNumAchievements(IntPtr self);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial IntPtr SteamAPI_ISteamUserStats_GetAchievementName(IntPtr self, uint iAchievement);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial SteamAPICall_t SteamAPI_ISteamUserStats_RequestUserStats(IntPtr self, CSteamID steamIDUser);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamUserStats_GetUserStatInt32(IntPtr self, CSteamID steamIDUser, [MarshalAs(UnmanagedType.LPUTF8Str)] string pchName, out int pData);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamUserStats_GetUserStatFloat(IntPtr self, CSteamID steamIDUser, [MarshalAs(UnmanagedType.LPUTF8Str)] string pchName, out float pData);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamUserStats_GetUserAchievement(IntPtr self, CSteamID steamIDUser, [MarshalAs(UnmanagedType.LPUTF8Str)] string pchName, [MarshalAs(UnmanagedType.I1)] out bool pbAchieved);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamUserStats_GetUserAchievementAndUnlockTime(IntPtr self, CSteamID steamIDUser, [MarshalAs(UnmanagedType.LPUTF8Str)] string pchName, [MarshalAs(UnmanagedType.I1)] out bool pbAchieved, out uint punUnlockTime);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamUserStats_ResetAllStats(IntPtr self, [MarshalAs(UnmanagedType.I1)] bool bAchievementsToo);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial SteamAPICall_t SteamAPI_ISteamUserStats_FindOrCreateLeaderboard(IntPtr self, [MarshalAs(UnmanagedType.LPUTF8Str)] string pchLeaderboardName, ELeaderboardSortMethod eLeaderboardSortMethod, ELeaderboardDisplayType
+eLeaderboardDisplayType);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial SteamAPICall_t SteamAPI_ISteamUserStats_FindLeaderboard(IntPtr self, [MarshalAs(UnmanagedType.LPUTF8Str)] string pchLeaderboardName);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial IntPtr SteamAPI_ISteamUserStats_GetLeaderboardName(IntPtr self, SteamLeaderboard_t hSteamLeaderboard);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial int SteamAPI_ISteamUserStats_GetLeaderboardEntryCount(IntPtr self, SteamLeaderboard_t hSteamLeaderboard);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial ELeaderboardSortMethod SteamAPI_ISteamUserStats_GetLeaderboardSortMethod(IntPtr self, SteamLeaderboard_t hSteamLeaderboard);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial ELeaderboardDisplayType SteamAPI_ISteamUserStats_GetLeaderboardDisplayType(IntPtr self, SteamLeaderboard_t hSteamLeaderboard);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial SteamAPICall_t SteamAPI_ISteamUserStats_DownloadLeaderboardEntries(IntPtr self, SteamLeaderboard_t hSteamLeaderboard, ELeaderboardDataRequest eLeaderboardDataRequest, int nRangeStart, int nRangeEnd);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial SteamAPICall_t SteamAPI_ISteamUserStats_DownloadLeaderboardEntriesForUsers(IntPtr self, SteamLeaderboard_t hSteamLeaderboard, Span<CSteamID> prgUsers, int cUsers);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamUserStats_GetDownloadedLeaderboardEntry(IntPtr self, SteamLeaderboardEntries_t hSteamLeaderboardEntries, int index, out LeaderboardEntry_t pLeaderboardEntry, Span<int> pDetails, int
+cDetailsMax);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial SteamAPICall_t SteamAPI_ISteamUserStats_UploadLeaderboardScore(IntPtr self, SteamLeaderboard_t hSteamLeaderboard, ELeaderboardUploadScoreMethod eLeaderboardUploadScoreMethod, int nScore, ReadOnlySpan<int> pScoreDetails, int cScoreDetailsCount);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial SteamAPICall_t SteamAPI_ISteamUserStats_AttachLeaderboardUGC(IntPtr self, SteamLeaderboard_t hSteamLeaderboard, UGCHandle_t hUGC);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial SteamAPICall_t SteamAPI_ISteamUserStats_GetNumberOfCurrentPlayers(IntPtr self);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial SteamAPICall_t SteamAPI_ISteamUserStats_RequestGlobalAchievementPercentages(IntPtr self);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial int SteamAPI_ISteamUserStats_GetMostAchievedAchievementInfo(IntPtr self, Span<byte> pchName, uint unNameBufLen, out float pflPercent, [MarshalAs(UnmanagedType.I1)] out bool pbAchieved);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial int SteamAPI_ISteamUserStats_GetNextMostAchievedAchievementInfo(IntPtr self, int iIteratorPrevious, Span<byte> pchName, uint unNameBufLen, out float pflPercent, [MarshalAs(UnmanagedType.I1)] out bool pbAchieved);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamUserStats_GetAchievementAchievedPercent(IntPtr self, [MarshalAs(UnmanagedType.LPUTF8Str)] string pchName, out float pflPercent);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial SteamAPICall_t SteamAPI_ISteamUserStats_RequestGlobalStats(IntPtr self, int nHistoryDays);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamUserStats_GetGlobalStatInt64(IntPtr self, [MarshalAs(UnmanagedType.LPUTF8Str)] string pchStatName, out long pData);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamUserStats_GetGlobalStatDouble(IntPtr self, [MarshalAs(UnmanagedType.LPUTF8Str)] string pchStatName, out double pData);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial int SteamAPI_ISteamUserStats_GetGlobalStatHistoryInt64(IntPtr self, [MarshalAs(UnmanagedType.LPUTF8Str)] string pchStatName, Span<long> pData, uint cubData);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial int SteamAPI_ISteamUserStats_GetGlobalStatHistoryDouble(IntPtr self, [MarshalAs(UnmanagedType.LPUTF8Str)] string pchStatName, Span<double> pData, uint cubData);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamUserStats_GetAchievementProgressLimitsInt32(IntPtr self, [MarshalAs(UnmanagedType.LPUTF8Str)] string pchName, out int pnMinProgress, out int pnMaxProgress);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamUserStats_GetAchievementProgressLimitsFloat(IntPtr self, [MarshalAs(UnmanagedType.LPUTF8Str)] string pchName, out float pfMinProgress, out float pfMaxProgress);
+
 #endif // Common API
 
     [LibraryImport(GnsLibraryName)]
