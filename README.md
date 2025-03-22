@@ -16,10 +16,10 @@ So, I'm creating one for my own needs.
 
 ## State of binding
 
-Currently, I've only ported the APIs that are compatible for both the stand-alone GNS and Steamworks SDK.\
-This means that there's **almost NO support** for the Steamworks exclusive features.
+Currently, I've fully ported the APIs that are compatible for both the stand-alone GNS and Steamworks SDK.
 
-This might change in the future if I need those.
+Steamworks exclusive features are much huge in scope, and I've only ported few APIs which I need.\
+More APIs might be added in the future if I need another Steamworks exclusive features.
 
 <details>
     <summary>Table of state</summary>
@@ -35,7 +35,7 @@ This might change in the future if I need those.
 | ISteamGameServer         | ❌ | ISteamTimeline          | ❌ |
 | ISteamGameServerStats    | ❌ | ISteamUGC               | ❌ |
 | ISteamHTMLSurface        | ❌ | ISteamUser              | ✔ |
-| ISteamHTTP               | ❌ | ISteamUserStats         | ❌ |
+| ISteamHTTP               | ❌ | ISteamUserStats         | ✔ |
 | ISteamInput              | ❌ | ISteamUtils             | ✔ |
 | ISteamInventory          | ❌ | ISteamVideo             | ❌ |
 | ISteamMatchmaking        | ✔ | SteamEncryptedAppTicket | ❌ |
@@ -46,9 +46,84 @@ This might change in the future if I need those.
 
 # Documentation
 
-Most of the APIs are almost the same as the original GNS, so you can refer to the [official Steam Networking Docs](https://partner.steamgames.com/doc/features/multiplayer/networking) to figure out how to use them.
+Most of the APIs are pretty much the same as the original GNS, so you can check out the [official Steam Networking Docs](https://partner.steamgames.com/doc/features/multiplayer/networking) and [GameNetworkingSockets examples](https://github.com/ValveSoftware/GameNetworkingSockets/tree/master/examples) to learn how to use them.
 
-## Differences
+For Steamworks exclusive features, you can also refer to the [Steamworks API overview](https://partner.steamgames.com/doc/sdk/api) and [Reference](https://partner.steamgames.com/doc/api).
+
+## Integrate
+
+There are 8 different nuget packages available for different backends & platforms.
+
+```powershell
+dotnet add package GnsSharp.Gns.Win64 --prerelease           # Open source GNS for Windows 64-bit
+dotnet add package GnsSharp.Gns.Win32 --prerelease           # Open source GNS for Windows 32-bit
+dotnet add package GnsSharp.Gns.Posix64 --prerelease         # Open source GNS for POSIX 64-bit
+dotnet add package GnsSharp.Gns.Posix32 --prerelease         # Open source GNS for POSIX 32-bit
+dotnet add package GnsSharp.Steamworks.Win64 --prerelease    # Steamworks SDK for Windows 64-bit
+dotnet add package GnsSharp.Steamworks.Win32 --prerelease    # Steamworks SDK for Windows 32-bit
+dotnet add package GnsSharp.Steamworks.Posix64 --prerelease  # Steamworks SDK for POSIX 64-bit
+dotnet add package GnsSharp.Steamworks.Posix32 --prerelease  # Steamworks SDK for POSIX 32-bit
+```
+
+This is because GNS uses different struct pack size for each platform, and `size_t` is different between 64/32 bits.
+
+## GnsSharp exclusive notes
+
+Current supported versions are [GameNetworkingSockets commit `725e273`](https://github.com/ValveSoftware/GameNetworkingSockets/tree/725e273c7442bac7a8bc903c0b210b1c15c34d92) and [Steamworks SDK v1.62](https://partner.steamgames.com/downloads/steamworks_sdk_162.zip)
+
+### Where's the native libraries?
+
+I don't provide them here, for many reasons:
+1. Stand-alone open source GNS can be built in many different setups.
+    * Your Linux distro might provide older OpenSSL, which wouldn't work with my build of GNS. Or vice versa.
+        * Or you might want to use BCrypt instead. Or libsodium.
+    * You might want to try out the build with P2P enabled (btw, it's broken for current master [commit `725e273`](https://github.com/ValveSoftware/GameNetworkingSockets/tree/725e273c7442bac7a8bc903c0b210b1c15c34d92)).
+1. I don't have any device with macOS.
+1. You might want to use the more recent version of GNS.
+
+So, bring your own native dll/dylib/so files by buiding the [GameNetworkingSockets](https://github.com/ValveSoftware/GameNetworkingSockets) on your own, or downloading the Steamworks SDK from the [Steamworks partner site](https://partner.steamgames.com/).
+
+### Initialization
+
+This method works with both the open source GNS & Steamworks SDK:
+```cs
+// Initialize GNS or SteamAPI
+bool initialized = false;
+string? errMsg = null;
+if (GnsSharpCore.Backend == GnsSharpCore.BackendKind.OpenSource)
+{
+    initialized = GameNetworkingSockets.Init(out errMsg);
+}
+else if (GnsSharpCore.Backend == GnsSharpCore.BackendKind.Steamworks)
+{
+    // For test environment, write `480` in `steam_appid.txt`, and put it next to your executable.
+    // And you must be running Steam client on your PC.
+    initialized = (SteamAPI.InitEx(out errMsg) == ESteamAPIInitResult.OK);
+}
+
+if (!initialized)
+{
+    Console.WriteLine(errMsg!);
+    throw new Exception(errMsg!);
+}
+```
+
+You might want to add `NativeLibrary.Load()` too, depending on your environment.
+
+Check out the "Self connect example" below for a runnable example.
+
+### Deinitialization
+
+Again, this method works with both the open source GNS & Steamworks SDK:
+```cs
+// De-initialize GNS or SteamAPI
+if (GnsSharpCore.Backend == GnsSharpCore.BackendKind.OpenSource)
+    GameNetworkingSockets.Kill();
+else if (GnsSharpCore.Backend == GnsSharpCore.BackendKind.Steamworks)
+    SteamAPI.Shutdown();
+```
+
+Check out the "Self connect example" below for a runnable example.
 
 ### Steam Callbacks
 
@@ -56,7 +131,7 @@ Steam callbacks are implemented as C# events in the respective Steam interfaces.
 
 ```cs
 // Subscribe an event to receive Steam callbacks associated with it.
-ISteamNetworkingSockets.User.SteamNetAuthenticationStatusChanged
+ISteamNetworkingSockets.User!.SteamNetAuthenticationStatusChanged
     += (ref SteamNetAuthenticationStatus_t data) {
         ...
     }
@@ -75,14 +150,31 @@ listenSocketConfigs[0].SetPtr(ESteamNetworkingConfigValue.Callback_ConnectionSta
 
 // Start listening with specifying this configuration.
 HSteamListenSocket listener
-    = ISteamNetworkingSockets.User.CreateListenSocketIP(in address, listenSocketConfigs);
+    = ISteamNetworkingSockets.User!.CreateListenSocketIP(in address, listenSocketConfigs);
 ```
 
-This is to allow the listen socket and the client connections to have a different callback set up.
+This exception is for 2 reasons:
+1. To allow the listen socket and the client connections to have a different callback set up.
+1. Because there's no Steam Callbacks in open source GNS, and I wanted to guarantee the same API usage for both versions.
 
 ### Steam CallResults
 
-Steam CallResults are implemented with custom awaitable `CallTask<T>`.
+Steam CallResults are implemented with custom awaitable `CallTask<T>`, so you can `await` it.
+
+```cs
+// Request the Steam async API call, and get a task associated with it
+CallTask<NumberOfCurrentPlayers_t>? callTask = ISteamUserStats.User!.GetNumberOfCurrentPlayers();
+
+if (callTask != null)
+{
+    // Await for the task to complete
+    NumberOfCurrentPlayers_t? result = await callTask;
+
+    // If succeeded, print the result
+    if (result.HasValue && result.Value.Success)
+        Console.WriteLine($"Number of current players: {result.Value.Players}");
+}
+```
 
 <details>
     <summary>Read spacewar cloud file async example</summary>
@@ -154,7 +246,7 @@ async Task ReadSpacewarCloudFileAsync()
 ### Stand-alone GameNetworkingSockets
 
 1. Build the open source [GameNetworkingSockets](https://github.com/ValveSoftware/GameNetworkingSockets).
-    * As of writing, the latest is [commit `725e273`](https://github.com/ValveSoftware/GameNetworkingSockets/tree/725e273c7442bac7a8bc903c0b210b1c15c34d92)
+    * Currently, GnsSharp uses [commit `725e273`](https://github.com/ValveSoftware/GameNetworkingSockets/tree/725e273c7442bac7a8bc903c0b210b1c15c34d92)
     * Refer to the [`BUILDING.md`](https://github.com/ValveSoftware/GameNetworkingSockets/blob/master/BUILDING.md) on GameNetworkingSockets for details.
         * If you're using *Developer Powershell for VS 2022* on Windows, do note that it defaults to x86 environment, which obviously doesn't work when building for the AMD64.\
           You need to switch to AMD64 environment manually with following:
@@ -167,10 +259,10 @@ async Task ReadSpacewarCloudFileAsync()
 ### Steamworks SDK
 
 1. Download the Steamworks SDK from the [Steamworks partner site](https://partner.steamgames.com/).
-    * As of writing, the latest is [Steamworks SDK v1.62](https://partner.steamgames.com/downloads/steamworks_sdk_162.zip)
+    * Currently, GnsSharp uses [Steamworks SDK v1.62](https://partner.steamgames.com/downloads/steamworks_sdk_162.zip)
 1. Copy the native library files from the `sdk/redistributable_bin/` to your executable's build directory.
 
-## Basic Examples
+## Runnable Examples
 
 <details>
     <summary>Self connect example</summary>
@@ -183,7 +275,7 @@ using System.Text;
 
 #pragma warning disable CS0162 // Unreachable code (because of `GnsSharpCore.Backend` check)
 
-// Load the native library depending on your platform
+// Load the native library depending on your platform (it might be unnecessary, but just in case)
 string nativeLibraryPath = Path.Join(AppContext.BaseDirectory,
        "GameNetworkingSockets.dll"         /* Open source GNS for Windows */
     // "libGameNetworkingSockets.so"       /* Open source GNS for Linux */
