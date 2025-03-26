@@ -170,6 +170,8 @@ public class ISteamFriends
 
     public static ISteamFriends? User { get; internal set; }
 
+    public IntPtr Ptr => this.ptr;
+
     /// <summary>
     /// <para>
     /// Gets the current user's persona (display) name.

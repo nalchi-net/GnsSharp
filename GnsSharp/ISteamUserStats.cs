@@ -112,6 +112,8 @@ public class ISteamUserStats
 
     public static ISteamUserStats? User { get; internal set; }
 
+    public IntPtr Ptr => this.ptr;
+
     // Note: this call is no longer required as it is managed by the Steam client
     // The game stats and achievements will be synchronized with Steam before
     // the game process begins.

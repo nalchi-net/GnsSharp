@@ -84,6 +84,8 @@ public class ISteamRemoteStorage
 
     public static ISteamRemoteStorage? User { get; internal set; }
 
+    public IntPtr Ptr => this.ptr;
+
     // NOTE
     //
     // Filenames are case-insensitive, and will be converted to lowercase automatically.

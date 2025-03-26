@@ -53,6 +53,8 @@ public class ISteamNetworkingUtils
     /// </summary>
     public static ISteamNetworkingUtils? GameServer { get; internal set; }
 
+    public IntPtr Ptr => this.ptr;
+
     // Efficient message sending
 
     /// <summary>

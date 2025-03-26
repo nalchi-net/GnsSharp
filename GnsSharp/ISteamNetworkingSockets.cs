@@ -78,6 +78,8 @@ public class ISteamNetworkingSockets
 
     public static ISteamNetworkingSockets? GameServer { get; internal set; }
 
+    public IntPtr Ptr => this.ptr;
+
     /// <summary>
     /// <para>
     /// Creates a "server" socket that listens for clients to connect to by<br/>

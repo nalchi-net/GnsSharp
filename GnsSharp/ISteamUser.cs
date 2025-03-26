@@ -127,6 +127,8 @@ public class ISteamUser
 
     public static ISteamUser? User { get; internal set; }
 
+    public IntPtr Ptr => this.ptr;
+
     /// <summary>
     /// <para>
     /// Gets Steam user handle that this interface represents.

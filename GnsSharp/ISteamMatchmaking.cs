@@ -115,6 +115,8 @@ public class ISteamMatchmaking
 
     public static ISteamMatchmaking? User { get; internal set; }
 
+    public IntPtr Ptr => this.ptr;
+
     // game server favorites storage
     // saves basic details about a multiplayer game server locally
 

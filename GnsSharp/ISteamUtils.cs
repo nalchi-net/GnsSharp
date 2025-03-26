@@ -105,6 +105,8 @@ public class ISteamUtils
 
     public static ISteamUtils? GameServer { get; internal set; }
 
+    public IntPtr Ptr => this.ptr;
+
     /// <summary>
     /// Returns the number of seconds since the application was active.
     /// </summary>

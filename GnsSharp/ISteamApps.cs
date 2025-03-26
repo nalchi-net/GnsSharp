@@ -65,6 +65,8 @@ public class ISteamApps
 
     public static ISteamApps? User { get; internal set; }
 
+    public IntPtr Ptr => this.ptr;
+
     /// <summary>
     /// <para>
     /// Gets the command line if the game was launched via Steam URL, e.g. steam://run/(appid)//(command line)/.<br/>
