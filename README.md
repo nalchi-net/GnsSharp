@@ -83,6 +83,14 @@ I don't provide them here, for many reasons:
 
 So, bring your own native dll/dylib/so files by buiding the [GameNetworkingSockets](https://github.com/ValveSoftware/GameNetworkingSockets) on your own, or downloading the Steamworks SDK from the [Steamworks partner site](https://partner.steamgames.com/).
 
+#### Can you provide the pre-built native libraries?
+
+You can download the pre-built native libraries in [nalchi](https://github.com/nalchi-net/nalchi) repository.\
+Download the one for your platform, that ends with `-Shared`.
+
+It will also include nalchi, my efficient message sending utility library, but you can ignore that if you don't need it.\
+If you want to try out nalchi too, you can use it with my C# binding called [NalchiSharp](https://github.com/nalchi-net/NalchiSharp).
+
 ### Initialization
 
 This method works with both the open source GNS & Steamworks SDK:
