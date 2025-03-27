@@ -81,7 +81,7 @@ I don't provide them here, for many reasons:
 1. I don't have any device with macOS.
 1. You might want to use the more recent version of GNS.
 
-So, bring your own native dll/dylib/so files by buiding the [GameNetworkingSockets](https://github.com/ValveSoftware/GameNetworkingSockets) on your own, or downloading the Steamworks SDK from the [Steamworks partner site](https://partner.steamgames.com/).
+So, bring your own native dll/dylib/so files by building the [GameNetworkingSockets](https://github.com/ValveSoftware/GameNetworkingSockets) on your own, or downloading the Steamworks SDK from the [Steamworks partner site](https://partner.steamgames.com/).
 
 #### Can you provide the pre-built native libraries?
 
