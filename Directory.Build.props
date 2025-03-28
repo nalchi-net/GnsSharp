@@ -8,8 +8,13 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Include="../*.cs" />
+  </ItemGroup>
+
   <PropertyGroup>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PackageOutputPath>..\..\bin</PackageOutputPath>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/nalchi-net/GnsSharp</RepositoryUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -18,14 +23,14 @@
     <Company>nalchi-net</Company>
     <Authors>copyrat90</Authors>
     <Description>Valve's GameNetworkingSockets binding for C#</Description>
-    <Version>0.1.0-alpha.8</Version>
+    <Version>0.1.0-alpha.9</Version>
     <PackageTags>GameNetworkingSockets;Steamworks</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\README.md">
+    <None Include="../../README.md">
       <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
+      <PackagePath>/</PackagePath>
     </None>
   </ItemGroup>
 
@@ -34,7 +39,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <AdditionalFiles Include="stylecop.json" />
+    <AdditionalFiles Include="../../stylecop.json" />
   </ItemGroup>
 
 </Project>
