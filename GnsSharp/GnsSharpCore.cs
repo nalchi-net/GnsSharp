@@ -49,14 +49,14 @@ public static class GnsSharpCore
         {
             ISteamNetworkingSockets.User = new(isGameServer);
             ISteamNetworkingUtils.User = new();
+
+#if GNS_SHARP_STEAMWORKS_SDK
             ISteamMatchmaking.User = new();
             ISteamFriends.User = new();
             ISteamUser.User = new();
             ISteamRemoteStorage.User = new();
             ISteamApps.User = new();
             ISteamUserStats.User = new();
-
-#if GNS_SHARP_STEAMWORKS_SDK
             ISteamUtils.User = new(isGameServer);
 #endif
         }
@@ -81,14 +81,14 @@ public static class GnsSharpCore
         {
             ISteamNetworkingSockets.User = null;
             ISteamNetworkingUtils.User = null;
+
+#if GNS_SHARP_STEAMWORKS_SDK
             ISteamMatchmaking.User = null;
             ISteamFriends.User = null;
             ISteamUser.User = null;
             ISteamRemoteStorage.User = null;
             ISteamApps.User = null;
             ISteamUserStats.User = null;
-
-#if GNS_SHARP_STEAMWORKS_SDK
             ISteamUtils.User = null;
 #endif
         }
