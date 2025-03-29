@@ -106,6 +106,11 @@ else if (GnsSharpCore.Backend == GnsSharpCore.BackendKind.Steamworks)
 {
     // For test environment, write `480` in `steam_appid.txt`, and put it next to your executable.
     // And you must be running Steam client on your PC.
+    //
+    // Alternatively, you can uncomment the two lines below.
+
+    // Environment.SetEnvironmentVariable("SteamAppId", "480");
+    // Environment.SetEnvironmentVariable("SteamGameId", "480");
     initialized = (SteamAPI.InitEx(out errMsg) == ESteamAPIInitResult.OK);
 }
 
@@ -307,6 +312,11 @@ else if (GnsSharpCore.Backend == GnsSharpCore.BackendKind.Steamworks)
 {
     // For test environment, write `480` in `steam_appid.txt`, and put it next to your executable.
     // And you must be running Steam client on your PC.
+    //
+    // Alternatively, you can uncomment the two lines below.
+
+    // Environment.SetEnvironmentVariable("SteamAppId", "480");
+    // Environment.SetEnvironmentVariable("SteamGameId", "480");
     initialized = (SteamAPI.InitEx(out errMsg) == ESteamAPIInitResult.OK);
 }
 
