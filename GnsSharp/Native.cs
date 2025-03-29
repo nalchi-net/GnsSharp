@@ -2209,7 +2209,23 @@ cDetailsMax);
 
     [LibraryImport(GnsLibraryName)]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial ESteamNetworkingGetConfigValueResult SteamAPI_ISteamNetworkingUtils_GetConfigValue(IntPtr self, ESteamNetworkingConfigValue eValue, ESteamNetworkingConfigScope eScopeType, IntPtr scopeObj, IntPtr pOutDataType, Span<byte> pResult, ref SizeT cbResult);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
     public static partial IntPtr SteamAPI_ISteamNetworkingUtils_GetConfigValueInfo(IntPtr self, ESteamNetworkingConfigValue eValue, out ESteamNetworkingConfigDataType pOutDataType, out ESteamNetworkingConfigScope pOutScope);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial IntPtr SteamAPI_ISteamNetworkingUtils_GetConfigValueInfo(IntPtr self, ESteamNetworkingConfigValue eValue, IntPtr pOutDataType, out ESteamNetworkingConfigScope pOutScope);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial IntPtr SteamAPI_ISteamNetworkingUtils_GetConfigValueInfo(IntPtr self, ESteamNetworkingConfigValue eValue, out ESteamNetworkingConfigDataType pOutDataType, IntPtr pOutScope);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial IntPtr SteamAPI_ISteamNetworkingUtils_GetConfigValueInfo(IntPtr self, ESteamNetworkingConfigValue eValue, IntPtr pOutDataType, IntPtr pOutScope);
 
     [LibraryImport(GnsLibraryName)]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]

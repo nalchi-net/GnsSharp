@@ -782,6 +782,19 @@ public class ISteamNetworkingUtils
     }
 
     /// <summary>
+    /// Get a configuration value.<br/>
+    /// - eValue: which value to fetch<br/>
+    /// - eScopeType: query setting on what type of object<br/>
+    /// - eScopeArg: the object to query the setting for<br/>
+    /// - pResult: Where to put the result.  Pass NULL to query the required buffer size.  (k_ESteamNetworkingGetConfigValue_BufferTooSmall will be returned.)<br/>
+    /// - cbResult: IN: the size of your buffer.  OUT: the number of bytes filled in or required.
+    /// </summary>
+    public ESteamNetworkingGetConfigValueResult GetConfigValue(ESteamNetworkingConfigValue value, ESteamNetworkingConfigScope scopeType, IntPtr scopeObj, Span<byte> result, ref SizeT resultSize)
+    {
+        return Native.SteamAPI_ISteamNetworkingUtils_GetConfigValue(this.ptr, value, scopeType, scopeObj, IntPtr.Zero, result, ref resultSize);
+    }
+
+    /// <summary>
     /// Get info about a configuration value.  Returns the name of the value,<br/>
     /// or NULL if the value doesn't exist.  Other output parameters can be NULL<br/>
     /// if you do not need them.
@@ -790,6 +803,60 @@ public class ISteamNetworkingUtils
     {
         string? result = null;
         IntPtr configPtr = Native.SteamAPI_ISteamNetworkingUtils_GetConfigValueInfo(this.ptr, value, out outDataType, out outScope);
+
+        if (configPtr != IntPtr.Zero)
+        {
+            result = Marshal.PtrToStringUTF8(configPtr);
+        }
+
+        return result;
+    }
+
+    /// <summary>
+    /// Get info about a configuration value.  Returns the name of the value,<br/>
+    /// or NULL if the value doesn't exist.  Other output parameters can be NULL<br/>
+    /// if you do not need them.
+    /// </summary>
+    public string? GetConfigValueInfo(ESteamNetworkingConfigValue value, out ESteamNetworkingConfigScope outScope)
+    {
+        string? result = null;
+        IntPtr configPtr = Native.SteamAPI_ISteamNetworkingUtils_GetConfigValueInfo(this.ptr, value, IntPtr.Zero, out outScope);
+
+        if (configPtr != IntPtr.Zero)
+        {
+            result = Marshal.PtrToStringUTF8(configPtr);
+        }
+
+        return result;
+    }
+
+    /// <summary>
+    /// Get info about a configuration value.  Returns the name of the value,<br/>
+    /// or NULL if the value doesn't exist.  Other output parameters can be NULL<br/>
+    /// if you do not need them.
+    /// </summary>
+    public string? GetConfigValueInfo(ESteamNetworkingConfigValue value, out ESteamNetworkingConfigDataType outDataType)
+    {
+        string? result = null;
+        IntPtr configPtr = Native.SteamAPI_ISteamNetworkingUtils_GetConfigValueInfo(this.ptr, value, out outDataType, IntPtr.Zero);
+
+        if (configPtr != IntPtr.Zero)
+        {
+            result = Marshal.PtrToStringUTF8(configPtr);
+        }
+
+        return result;
+    }
+
+    /// <summary>
+    /// Get info about a configuration value.  Returns the name of the value,<br/>
+    /// or NULL if the value doesn't exist.  Other output parameters can be NULL<br/>
+    /// if you do not need them.
+    /// </summary>
+    public string? GetConfigValueInfo(ESteamNetworkingConfigValue value)
+    {
+        string? result = null;
+        IntPtr configPtr = Native.SteamAPI_ISteamNetworkingUtils_GetConfigValueInfo(this.ptr, value, IntPtr.Zero, IntPtr.Zero);
 
         if (configPtr != IntPtr.Zero)
         {
