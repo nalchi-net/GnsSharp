@@ -49,6 +49,10 @@ public class ISteamNetworkingSockets
 
     private IntPtr ptr = IntPtr.Zero;
 
+#if GNS_SHARP_STEAMWORKS_SDK
+    private bool isGameServer;
+#endif
+
     internal ISteamNetworkingSockets(bool isGameServer)
     {
 #if GNS_SHARP_OPENSOURCE_GNS
@@ -63,6 +67,8 @@ public class ISteamNetworkingSockets
         {
             this.ptr = Native.SteamAPI_SteamNetworkingSockets_SteamAPI_v012();
         }
+
+        this.isGameServer = isGameServer;
 #endif
     }
 
@@ -1798,7 +1804,7 @@ public class ISteamNetworkingSockets
                 {
                     // This one should match the usage pattern of open source GNS.
                     // So, it's not exposed as an event.
-                    HandleConnectionStatusChanged(ref msg);
+                    this.HandleConnectionStatusChanged(ref msg);
                     break;
                 }
 
@@ -1831,7 +1837,7 @@ public class ISteamNetworkingSockets
     /// This is a pretty hacky solution to support the same usage on both the open source GNS and Steamworks.
     /// </para>
     /// </summary>
-    private static void HandleConnectionStatusChanged(ref CallbackMsg_t msg)
+    private void HandleConnectionStatusChanged(ref CallbackMsg_t msg)
     {
         ref var connChanged = ref msg.GetCallbackParamAs<SteamNetConnectionStatusChangedCallback_t>();
 
@@ -1845,6 +1851,12 @@ public class ISteamNetworkingSockets
         SizeT prevResultSize = resultSize;
         Span<IntPtr> connChangedCallbackPtr = stackalloc IntPtr[1];
 
+#if GNS_SHARP_OPENSOURCE_GNS
+        var netUtils = ISteamNetworkingUtils.User!;
+#elif GNS_SHARP_STEAMWORKS_SDK
+        var netUtils = this.isGameServer ? ISteamNetworkingUtils.GameServer! : ISteamNetworkingUtils.User!;
+#endif
+
         // This approach has a flaw that:
         // When the connection is closed, it won't receive status changed callback for `ESteamNetworkingConnectionState.None`.
         // Because, at that point, the connection handle should be already invalidated,
@@ -1852,7 +1864,7 @@ public class ISteamNetworkingSockets
         //
         // But `ESteamNetworkingConnectionState.None` status is rarely useful;
         // Managing seperate pointer table only for that doesn't look too good.
-        var getConfigValueResult = ISteamNetworkingUtils.User!.GetConfigValue(ESteamNetworkingConfigValue.Callback_ConnectionStatusChanged, ESteamNetworkingConfigScope.Connection, (IntPtr)(uint)connChanged.Conn, out ESteamNetworkingConfigDataType outDataType, MemoryMarshal.AsBytes(connChangedCallbackPtr), ref resultSize);
+        var getConfigValueResult = netUtils.GetConfigValue(ESteamNetworkingConfigValue.Callback_ConnectionStatusChanged, ESteamNetworkingConfigScope.Connection, (IntPtr)(uint)connChanged.Conn, out ESteamNetworkingConfigDataType outDataType, MemoryMarshal.AsBytes(connChangedCallbackPtr), ref resultSize);
 
         if (getConfigValueResult == ESteamNetworkingGetConfigValueResult.OK || getConfigValueResult == ESteamNetworkingGetConfigValueResult.OKInherited)
         {
