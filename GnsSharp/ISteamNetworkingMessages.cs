@@ -54,7 +54,8 @@ public class ISteamNetworkingMessages
     internal ISteamNetworkingMessages(bool isGameServer)
     {
 #if GNS_SHARP_OPENSOURCE_GNS
-        throw new NotImplementedException("Open source GNS doesn't expose ISteamNetworkingMessages flat API");
+        Debug.Assert(!isGameServer, "Open source GNS doesn't have GameServer API");
+        this.ptr = Native.SteamAPI_SteamNetworkingMessages_v002();
 #elif GNS_SHARP_STEAMWORKS_SDK
         if (isGameServer)
         {
@@ -140,11 +141,7 @@ public class ISteamNetworkingMessages
     /// </summary>
     public EResult SendMessageToUser(in SteamNetworkingIdentity identityRemote, ReadOnlySpan<byte> data, ESteamNetworkingSendType sendFlags, int remoteChannel)
     {
-#if GNS_SHARP_OPENSOURCE_GNS
-        throw new NotImplementedException("Open source GNS doesn't expose ISteamNetworkingMessages flat API");
-#elif GNS_SHARP_STEAMWORKS_SDK
         return Native.SteamAPI_ISteamNetworkingMessages_SendMessageToUser(this.ptr, in identityRemote, data, (uint)data.Length, sendFlags, remoteChannel);
-#endif
     }
 
     /// <summary>
@@ -159,11 +156,7 @@ public class ISteamNetworkingMessages
     /// </summary>
     public int ReceiveMessagesOnChannel(int localChannel, Span<IntPtr> outMessages)
     {
-#if GNS_SHARP_OPENSOURCE_GNS
-        throw new NotImplementedException("Open source GNS doesn't expose ISteamNetworkingMessages flat API");
-#elif GNS_SHARP_STEAMWORKS_SDK
         return Native.SteamAPI_ISteamNetworkingMessages_ReceiveMessagesOnChannel(this.ptr, localChannel, outMessages, outMessages.Length);
-#endif
     }
 
     // Although this API allows for sending messages to peers ad-hoc, under the hood ISteamNetworkingSockets connections are used.
@@ -191,11 +184,7 @@ public class ISteamNetworkingMessages
     /// </summary>
     public bool AcceptSessionWithUser(in SteamNetworkingIdentity identityRemote)
     {
-#if GNS_SHARP_OPENSOURCE_GNS
-        throw new NotImplementedException("Open source GNS doesn't expose ISteamNetworkingMessages flat API");
-#elif GNS_SHARP_STEAMWORKS_SDK
         return Native.SteamAPI_ISteamNetworkingMessages_AcceptSessionWithUser(this.ptr, in identityRemote);
-#endif
     }
 
     /// <summary>
@@ -211,11 +200,7 @@ public class ISteamNetworkingMessages
     /// </summary>
     public bool CloseSessionWithUser(in SteamNetworkingIdentity identityRemote)
     {
-#if GNS_SHARP_OPENSOURCE_GNS
-        throw new NotImplementedException("Open source GNS doesn't expose ISteamNetworkingMessages flat API");
-#elif GNS_SHARP_STEAMWORKS_SDK
         return Native.SteamAPI_ISteamNetworkingMessages_CloseSessionWithUser(this.ptr, in identityRemote);
-#endif
     }
 
     /// <summary>
@@ -226,11 +211,7 @@ public class ISteamNetworkingMessages
     /// </summary>
     public bool CloseChannelWithUser(in SteamNetworkingIdentity identityRemote, int localChannel)
     {
-#if GNS_SHARP_OPENSOURCE_GNS
-        throw new NotImplementedException("Open source GNS doesn't expose ISteamNetworkingMessages flat API");
-#elif GNS_SHARP_STEAMWORKS_SDK
         return Native.SteamAPI_ISteamNetworkingMessages_CloseChannelWithUser(this.ptr, in identityRemote, localChannel);
-#endif
     }
 
     /// <summary>
@@ -250,11 +231,7 @@ public class ISteamNetworkingMessages
     /// </summary>
     public ESteamNetworkingConnectionState GetSessionConnectionInfo(in SteamNetworkingIdentity identityRemote, out SteamNetConnectionInfo_t connectionInfo, out SteamNetConnectionRealTimeStatus_t quickStatus)
     {
-#if GNS_SHARP_OPENSOURCE_GNS
-        throw new NotImplementedException("Open source GNS doesn't expose ISteamNetworkingMessages flat API");
-#elif GNS_SHARP_STEAMWORKS_SDK
         return Native.SteamAPI_ISteamNetworkingMessages_GetSessionConnectionInfo(this.ptr, in identityRemote, out connectionInfo, out quickStatus);
-#endif
     }
 
     /// <summary>
@@ -274,11 +251,7 @@ public class ISteamNetworkingMessages
     /// </summary>
     public ESteamNetworkingConnectionState GetSessionConnectionInfo(in SteamNetworkingIdentity identityRemote, out SteamNetConnectionRealTimeStatus_t quickStatus)
     {
-#if GNS_SHARP_OPENSOURCE_GNS
-        throw new NotImplementedException("Open source GNS doesn't expose ISteamNetworkingMessages flat API");
-#elif GNS_SHARP_STEAMWORKS_SDK
         return Native.SteamAPI_ISteamNetworkingMessages_GetSessionConnectionInfo(this.ptr, in identityRemote, IntPtr.Zero, out quickStatus);
-#endif
     }
 
     /// <summary>
@@ -298,11 +271,7 @@ public class ISteamNetworkingMessages
     /// </summary>
     public ESteamNetworkingConnectionState GetSessionConnectionInfo(in SteamNetworkingIdentity identityRemote, out SteamNetConnectionInfo_t connectionInfo)
     {
-#if GNS_SHARP_OPENSOURCE_GNS
-        throw new NotImplementedException("Open source GNS doesn't expose ISteamNetworkingMessages flat API");
-#elif GNS_SHARP_STEAMWORKS_SDK
         return Native.SteamAPI_ISteamNetworkingMessages_GetSessionConnectionInfo(this.ptr, in identityRemote, out connectionInfo, IntPtr.Zero);
-#endif
     }
 
     /// <summary>
@@ -322,11 +291,7 @@ public class ISteamNetworkingMessages
     /// </summary>
     public ESteamNetworkingConnectionState GetSessionConnectionInfo(in SteamNetworkingIdentity identityRemote)
     {
-#if GNS_SHARP_OPENSOURCE_GNS
-        throw new NotImplementedException("Open source GNS doesn't expose ISteamNetworkingMessages flat API");
-#elif GNS_SHARP_STEAMWORKS_SDK
         return Native.SteamAPI_ISteamNetworkingMessages_GetSessionConnectionInfo(this.ptr, in identityRemote, IntPtr.Zero, IntPtr.Zero);
-#endif
     }
 
 #if GNS_SHARP_STEAMWORKS_SDK

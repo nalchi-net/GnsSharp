@@ -40,9 +40,9 @@ public static class GnsSharpCore
         {
             ISteamNetworkingSockets.GameServer = new(isGameServer);
             ISteamNetworkingUtils.GameServer = new();
+            ISteamNetworkingMessages.GameServer = new(isGameServer);
 
 #if GNS_SHARP_STEAMWORKS_SDK
-            ISteamNetworkingMessages.GameServer = new(isGameServer);
             ISteamUtils.GameServer = new(isGameServer);
 #endif
         }
@@ -50,9 +50,9 @@ public static class GnsSharpCore
         {
             ISteamNetworkingSockets.User = new(isGameServer);
             ISteamNetworkingUtils.User = new();
+            ISteamNetworkingMessages.User = new(isGameServer);
 
 #if GNS_SHARP_STEAMWORKS_SDK
-            ISteamNetworkingMessages.User = new(isGameServer);
             ISteamMatchmaking.User = new();
             ISteamFriends.User = new();
             ISteamUser.User = new();
