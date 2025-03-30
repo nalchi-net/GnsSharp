@@ -77,14 +77,16 @@ public struct SteamNetworkingMessage_t
 
     /// <summary>
     /// <para>
-    /// Function used to free up m_pData.  This mechanism exists so that<br/>
+    /// Function used to free up <see cref="Data"/>.  This mechanism exists so that<br/>
     /// apps can create messages with buffers allocated from their own<br/>
     /// heap, and pass them into the library.  This function will<br/>
     /// usually be something like:
     /// </para>
     ///
     /// <para>
+    /// <code>
     /// free( pMsg->m_pData );
+    /// </code>
     /// </para>
     /// </summary>
     public IntPtr FreeDataFuncPtr;
@@ -92,19 +94,19 @@ public struct SteamNetworkingMessage_t
     /// <summary>
     /// Function to used to decrement the internal reference count and, if<br/>
     /// it's zero, release the message.  You should not set this function pointer,<br/>
-    /// or need to access this directly!  Use the Release() function instead!
+    /// or need to access this directly!  Use the <see cref="Release"/> function instead!
     /// </summary>
     public IntPtr ReleaseFuncPtr;
 
     /// <summary>
-    /// When using ISteamNetworkingMessages, the channel number the message was received on<br/>
+    /// When using <see cref="ISteamNetworkingMessages"/>, the channel number the message was received on<br/>
     /// (Not used for messages sent or received on "connections")
     /// </summary>
     public int Channel;
 
     /// <summary>
-    /// Bitmask of k_nSteamNetworkingSend_xxx flags.<br/>
-    /// For received messages, only the k_nSteamNetworkingSend_Reliable bit is valid.<br/>
+    /// Bitmask of <see cref="ESteamNetworkingSendType"/> flags.<br/>
+    /// For received messages, only the <see cref="ESteamNetworkingSendType.Reliable"/> bit is valid.<br/>
     /// For outbound messages, all bits are relevant
     /// </summary>
     public ESteamNetworkingSendType Flags;
@@ -112,7 +114,7 @@ public struct SteamNetworkingMessage_t
     /// <summary>
     /// <para>
     /// Arbitrary user data that you can use when sending messages using<br/>
-    /// ISteamNetworkingUtils::AllocateMessage and ISteamNetworkingSockets::SendMessage.<br/>
+    /// <see cref="ISteamNetworkingUtils.AllocateMessage"/> and <see cref="ISteamNetworkingSockets.SendMessages"/>.<br/>
     /// (The callback you set in m_pfnFreeData might use this field.)
     /// </para>
     ///
@@ -123,7 +125,7 @@ public struct SteamNetworkingMessage_t
     public long UserData;
 
     /// <summary>
-    /// For outbound messages, which lane to use?  See ISteamNetworkingSockets::ConfigureConnectionLanes.<br/>
+    /// For outbound messages, which lane to use?  See <see cref="ISteamNetworkingSockets.ConfigureConnectionLanes"/>.<br/>
     /// For inbound messages, what lane was the message received on?
     /// </summary>
     public ushort IdxLane;
