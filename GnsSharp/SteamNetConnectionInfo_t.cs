@@ -55,7 +55,7 @@ public struct SteamNetConnectionInfo_t
 
     /// <summary>
     /// Basic cause of the connection termination or problem.<br/>
-    /// See ESteamNetConnectionEnd for the values used
+    /// See <see cref="ESteamNetConnectionEnd"/> for the values used
     /// </summary>
     public int EndReason;
 
@@ -64,9 +64,9 @@ public struct SteamNetConnectionInfo_t
     private Array128<byte> connectionDescription;
 
     /// <summary>
-    /// Misc flags.  Bitmask of k_nSteamNetworkConnectionInfoFlags_Xxxx
+    /// Misc flags.  Bitmask of <see cref="ESteamNetworkConnectionInfoFlags"/>
     /// </summary>
-    public int Flags;
+    public ESteamNetworkConnectionInfoFlags Flags;
 
     /// <summary>
     /// Internal stuff, room to change API easily

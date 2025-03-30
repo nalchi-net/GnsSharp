@@ -24,11 +24,6 @@ public enum ESteamNetworkingSendType : int
     /// happening on the connection, the packet will be batched until the connection<br/>
     /// is open again.
     /// </para>
-    ///
-    /// <para>
-    /// Migration note: This is not exactly the same as k_EP2PSendUnreliable!  You<br/>
-    /// probably want k_ESteamNetworkingSendType_UnreliableNoNagle
-    /// </para>
     /// </summary>
     Unreliable = 0,
 
@@ -40,7 +35,7 @@ public enum ESteamNetworkingSendType : int
     /// sent soon after you send this, which can be grouped together.  Any time there<br/>
     /// is enough buffered data to fill a packet, the packets will be pushed out immediately,<br/>
     /// but partially-full packets not be sent until the Nagle timer expires.  See<br/>
-    /// ISteamNetworkingSockets::FlushMessagesOnConnection, ISteamNetworkingMessages::FlushMessagesToUser
+    /// <see cref="ISteamNetworkingSockets.FlushMessagesOnConnection"/>, ISteamNetworkingMessages::FlushMessagesToUser
     /// </para>
     ///
     /// <para>
@@ -58,7 +53,7 @@ public enum ESteamNetworkingSendType : int
     /// <summary>
     /// Send a message unreliably, bypassing Nagle's algorithm for this message and any messages<br/>
     /// currently pending on the Nagle timer.  This is equivalent to using k_ESteamNetworkingSend_Unreliable<br/>
-    /// and then immediately flushing the messages using ISteamNetworkingSockets::FlushMessagesOnConnection<br/>
+    /// and then immediately flushing the messages using <see cref="ISteamNetworkingSockets.FlushMessagesOnConnection"/><br/>
     /// or ISteamNetworkingMessages::FlushMessagesToUser.  (But using this flag is more efficient since you<br/>
     /// only make one API call.)
     /// </summary>
@@ -87,38 +82,28 @@ public enum ESteamNetworkingSendType : int
     /// </para>
     ///
     /// <para>
-    /// If a message is dropped for these reasons, k_EResultIgnored will be returned.
+    /// If a message is dropped for these reasons, <see cref="EResult.Ignored"/> will be returned.
     /// </para>
     /// </summary>
     UnreliableNoDelay = Unreliable | NoDelay | NoNagle,
 
     /// <summary>
     /// <para>
-    /// Reliable message send. Can send up to k_cbMaxSteamNetworkingSocketsMessageSizeSend bytes in a single message.<br/>
+    /// Reliable message send. Can send up to <see cref="ISteamNetworkingSockets.MaxMessageSizeSend"/> bytes in a single message.<br/>
     /// Does fragmentation/re-assembly of messages under the hood, as well as a sliding window for<br/>
     /// efficient sends of large chunks of data.
     /// </para>
     ///
     /// <para>
-    /// The Nagle algorithm is used.  See notes on k_ESteamNetworkingSendType_Unreliable for more details.<br/>
-    /// See k_ESteamNetworkingSendType_ReliableNoNagle, ISteamNetworkingSockets::FlushMessagesOnConnection,<br/>
+    /// The Nagle algorithm is used.  See notes on <see cref="Unreliable"/> for more details.<br/>
+    /// See <see cref="ReliableNoNagle"/>, <see cref="ISteamNetworkingSockets.FlushMessagesOnConnection"/>,<br/>
     /// ISteamNetworkingMessages::FlushMessagesToUser
-    /// </para>
-    ///
-    /// <para>
-    /// Migration note: This is NOT the same as k_EP2PSendReliable, it's more like k_EP2PSendReliableWithBuffering
     /// </para>
     /// </summary>
     Reliable = 8,
 
     /// <summary>
-    /// <para>
     /// Send a message reliably, but bypass Nagle's algorithm.
-    /// </para>
-    ///
-    /// <para>
-    /// Migration note: This is equivalent to k_EP2PSendReliable
-    /// </para>
     /// </summary>
     ReliableNoNagle = Reliable | NoNagle,
 
@@ -145,25 +130,25 @@ public enum ESteamNetworkingSendType : int
 
     /// <summary>
     /// <para>
-    /// When sending a message using ISteamNetworkingMessages, automatically re-establish<br/>
-    /// a broken session, without returning k_EResultNoConnection.  Without this flag,<br/>
+    /// When sending a message using <see cref="ISteamNetworkingMessages"/>, automatically re-establish<br/>
+    /// a broken session, without returning <see cref="EResult.NoConnection"/>.  Without this flag,<br/>
     /// if you attempt to send a message, and the session was proactively closed by the<br/>
     /// peer, or an error occurred that disrupted communications, then you must close the<br/>
-    /// session using ISteamNetworkingMessages::CloseSessionWithUser before attempting to<br/>
+    /// session using <see cref="ISteamNetworkingMessages.CloseSessionWithUser"/> before attempting to<br/>
     /// send another message.  (Or you can simply add this flag and retry.)  In this way,<br/>
     /// the disruption cannot go unnoticed, and a more clear order of events can be<br/>
     /// ascertained. This is especially important when reliable messages are used, since<br/>
     /// if the connection is disrupted, some of those messages will not have been delivered,<br/>
     /// and it is in general not possible to know which.  Although a<br/>
-    /// SteamNetworkingMessagesSessionFailed_t callback will be posted when an error occurs<br/>
+    /// <see cref="SteamNetworkingMessagesSessionFailed_t"/> callback will be posted when an error occurs<br/>
     /// to notify you that a failure has happened, callbacks are asynchronous, so it is not<br/>
     /// possible to tell exactly when it happened.  And because the primary purpose of<br/>
-    /// ISteamNetworkingMessages is to be like UDP, there is no notification when a peer closes<br/>
+    /// <see cref="ISteamNetworkingMessages"/> is to be like UDP, there is no notification when a peer closes<br/>
     /// the session.
     /// </para>
     ///
     /// <para>
-    /// If you are not using any reliable messages (e.g. you are using ISteamNetworkingMessages<br/>
+    /// If you are not using any reliable messages (e.g. you are using <see cref="ISteamNetworkingMessages"/><br/>
     /// exactly as a transport replacement for UDP-style datagrams only), you may not need to<br/>
     /// know when an underlying connection fails, and so you may not need this notification.
     /// </para>

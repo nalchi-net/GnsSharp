@@ -13,6 +13,11 @@ using System.Runtime.InteropServices;
 [StructLayout(LayoutKind.Sequential)]
 public struct SteamNetworkingPOPID(uint id) : IEquatable<SteamNetworkingPOPID>, IComparable<SteamNetworkingPOPID>
 {
+    /// <summary>
+    /// The POPID "dev" is used in non-production environments for testing.
+    /// </summary>
+    public static readonly SteamNetworkingPOPID Dev = 6579574u;
+
     public uint Id = id;
 
     public static implicit operator SteamNetworkingPOPID(uint id) => new(id);

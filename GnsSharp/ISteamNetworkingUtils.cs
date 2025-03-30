@@ -10,11 +10,20 @@ using System.Runtime.InteropServices;
 using System.Text;
 
 /// <summary>
-/// Misc networking utilities for checking the local networking environment
-/// and estimating pings.
+/// Misc networking utilities for checking the local networking environment and estimating pings.
 /// </summary>
 public class ISteamNetworkingUtils
 {
+    /// <summary>
+    /// Special values that are returned by some functions that return a ping.
+    /// </summary>
+    public const int PingFailed = -1;
+
+    /// <summary>
+    /// Special values that are returned by some functions that return a ping.
+    /// </summary>
+    public const int PingUnknown = -2;
+
     /// <summary>
     /// Max possible length of a ping location, in string format.  This is<br/>
     /// an extremely conservative worst case value which leaves room for future<br/>
@@ -22,7 +31,7 @@ public class ISteamNetworkingUtils
     /// If you are storing many of these, you will very likely benefit from<br/>
     /// using dynamic memory.
     /// </summary>
-    private const int MaxSteamNetworkingPingLocationString = 1024;
+    private const int MaxPingLocationString = 1024;
 
     private IntPtr ptr = IntPtr.Zero;
 
@@ -60,23 +69,23 @@ public class ISteamNetworkingUtils
     /// <summary>
     /// <para>
     /// Allocate and initialize a message object.  Usually the reason<br/>
-    /// you call this is to pass it to ISteamNetworkingSockets::SendMessages.<br/>
+    /// you call this is to pass it to <see cref="ISteamNetworkingSockets.SendMessages"/>.<br/>
     /// The returned object will have all of the relevant fields cleared to zero.
     /// </para>
     ///
     /// <para>
     /// Optionally you can also request that this system allocate space to<br/>
-    /// hold the payload itself.  If cbAllocateBuffer is nonzero, the system<br/>
-    /// will allocate memory to hold a payload of at least cbAllocateBuffer bytes.<br/>
-    /// m_pData will point to the allocated buffer, m_cbSize will be set to the<br/>
-    /// size, and m_pfnFreeData will be set to the proper function to free up<br/>
+    /// hold the payload itself.  If <paramref name="allocateBuffer"/> is nonzero, the system<br/>
+    /// will allocate memory to hold a payload of at least <paramref name="allocateBuffer"/> bytes.<br/>
+    /// <see cref="SteamNetworkingMessage_t.Data"/> will point to the allocated buffer, <see cref="SteamNetworkingMessage_t.Size"/> will be set to the<br/>
+    /// size, and <see cref="SteamNetworkingMessage_t.FreeDataFuncPtr"/> will be set to the proper function to free up<br/>
     /// the buffer.
     /// </para>
     ///
     /// <para>
-    /// If cbAllocateBuffer=0, then no buffer is allocated.  m_pData will be NULL,<br/>
-    /// m_cbSize will be zero, and m_pfnFreeData will be NULL.  You will need to<br/>
-    /// set each of these.
+    /// If <paramref name="allocateBuffer"/>=0, then no buffer is allocated.  <see cref="SteamNetworkingMessage_t.Data"/> will be <see cref="IntPtr.Zero"/>,<br/>
+    /// <see cref="SteamNetworkingMessage_t.Size"/> will be zero, and <see cref="SteamNetworkingMessage_t.FreeDataFuncPtr"/> will be <see cref="IntPtr.Zero"/>.<br/>
+    /// You will need to set each of these.
     /// </para>
     /// </summary>
     public IntPtr AllocateMessage(int allocateBuffer)
@@ -106,7 +115,7 @@ public class ISteamNetworkingUtils
     /// </para>
     ///
     /// <para>
-    /// Use GetRelayNetworkStatus or listen for SteamRelayNetworkStatus_t<br/>
+    /// Use <see cref="GetRelayNetworkStatus"/> or listen for <see cref="SteamRelayNetworkStatusChanged"/><br/>
     /// callbacks to know when initialization has completed.<br/>
     /// Typically initialization completes in a few seconds.
     /// </para>
@@ -129,13 +138,13 @@ public class ISteamNetworkingUtils
     /// </para>
     ///
     /// <para>
-    /// SteamRelayNetworkStatus_t is also a callback.  It will be triggered on<br/>
+    /// <see cref="SteamRelayNetworkStatus_t"/> is also a callback.  It will be triggered on<br/>
     /// both the user and gameserver interfaces any time the status changes, or<br/>
     /// ping measurement starts or stops.
     /// </para>
     ///
     /// <para>
-    /// SteamRelayNetworkStatus_t::m_eAvail is returned.  If you want<br/>
+    /// <see cref="SteamRelayNetworkStatus_t.Avail"/> is returned.  If you want<br/>
     /// more details, you can pass a non-NULL value.
     /// </para>
     /// </summary>
@@ -150,13 +159,13 @@ public class ISteamNetworkingUtils
     /// </para>
     ///
     /// <para>
-    /// SteamRelayNetworkStatus_t is also a callback.  It will be triggered on<br/>
+    /// <see cref="SteamRelayNetworkStatus_t"/> is also a callback.  It will be triggered on<br/>
     /// both the user and gameserver interfaces any time the status changes, or<br/>
     /// ping measurement starts or stops.
     /// </para>
     ///
     /// <para>
-    /// SteamRelayNetworkStatus_t::m_eAvail is returned.  If you want<br/>
+    /// <see cref="SteamRelayNetworkStatus_t.Avail"/> is returned.  If you want<br/>
     /// more details, you can pass a non-NULL value.
     /// </para>
     /// </summary>
@@ -185,12 +194,12 @@ public class ISteamNetworkingUtils
     /// <summary>
     /// <para>
     /// Return location info for the current host.  Returns the approximate<br/>
-    /// age of the data, in seconds, or -1 if no data is available.
+    /// age of the data, in seconds, or <c>-1</c> if no data is available.
     /// </para>
     ///
     /// <para>
     /// It takes a few seconds to initialize access to the relay network.  If<br/>
-    /// you call this very soon after calling InitRelayNetworkAccess,<br/>
+    /// you call this very soon after calling <see cref="InitRelayNetworkAccess"/>,<br/>
     /// the data may not be available yet.
     /// </para>
     ///
@@ -227,9 +236,9 @@ public class ISteamNetworkingUtils
     ///
     /// <para>
     /// In a few cases we might not able to estimate the route.  In this case<br/>
-    /// a negative value is returned.  k_nSteamNetworkingPing_Failed means<br/>
+    /// a negative value is returned.  <see cref="PingFailed"/> means<br/>
     /// the reason was because of some networking difficulty.  (Failure to<br/>
-    /// ping, etc)  k_nSteamNetworkingPing_Unknown is returned if we cannot<br/>
+    /// ping, etc)  <see cref="PingUnknown"/> is returned if we cannot<br/>
     /// currently answer the question for some other reason.
     /// </para>
     ///
@@ -245,14 +254,14 @@ public class ISteamNetworkingUtils
 
     /// <summary>
     /// <para>
-    /// Same as EstimatePingTime, but assumes that one location is the local host.<br/>
+    /// Same as <see cref="EstimatePingTimeBetweenTwoLocations"/>, but assumes that one location is the local host.<br/>
     /// This is a bit faster, especially if you need to calculate a bunch of<br/>
     /// these in a loop to find the fastest one.
     /// </para>
     ///
     /// <para>
     /// In rare cases this might return a slightly different estimate than combining<br/>
-    /// GetLocalPingLocation with EstimatePingTimeBetweenTwoLocations.  That's because<br/>
+    /// <see cref="GetLocalPingLocation"/> with <see cref="EstimatePingTimeBetweenTwoLocations"/>.  That's because<br/>
     /// this function uses a slightly more complete set of information about what<br/>
     /// route would be taken.
     /// </para>
@@ -266,20 +275,22 @@ public class ISteamNetworkingUtils
     /// Convert a ping location into a text format suitable for sending over the wire.<br/>
     /// The format is a compact and human readable.  However, it is subject to change<br/>
     /// so please do not parse it yourself.  Your buffer must be at least<br/>
-    /// k_cchMaxSteamNetworkingPingLocationString bytes.
+    /// <see cref="MaxPingLocationString"/> bytes.
     /// </summary>
     public string ConvertPingLocationToString(in SteamNetworkPingLocation_t location)
     {
-        Span<byte> raw = stackalloc byte[MaxSteamNetworkingPingLocationString];
+        Span<byte> raw = stackalloc byte[MaxPingLocationString];
         Native.SteamAPI_ISteamNetworkingUtils_ConvertPingLocationToString(this.ptr, in location, raw, raw.Length);
 
         return Utf8StringHelper.NullTerminatedSpanToString(raw);
     }
 
     /// <summary>
-    /// Parse back SteamNetworkPingLocation_t string.  Returns false if we couldn't understand<br/>
-    /// the string.
+    /// Parse back <see cref="SteamNetworkPingLocation_t"/> string.
     /// </summary>
+    /// <returns>
+    /// <see cref="bool"/> <c>false</c> if we couldn't understand the string.
+    /// </returns>
     public bool ParsePingLocationString(string str, out SteamNetworkPingLocation_t result)
     {
         return Native.SteamAPI_ISteamNetworkingUtils_ParsePingLocationString(this.ptr, str, out result);
@@ -301,20 +312,22 @@ public class ISteamNetworkingUtils
     /// </para>
     ///
     /// <para>
-    /// Returns true if sufficiently recent data is already available.
-    /// </para>
-    ///
-    /// <para>
-    /// Returns false if sufficiently recent data is not available.  In this<br/>
-    /// case, ping measurement is initiated, if it is not already active.<br/>
-    /// (You cannot restart a measurement already in progress.)
-    /// </para>
-    ///
-    /// <para>
-    /// You can use GetRelayNetworkStatus or listen for SteamRelayNetworkStatus_t<br/>
+    /// You can use <see cref="GetRelayNetworkStatus"/> or listen for <see cref="SteamRelayNetworkStatusChanged"/><br/>
     /// to know when ping measurement completes.
     /// </para>
     /// </summary>
+    ///
+    /// <returns>
+    /// <para>
+    /// <see cref="bool"/> <c>true</c> if sufficiently recent data is already available.
+    /// </para>
+    ///
+    /// <para>
+    /// <c>false</c> if sufficiently recent data is not available.  In this<br/>
+    /// case, ping measurement is initiated, if it is not already active.<br/>
+    /// (You cannot restart a measurement already in progress.)
+    /// </para>
+    /// </returns>
     public bool CheckPingDataUpToDate(float maxAgeSeconds)
     {
         return Native.SteamAPI_ISteamNetworkingUtils_CheckPingDataUpToDate(this.ptr, maxAgeSeconds);
@@ -362,7 +375,8 @@ public class ISteamNetworkingUtils
 
     /// <summary>
     /// <para>
-    /// Fetch current timestamp.  This timer has the following properties:
+    /// Fetch current timestamp.  This is a general purpose high resolution local timer.<br/>
+    /// It has the following properties:
     /// </para>
     ///
     /// <para>
@@ -394,7 +408,10 @@ public class ISteamNetworkingUtils
 
     /// <summary>
     /// <para>
-    /// Set a function to receive network-related information that is useful for debugging.<br/>
+    /// Set a function to receive network-related information that is useful for debugging.
+    /// </para>
+    ///
+    /// <para>
     /// This can be very useful during development, but it can also be useful for troubleshooting<br/>
     /// problems with tech savvy end users.  If you have a console or other log that customers<br/>
     /// can examine, these log messages can often be helpful to troubleshoot network issues.<br/>
@@ -410,23 +427,23 @@ public class ISteamNetworkingUtils
     /// <para>
     /// The value here controls the detail level for most messages.  You can control the<br/>
     /// detail level for various subsystems (perhaps only for certain connections) by<br/>
-    /// adjusting the configuration values k_ESteamNetworkingConfig_LogLevel_Xxxxx.
+    /// adjusting the configuration values <see cref="ESteamNetworkingConfigValue"/>.LogLevel_Xxxxx.
     /// </para>
     ///
     /// <para>
-    /// Except when debugging, you should only use k_ESteamNetworkingSocketsDebugOutputType_Msg<br/>
-    /// or k_ESteamNetworkingSocketsDebugOutputType_Warning.  For best performance, do NOT<br/>
+    /// Except when debugging, you should only use <see cref="ESteamNetworkingSocketsDebugOutputType.Msg"/><br/>
+    /// or <see cref="ESteamNetworkingSocketsDebugOutputType.Warning"/>.  For best performance, do NOT<br/>
     /// request a high detail level and then filter out messages in your callback.  This incurs<br/>
     /// all of the expense of formatting the messages, which are then discarded.  Setting a high<br/>
     /// priority value (low numeric value) here allows the library to avoid doing this work.
     /// </para>
+    /// </summary>
     ///
-    /// <para>
+    /// <remarks>
     /// IMPORTANT: This may be called from a service thread, while we own a mutex, etc.<br/>
     /// Your output function must be threadsafe and fast!  Do not make any other<br/>
     /// Steamworks calls from within the handler.
-    /// </para>
-    /// </summary>
+    /// </remarks>
     public unsafe void SetDebugOutputFunction(ESteamNetworkingSocketsDebugOutputType detailLevel, FPtrSteamNetworkingSocketsDebugOutput func)
     {
         Native.SteamAPI_ISteamNetworkingUtils_SetDebugOutputFunction(this.ptr, detailLevel, func);
@@ -434,7 +451,10 @@ public class ISteamNetworkingUtils
 
     /// <summary>
     /// <para>
-    /// Set a function to receive network-related information that is useful for debugging.<br/>
+    /// Set a function to receive network-related information that is useful for debugging.
+    /// </para>
+    ///
+    /// <para>
     /// This can be very useful during development, but it can also be useful for troubleshooting<br/>
     /// problems with tech savvy end users.  If you have a console or other log that customers<br/>
     /// can examine, these log messages can often be helpful to troubleshoot network issues.<br/>
@@ -450,23 +470,23 @@ public class ISteamNetworkingUtils
     /// <para>
     /// The value here controls the detail level for most messages.  You can control the<br/>
     /// detail level for various subsystems (perhaps only for certain connections) by<br/>
-    /// adjusting the configuration values k_ESteamNetworkingConfig_LogLevel_Xxxxx.
+    /// adjusting the configuration values <see cref="ESteamNetworkingConfigValue"/>.LogLevel_Xxxxx.
     /// </para>
     ///
     /// <para>
-    /// Except when debugging, you should only use k_ESteamNetworkingSocketsDebugOutputType_Msg<br/>
-    /// or k_ESteamNetworkingSocketsDebugOutputType_Warning.  For best performance, do NOT<br/>
+    /// Except when debugging, you should only use <see cref="ESteamNetworkingSocketsDebugOutputType.Msg"/><br/>
+    /// or <see cref="ESteamNetworkingSocketsDebugOutputType.Warning"/>.  For best performance, do NOT<br/>
     /// request a high detail level and then filter out messages in your callback.  This incurs<br/>
     /// all of the expense of formatting the messages, which are then discarded.  Setting a high<br/>
     /// priority value (low numeric value) here allows the library to avoid doing this work.
     /// </para>
+    /// </summary>
     ///
-    /// <para>
+    /// <remarks>
     /// IMPORTANT: This may be called from a service thread, while we own a mutex, etc.<br/>
     /// Your output function must be threadsafe and fast!  Do not make any other<br/>
     /// Steamworks calls from within the handler.
-    /// </para>
-    /// </summary>
+    /// </remarks>
     public void SetDebugOutputFunction(ESteamNetworkingSocketsDebugOutputType detailLevel, FSteamNetworkingSocketsDebugOutput func)
     {
         Native.SteamAPI_ISteamNetworkingUtils_SetDebugOutputFunction(this.ptr, detailLevel, func);
@@ -477,7 +497,7 @@ public class ISteamNetworkingUtils
     // Useful for interfacing with code that assumes peers are identified using an IPv4 address
 
     /// <summary>
-    /// Return true if an IPv4 address is one that might be used as a "fake" one.<br/>
+    /// Return <c>true</c> if an IPv4 address is one that might be used as a "fake" one.<br/>
     /// This function is fast; it just does some logical tests on the IP and does<br/>
     /// not need to do any lookup operations.
     /// </summary>
@@ -500,11 +520,6 @@ public class ISteamNetworkingUtils
     /// Get the real identity associated with a given FakeIP.
     /// </para>
     ///
-    /// <para>
-    /// On failure, returns:<br/>
-    /// - k_EResultInvalidParam: the IP is not a FakeIP.<br/>
-    /// - k_EResultNoMatch: we don't recognize that FakeIP and don't know the corresponding identity.
-    /// </para>
     ///
     /// <para>
     /// FakeIP's used by active connections, or the FakeIPs assigned to local identities,<br/>
@@ -515,6 +530,12 @@ public class ISteamNetworkingUtils
     /// indefinitely.
     /// </para>
     /// </summary>
+    ///
+    /// <returns>
+    /// On failure, returns:<br/>
+    /// - <see cref="EResult.InvalidParam"/>: the IP is not a FakeIP.<br/>
+    /// - <see cref="EResult.NoMatch"/>: we don't recognize that FakeIP and don't know the corresponding identity.
+    /// </returns>
     public EResult GetRealIdentityForFakeIP(in SteamNetworkingIPAddr fakeIP, ref SteamNetworkingIdentity outRealIdentity)
     {
 #if GNS_SHARP_OPENSOURCE_GNS
@@ -528,7 +549,7 @@ public class ISteamNetworkingUtils
     // Set and get configuration values, see ESteamNetworkingConfigValue for individual descriptions.
 
     /// <summary>
-    /// Shortcuts for common cases.
+    /// Set configuration value shortcut for common cases.
     /// </summary>
     public bool SetGlobalConfigValueInt32(ESteamNetworkingConfigValue value, int val)
     {
@@ -536,7 +557,7 @@ public class ISteamNetworkingUtils
     }
 
     /// <summary>
-    /// Shortcuts for common cases.
+    /// Set configuration value shortcut for common cases.
     /// </summary>
     public bool SetGlobalConfigValueFloat(ESteamNetworkingConfigValue value, float val)
     {
@@ -544,7 +565,7 @@ public class ISteamNetworkingUtils
     }
 
     /// <summary>
-    /// Shortcuts for common cases.
+    /// Set configuration value shortcut for common cases.
     /// </summary>
     public bool SetGlobalConfigValueString(ESteamNetworkingConfigValue value, string val)
     {
@@ -552,7 +573,7 @@ public class ISteamNetworkingUtils
     }
 
     /// <summary>
-    /// Shortcuts for common cases.
+    /// Set configuration value shortcut for common cases.
     /// </summary>
     public bool SetGlobalConfigValuePtr(ESteamNetworkingConfigValue value, IntPtr val)
     {
@@ -560,7 +581,7 @@ public class ISteamNetworkingUtils
     }
 
     /// <summary>
-    /// Shortcuts for common cases.
+    /// Set configuration value shortcut for common cases.
     /// </summary>
     public bool SetConnectionConfigValueInt32(HSteamNetConnection conn, ESteamNetworkingConfigValue value, int val)
     {
@@ -568,7 +589,7 @@ public class ISteamNetworkingUtils
     }
 
     /// <summary>
-    /// Shortcuts for common cases.
+    /// Set configuration value shortcut for common cases.
     /// </summary>
     public bool SetConnectionConfigValueFloat(HSteamNetConnection conn, ESteamNetworkingConfigValue value, float val)
     {
@@ -576,7 +597,7 @@ public class ISteamNetworkingUtils
     }
 
     /// <summary>
-    /// Shortcuts for common cases.
+    /// Set configuration value shortcut for common cases.
     /// </summary>
     public bool SetConnectionConfigValueString(HSteamNetConnection conn, ESteamNetworkingConfigValue value, string val)
     {
@@ -587,7 +608,7 @@ public class ISteamNetworkingUtils
     /// Set global callbacks.  If you do not want to use Steam's callback dispatch mechanism and you<br/>
     /// want to use the same callback on all (or most) listen sockets and connections, then<br/>
     /// simply install these callbacks first thing, and you are good to go.<br/>
-    /// See ISteamNetworkingSockets::RunCallbacks
+    /// See <see cref="ISteamNetworkingSockets.RunCallbacks"/>
     /// </summary>
     public unsafe bool SetGlobalCallback_SteamNetConnectionStatusChanged(FnPtrSteamNetConnectionStatusChanged callback)
     {
@@ -598,7 +619,7 @@ public class ISteamNetworkingUtils
     /// Set global callbacks.  If you do not want to use Steam's callback dispatch mechanism and you<br/>
     /// want to use the same callback on all (or most) listen sockets and connections, then<br/>
     /// simply install these callbacks first thing, and you are good to go.<br/>
-    /// See ISteamNetworkingSockets::RunCallbacks
+    /// See <see cref="ISteamNetworkingSockets.RunCallbacks"/>
     /// </summary>
     public bool SetGlobalCallback_SteamNetConnectionStatusChanged(FnSteamNetConnectionStatusChanged callback)
     {
@@ -609,7 +630,7 @@ public class ISteamNetworkingUtils
     /// Set global callbacks.  If you do not want to use Steam's callback dispatch mechanism and you<br/>
     /// want to use the same callback on all (or most) listen sockets and connections, then<br/>
     /// simply install these callbacks first thing, and you are good to go.<br/>
-    /// See ISteamNetworkingSockets::RunCallbacks
+    /// See <see cref="ISteamNetworkingSockets.RunCallbacks"/>
     /// </summary>
     public unsafe bool SetGlobalCallback_SteamNetAuthenticationStatusChanged(FnPtrSteamNetAuthenticationStatusChanged callback)
     {
@@ -620,7 +641,7 @@ public class ISteamNetworkingUtils
     /// Set global callbacks.  If you do not want to use Steam's callback dispatch mechanism and you<br/>
     /// want to use the same callback on all (or most) listen sockets and connections, then<br/>
     /// simply install these callbacks first thing, and you are good to go.<br/>
-    /// See ISteamNetworkingSockets::RunCallbacks
+    /// See <see cref="ISteamNetworkingSockets.RunCallbacks"/>
     /// </summary>
     public bool SetGlobalCallback_SteamNetAuthenticationStatusChanged(FnSteamNetAuthenticationStatusChanged callback)
     {
@@ -631,7 +652,7 @@ public class ISteamNetworkingUtils
     /// Set global callbacks.  If you do not want to use Steam's callback dispatch mechanism and you<br/>
     /// want to use the same callback on all (or most) listen sockets and connections, then<br/>
     /// simply install these callbacks first thing, and you are good to go.<br/>
-    /// See ISteamNetworkingSockets::RunCallbacks
+    /// See <see cref="ISteamNetworkingSockets.RunCallbacks"/>
     /// </summary>
     public unsafe bool SetGlobalCallback_SteamRelayNetworkStatusChanged(FnPtrSteamRelayNetworkStatusChanged callback)
     {
@@ -642,7 +663,7 @@ public class ISteamNetworkingUtils
     /// Set global callbacks.  If you do not want to use Steam's callback dispatch mechanism and you<br/>
     /// want to use the same callback on all (or most) listen sockets and connections, then<br/>
     /// simply install these callbacks first thing, and you are good to go.<br/>
-    /// See ISteamNetworkingSockets::RunCallbacks
+    /// See <see cref="ISteamNetworkingSockets.RunCallbacks"/>
     /// </summary>
     public bool SetGlobalCallback_SteamRelayNetworkStatusChanged(FnSteamRelayNetworkStatusChanged callback)
     {
@@ -653,7 +674,7 @@ public class ISteamNetworkingUtils
     /// Set global callbacks.  If you do not want to use Steam's callback dispatch mechanism and you<br/>
     /// want to use the same callback on all (or most) listen sockets and connections, then<br/>
     /// simply install these callbacks first thing, and you are good to go.<br/>
-    /// See ISteamNetworkingSockets::RunCallbacks
+    /// See <see cref="ISteamNetworkingSockets.RunCallbacks"/>
     /// </summary>
     public unsafe bool SetGlobalCallback_FakeIPResult(FnPtrSteamNetworkingFakeIPResult callback)
     {
@@ -668,7 +689,7 @@ public class ISteamNetworkingUtils
     /// Set global callbacks.  If you do not want to use Steam's callback dispatch mechanism and you<br/>
     /// want to use the same callback on all (or most) listen sockets and connections, then<br/>
     /// simply install these callbacks first thing, and you are good to go.<br/>
-    /// See ISteamNetworkingSockets::RunCallbacks
+    /// See <see cref="ISteamNetworkingSockets.RunCallbacks"/>
     /// </summary>
     public bool SetGlobalCallback_FakeIPResult(FnSteamNetworkingFakeIPResult callback)
     {
@@ -683,7 +704,7 @@ public class ISteamNetworkingUtils
     /// Set global callbacks.  If you do not want to use Steam's callback dispatch mechanism and you<br/>
     /// want to use the same callback on all (or most) listen sockets and connections, then<br/>
     /// simply install these callbacks first thing, and you are good to go.<br/>
-    /// See ISteamNetworkingSockets::RunCallbacks
+    /// See <see cref="ISteamNetworkingSockets.RunCallbacks"/>
     /// </summary>
     public unsafe bool SetGlobalCallback_MessagesSessionRequest(FnPtrSteamNetworkingMessagesSessionRequest callback)
     {
@@ -698,7 +719,7 @@ public class ISteamNetworkingUtils
     /// Set global callbacks.  If you do not want to use Steam's callback dispatch mechanism and you<br/>
     /// want to use the same callback on all (or most) listen sockets and connections, then<br/>
     /// simply install these callbacks first thing, and you are good to go.<br/>
-    /// See ISteamNetworkingSockets::RunCallbacks
+    /// See <see cref="ISteamNetworkingSockets.RunCallbacks"/>
     /// </summary>
     public bool SetGlobalCallback_MessagesSessionRequest(FnSteamNetworkingMessagesSessionRequest callback)
     {
@@ -713,7 +734,7 @@ public class ISteamNetworkingUtils
     /// Set global callbacks.  If you do not want to use Steam's callback dispatch mechanism and you<br/>
     /// want to use the same callback on all (or most) listen sockets and connections, then<br/>
     /// simply install these callbacks first thing, and you are good to go.<br/>
-    /// See ISteamNetworkingSockets::RunCallbacks
+    /// See <see cref="ISteamNetworkingSockets.RunCallbacks"/>
     /// </summary>
     public unsafe bool SetGlobalCallback_MessagesSessionFailed(FnPtrSteamNetworkingMessagesSessionFailed callback)
     {
@@ -728,7 +749,7 @@ public class ISteamNetworkingUtils
     /// Set global callbacks.  If you do not want to use Steam's callback dispatch mechanism and you<br/>
     /// want to use the same callback on all (or most) listen sockets and connections, then<br/>
     /// simply install these callbacks first thing, and you are good to go.<br/>
-    /// See ISteamNetworkingSockets::RunCallbacks
+    /// See <see cref="ISteamNetworkingSockets.RunCallbacks"/>
     /// </summary>
     public bool SetGlobalCallback_MessagesSessionFailed(FnSteamNetworkingMessagesSessionFailed callback)
     {
@@ -740,17 +761,19 @@ public class ISteamNetworkingUtils
     }
 
     /// <summary>
-    /// Set a configuration value.<br/>
-    /// - eValue: which value is being set<br/>
-    /// - eScope: Onto what type of object are you applying the setting?<br/>
-    /// - scopeArg: Which object you want to change?  (Ignored for global scope).  E.g. connection handle, listen socket handle, interface pointer, etc.<br/>
-    /// - eDataType: What type of data is in the buffer at pValue?  This must match the type of the variable exactly!<br/>
-    /// - pArg: Value to set it to.  You can pass NULL to remove a non-global setting at this scope,<br/>
-    /// causing the value for that object to use global defaults.  Or at global scope, passing NULL<br/>
-    /// will reset any custom value and restore it to the system default.<br/>
+    /// Set a configuration value.
+    /// </summary>
+    /// <param name="value">which value is being set</param>
+    /// <param name="scopeType">Onto what type of object are you applying the setting?</param>
+    /// <param name="scopeObj">Which object you want to change?  (Ignored for global scope).  E.g. connection handle, listen socket handle, interface pointer, etc.</param>
+    /// <param name="dataType">What type of data is in the buffer at pValue?  This must match the type of the variable exactly!</param>
+    /// <param name="arg">Value to set it to.  You can pass <c>[]</c> to remove a non-global setting at this scope,br/>
+    /// causing the value for that object to use global defaults.  Or at global scope, passing <c>[]</c><br/>
+    /// will reset any custom value and restore it to the system default.<br/></param>
+    /// <remarks>
     /// NOTE: When setting pointers (e.g. callback functions), do not pass the function pointer directly.<br/>
     /// Your argument should be a pointer to a function pointer.
-    /// </summary>
+    /// </remarks>
     public bool SetConfigValue(ESteamNetworkingConfigValue value, ESteamNetworkingConfigScope scopeType, IntPtr scopeObj, ESteamNetworkingConfigDataType dataType, ReadOnlySpan<byte> arg)
     {
         return Native.SteamAPI_ISteamNetworkingUtils_SetConfigValue(this.ptr, value, scopeType, scopeObj, dataType, arg);
@@ -759,7 +782,7 @@ public class ISteamNetworkingUtils
     /// <summary>
     /// Set a configuration value, using a struct to pass the value.<br/>
     /// (This is just a convenience shortcut; see below for the implementation and<br/>
-    /// a little insight into how SteamNetworkingConfigValue_t is used when<br/>
+    /// a little insight into how <see cref="SteamNetworkingConfigValue_t"/> is used when<br/>
     /// setting config options during listen socket and connection creation.)
     /// </summary>
     public bool SetConfigValueStruct(in SteamNetworkingConfigValue_t opt, ESteamNetworkingConfigScope scopeType, IntPtr scopeObj)
@@ -768,27 +791,29 @@ public class ISteamNetworkingUtils
     }
 
     /// <summary>
-    /// Get a configuration value.<br/>
-    /// - eValue: which value to fetch<br/>
-    /// - eScopeType: query setting on what type of object<br/>
-    /// - eScopeArg: the object to query the setting for<br/>
-    /// - pOutDataType: If non-NULL, the data type of the value is returned.<br/>
-    /// - pResult: Where to put the result.  Pass NULL to query the required buffer size.  (k_ESteamNetworkingGetConfigValue_BufferTooSmall will be returned.)<br/>
-    /// - cbResult: IN: the size of your buffer.  OUT: the number of bytes filled in or required.
+    /// Get a configuration value.
     /// </summary>
+    /// <param name="value">which value to fetch</param>
+    /// <param name="scopeType">query setting on what type of object</param>
+    /// <param name="scopeObj">the object to query the setting for</param>
+    /// <param name="outDataType">If non-NULL, the data type of the value is returned.</param>
+    /// <param name="result">Where to put the result.  Pass <c>[]</c> to query the required buffer size.<br/>
+    /// (<see cref="ESteamNetworkingGetConfigValueResult.BufferTooSmall"/> will be returned.)</param>
+    /// <param name="resultSize">IN: the size of your buffer.  OUT: the number of bytes filled in or required.</param>
     public ESteamNetworkingGetConfigValueResult GetConfigValue(ESteamNetworkingConfigValue value, ESteamNetworkingConfigScope scopeType, IntPtr scopeObj, out ESteamNetworkingConfigDataType outDataType, Span<byte> result, ref SizeT resultSize)
     {
         return Native.SteamAPI_ISteamNetworkingUtils_GetConfigValue(this.ptr, value, scopeType, scopeObj, out outDataType, result, ref resultSize);
     }
 
     /// <summary>
-    /// Get a configuration value.<br/>
-    /// - eValue: which value to fetch<br/>
-    /// - eScopeType: query setting on what type of object<br/>
-    /// - eScopeArg: the object to query the setting for<br/>
-    /// - pResult: Where to put the result.  Pass NULL to query the required buffer size.  (k_ESteamNetworkingGetConfigValue_BufferTooSmall will be returned.)<br/>
-    /// - cbResult: IN: the size of your buffer.  OUT: the number of bytes filled in or required.
+    /// Get a configuration value.
     /// </summary>
+    /// <param name="value">which value to fetch</param>
+    /// <param name="scopeType">query setting on what type of object</param>
+    /// <param name="scopeObj">the object to query the setting for</param>
+    /// <param name="result">Where to put the result.  Pass <c>[]</c> to query the required buffer size.<br/>
+    /// (<see cref="ESteamNetworkingGetConfigValueResult.BufferTooSmall"/> will be returned.)</param>
+    /// <param name="resultSize">IN: the size of your buffer.  OUT: the number of bytes filled in or required.</param>
     public ESteamNetworkingGetConfigValueResult GetConfigValue(ESteamNetworkingConfigValue value, ESteamNetworkingConfigScope scopeType, IntPtr scopeObj, Span<byte> result, ref SizeT resultSize)
     {
         return Native.SteamAPI_ISteamNetworkingUtils_GetConfigValue(this.ptr, value, scopeType, scopeObj, IntPtr.Zero, result, ref resultSize);
@@ -796,7 +821,7 @@ public class ISteamNetworkingUtils
 
     /// <summary>
     /// Get info about a configuration value.  Returns the name of the value,<br/>
-    /// or NULL if the value doesn't exist.  Other output parameters can be NULL<br/>
+    /// or <c>null</c> if the value doesn't exist.  Other output parameters can be NULL<br/>
     /// if you do not need them.
     /// </summary>
     public string? GetConfigValueInfo(ESteamNetworkingConfigValue value, out ESteamNetworkingConfigDataType outDataType, out ESteamNetworkingConfigScope outScope)
@@ -814,7 +839,7 @@ public class ISteamNetworkingUtils
 
     /// <summary>
     /// Get info about a configuration value.  Returns the name of the value,<br/>
-    /// or NULL if the value doesn't exist.  Other output parameters can be NULL<br/>
+    /// or <c>null</c> if the value doesn't exist.  Other output parameters can be NULL<br/>
     /// if you do not need them.
     /// </summary>
     public string? GetConfigValueInfo(ESteamNetworkingConfigValue value, out ESteamNetworkingConfigScope outScope)
@@ -832,7 +857,7 @@ public class ISteamNetworkingUtils
 
     /// <summary>
     /// Get info about a configuration value.  Returns the name of the value,<br/>
-    /// or NULL if the value doesn't exist.  Other output parameters can be NULL<br/>
+    /// or <c>null</c> if the value doesn't exist.  Other output parameters can be NULL<br/>
     /// if you do not need them.
     /// </summary>
     public string? GetConfigValueInfo(ESteamNetworkingConfigValue value, out ESteamNetworkingConfigDataType outDataType)
@@ -850,7 +875,7 @@ public class ISteamNetworkingUtils
 
     /// <summary>
     /// Get info about a configuration value.  Returns the name of the value,<br/>
-    /// or NULL if the value doesn't exist.  Other output parameters can be NULL<br/>
+    /// or <c>null</c> if the value doesn't exist.  Other output parameters can be NULL<br/>
     /// if you do not need them.
     /// </summary>
     public string? GetConfigValueInfo(ESteamNetworkingConfigValue value)
@@ -870,12 +895,12 @@ public class ISteamNetworkingUtils
     /// <para>
     /// Iterate the list of all configuration values in the current environment that it might<br/>
     /// be possible to display or edit using a generic UI.  To get the first iterable value,<br/>
-    /// pass k_ESteamNetworkingConfig_Invalid.  Returns k_ESteamNetworkingConfig_Invalid<br/>
+    /// pass <see cref="ESteamNetworkingConfigValue.Invalid"/>.  Returns <see cref="ESteamNetworkingConfigValue.Invalid"/><br/>
     /// to signal end of list.
     /// </para>
     ///
     /// <para>
-    /// The bEnumerateDevVars argument can be used to include "dev" vars.  These are vars that<br/>
+    /// The <paramref name="enumerateDevVars"/> argument can be used to include "dev" vars.  These are vars that<br/>
     /// are recommended to only be editable in "debug" or "dev" mode and typically should not be<br/>
     /// shown in a retail environment where a malicious local user might use this to cheat.
     /// </para>
@@ -886,8 +911,8 @@ public class ISteamNetworkingUtils
     }
 
     /// <summary>
-    /// String conversions.  You'll usually access these using the respective<br/>
-    /// inline methods.
+    /// String conversions.<br/>
+    /// You'll usually access these using the respective inline methods.
     /// </summary>
     public string SteamNetworkingIPAddr_ToString(in SteamNetworkingIPAddr addr, bool withPort)
     {
@@ -901,8 +926,8 @@ public class ISteamNetworkingUtils
     }
 
     /// <summary>
-    /// String conversions.  You'll usually access these using the respective<br/>
-    /// inline methods.
+    /// String conversions.<br/>
+    /// You'll usually access these using the respective inline methods.
     /// </summary>
     public bool SteamNetworkingIPAddr_ParseString(ref SteamNetworkingIPAddr addr, string str)
     {
@@ -914,8 +939,8 @@ public class ISteamNetworkingUtils
     }
 
     /// <summary>
-    /// String conversions.  You'll usually access these using the respective<br/>
-    /// inline methods.
+    /// String conversions.<br/>
+    /// You'll usually access these using the respective inline methods.
     /// </summary>
     public ESteamNetworkingFakeIPType SteamNetworkingIPAddr_GetFakeIPType(in SteamNetworkingIPAddr addr)
     {
@@ -927,8 +952,8 @@ public class ISteamNetworkingUtils
     }
 
     /// <summary>
-    /// String conversions.  You'll usually access these using the respective<br/>
-    /// inline methods.
+    /// String conversions.<br/>
+    /// You'll usually access these using the respective inline methods.
     /// </summary>
     public string SteamNetworkingIdentity_ToString(in SteamNetworkingIdentity identity)
     {
@@ -942,8 +967,8 @@ public class ISteamNetworkingUtils
     }
 
     /// <summary>
-    /// String conversions.  You'll usually access these using the respective<br/>
-    /// inline methods.
+    /// String conversions.<br/>
+    /// You'll usually access these using the respective inline methods.
     /// </summary>
     public bool SteamNetworkingIdentity_ParseString(ref SteamNetworkingIdentity identity, string str)
     {
