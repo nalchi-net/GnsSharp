@@ -1851,11 +1851,7 @@ public class ISteamNetworkingSockets
         SizeT prevResultSize = resultSize;
         Span<IntPtr> connChangedCallbackPtr = stackalloc IntPtr[1];
 
-#if GNS_SHARP_OPENSOURCE_GNS
-        var netUtils = ISteamNetworkingUtils.User!;
-#elif GNS_SHARP_STEAMWORKS_SDK
         var netUtils = this.isGameServer ? ISteamNetworkingUtils.GameServer! : ISteamNetworkingUtils.User!;
-#endif
 
         // This approach has a flaw that:
         // When the connection is closed, it won't receive status changed callback for `ESteamNetworkingConnectionState.None`.
