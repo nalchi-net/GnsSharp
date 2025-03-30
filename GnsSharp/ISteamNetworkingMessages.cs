@@ -138,7 +138,7 @@ public class ISteamNetworkingMessages
     /// - See <see cref="ISteamNetworkingSockets.SendMessageToConnection"/> for more possible return values
     /// </returns>
     /// </summary>
-    public EResult SendMessageToUser(in SteamNetworkingIdentity identityRemote, ReadOnlySpan<byte> data, int sendFlags, int remoteChannel)
+    public EResult SendMessageToUser(in SteamNetworkingIdentity identityRemote, ReadOnlySpan<byte> data, ESteamNetworkingSendType sendFlags, int remoteChannel)
     {
 #if GNS_SHARP_OPENSOURCE_GNS
         throw new NotImplementedException("Open source GNS doesn't expose ISteamNetworkingMessages flat API");

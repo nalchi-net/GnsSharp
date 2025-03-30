@@ -1757,7 +1757,7 @@ cDetailsMax);
 
     [LibraryImport(GnsLibraryName)]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
-    public static partial EResult SteamAPI_ISteamNetworkingMessages_SendMessageToUser(IntPtr self, in SteamNetworkingIdentity identityRemote, ReadOnlySpan<byte> pubData, uint cubData, int nSendFlags, int nRemoteChannel);
+    public static partial EResult SteamAPI_ISteamNetworkingMessages_SendMessageToUser(IntPtr self, in SteamNetworkingIdentity identityRemote, ReadOnlySpan<byte> pubData, uint cubData, ESteamNetworkingSendType nSendFlags, int nRemoteChannel);
 
     [LibraryImport(GnsLibraryName)]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
