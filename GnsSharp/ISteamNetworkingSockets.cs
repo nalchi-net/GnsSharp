@@ -1860,7 +1860,7 @@ public class ISteamNetworkingSockets
         //
         // But `ESteamNetworkingConnectionState.None` status is rarely useful;
         // Managing seperate pointer table only for that doesn't look too good.
-        var getConfigValueResult = netUtils.GetConfigValue(ESteamNetworkingConfigValue.Callback_ConnectionStatusChanged, ESteamNetworkingConfigScope.Connection, (IntPtr)(uint)connChanged.Conn, out ESteamNetworkingConfigDataType outDataType, MemoryMarshal.AsBytes(connChangedCallbackPtr), ref resultSize);
+        var getConfigValueResult = netUtils.GetConfigValue(ESteamNetworkingConfigValue.Callback_ConnectionStatusChanged, ESteamNetworkingConfigScope.Connection, (IntPtr)(uint)connChanged.Conn, MemoryMarshal.AsBytes(connChangedCallbackPtr), ref resultSize);
 
         if (getConfigValueResult == ESteamNetworkingGetConfigValueResult.OK || getConfigValueResult == ESteamNetworkingGetConfigValueResult.OKInherited)
         {

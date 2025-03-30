@@ -4,7 +4,7 @@
 namespace GnsSharp;
 
 /// <summary>
-/// Return value of ISteamNetworkintgUtils::GetConfigValue
+/// Return value of <see cref="ISteamNetworkingUtils.GetConfigValue"/>
 /// </summary>
 public enum ESteamNetworkingGetConfigValueResult : int
 {
