@@ -66,6 +66,7 @@ public static class SteamAPI
             + Constants.SteamRemoteStorageInterfaceVersion.Length + 1
             + Constants.SteamAppsInterfaceVersion.Length + 1
             + Constants.SteamUserStatsInterfaceVersion.Length + 1
+            + Constants.SteamNetworkingMessagesInterfaceVersion.Length + 1
 
             // + Constants.SteamControllerInterfaceVersion.Length + 1
             // + Constants.SteamGameSearchInterfaceVersion.Length + 1
@@ -76,7 +77,6 @@ public static class SteamAPI
             // + Constants.SteamMatchmakingServersInterfaceVersion.Length + 1
             // + Constants.SteamMusicRemoteInterfaceVersion.Length + 1
             // + Constants.SteamMusicInterfaceVersion.Length + 1
-            // + Constants.SteamNetworkingMessagesInterfaceVersion.Length + 1
             // + Constants.SteamNetworkingInterfaceVersion.Length + 1
             // + Constants.SteamParentalSettingsInterfaceVersion.Length + 1
             // + Constants.SteamPartiesInterfaceVersion.Length + 1
@@ -97,6 +97,7 @@ public static class SteamAPI
         versions.Append(Constants.SteamRemoteStorageInterfaceVersion).Append('\0');
         versions.Append(Constants.SteamAppsInterfaceVersion).Append('\0');
         versions.Append(Constants.SteamUserStatsInterfaceVersion).Append('\0');
+        versions.Append(Constants.SteamNetworkingMessagesInterfaceVersion).Append('\0');
 
         // versions.Append(Constants.SteamControllerInterfaceVersion).Append('\0');
         // versions.Append(Constants.SteamGameSearchInterfaceVersion).Append('\0');
@@ -107,7 +108,6 @@ public static class SteamAPI
         // versions.Append(Constants.SteamMatchmakingServersInterfaceVersion).Append('\0');
         // versions.Append(Constants.SteamMusicRemoteInterfaceVersion).Append('\0');
         // versions.Append(Constants.SteamMusicInterfaceVersion).Append('\0');
-        // versions.Append(Constants.SteamNetworkingMessagesInterfaceVersion).Append('\0');
         // versions.Append(Constants.SteamNetworkingInterfaceVersion).Append('\0');
         // versions.Append(Constants.SteamParentalSettingsInterfaceVersion).Append('\0');
         // versions.Append(Constants.SteamPartiesInterfaceVersion).Append('\0');

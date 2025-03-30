@@ -24,9 +24,9 @@ More APIs might be added in the future if I need another Steamworks exclusive fe
 <details>
     <summary>Table of state</summary>
 
-| Interfaces          | Ported? | Interfaces              | Ported? |
-|---------------------|---------|-------------------------|---------|
-| ISteamApps               | ❌ | ISteamNetworking        | ❌ |
+| Interfaces          | Ported? | Interfaces               | Ported? |
+|---------------------|---------|--------------------------|---------|
+| ISteamApps               | ❌ | ISteamNetworkingMessages | ✔ |
 | ISteamAppTicket          | ❌ | ISteamNetworkingSockets | ✔ |
 | ISteamClient             | ❌ | ISteamNetworkingUtils   | ✔ |
 | ISteamController         | ❌ | ISteamRemotePlay        | ❌ |
@@ -150,7 +150,10 @@ ISteamNetworkingSockets.User!.SteamNetAuthenticationStatusChanged
     }
 ```
 
-There's one exception to this, which is `FnSteamNetConnectionStatusChanged`:
+There's 3 exception to this:
+    * `FnSteamNetConnectionStatusChanged`
+    * `FnPtrSteamNetworkingMessagesSessionRequest`
+    * `FnPtrSteamNetworkingMessagesSessionFailed`
 
 ```cs
 // This delegate should be alive until the listen socket is closed.
@@ -166,7 +169,7 @@ HSteamListenSocket listener
     = ISteamNetworkingSockets.User!.CreateListenSocketIP(in address, listenSocketConfigs);
 ```
 
-This exception is for 2 reasons:
+These exceptions are for 2 reasons:
 1. To allow the listen socket and the client connections to have a different callback set up.
 1. Because there's no Steam Callbacks in open source GNS, and I wanted to guarantee the same API usage for both versions.
 

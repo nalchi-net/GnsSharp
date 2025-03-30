@@ -1747,6 +1747,53 @@ cDetailsMax);
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool SteamAPI_ISteamUserStats_GetAchievementProgressLimitsFloat(IntPtr self, [MarshalAs(UnmanagedType.LPUTF8Str)] string pchName, out float pfMinProgress, out float pfMaxProgress);
 
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial IntPtr SteamAPI_SteamNetworkingMessages_SteamAPI_v002();
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial IntPtr SteamAPI_SteamGameServerNetworkingMessages_SteamAPI_v002();
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial EResult SteamAPI_ISteamNetworkingMessages_SendMessageToUser(IntPtr self, in SteamNetworkingIdentity identityRemote, ReadOnlySpan<byte> pubData, uint cubData, int nSendFlags, int nRemoteChannel);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial int SteamAPI_ISteamNetworkingMessages_ReceiveMessagesOnChannel(IntPtr self, int nLocalChannel, Span<IntPtr> ppOutMessages, int nMaxMessages);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamNetworkingMessages_AcceptSessionWithUser(IntPtr self, in SteamNetworkingIdentity identityRemote);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamNetworkingMessages_CloseSessionWithUser(IntPtr self, in SteamNetworkingIdentity identityRemote);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SteamAPI_ISteamNetworkingMessages_CloseChannelWithUser(IntPtr self, in SteamNetworkingIdentity identityRemote, int nLocalChannel);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial ESteamNetworkingConnectionState SteamAPI_ISteamNetworkingMessages_GetSessionConnectionInfo(IntPtr self, in SteamNetworkingIdentity identityRemote, out SteamNetConnectionInfo_t pConnectionInfo, out SteamNetConnectionRealTimeStatus_t pQuickStatus);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial ESteamNetworkingConnectionState SteamAPI_ISteamNetworkingMessages_GetSessionConnectionInfo(IntPtr self, in SteamNetworkingIdentity identityRemote, IntPtr pConnectionInfo, out SteamNetConnectionRealTimeStatus_t pQuickStatus);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial ESteamNetworkingConnectionState SteamAPI_ISteamNetworkingMessages_GetSessionConnectionInfo(IntPtr self, in SteamNetworkingIdentity identityRemote, out SteamNetConnectionInfo_t pConnectionInfo, IntPtr pQuickStatus);
+
+    [LibraryImport(GnsLibraryName)]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial ESteamNetworkingConnectionState SteamAPI_ISteamNetworkingMessages_GetSessionConnectionInfo(IntPtr self, in SteamNetworkingIdentity identityRemote, IntPtr pConnectionInfo, IntPtr pQuickStatus);
+
 #endif // Common API
 
     [LibraryImport(GnsLibraryName)]

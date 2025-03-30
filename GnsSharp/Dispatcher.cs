@@ -47,6 +47,11 @@ internal class Dispatcher
                                 networkingUtils!.OnDispatch(ref msg);
                                 break;
 
+                            case (Constants.SteamNetworkingMessagesCallbacks % CallbackBigGroupSize) / CallbackSmallGroupSize:
+                                var networkingMsgs = isGameServer ? ISteamNetworkingMessages.GameServer : ISteamNetworkingMessages.User;
+                                networkingMsgs!.OnDispatch(ref msg);
+                                break;
+
                             default:
                                 Debug.WriteLine($"Unsupported callback = {msg.CallbackId} on Dispatcher.RunCallbacks()");
                                 break;
