@@ -56,13 +56,13 @@ public static class SteamGameServer
               Constants.SteamNetworkingSocketsInterfaceVersion.Length + 1
             + Constants.SteamNetworkingUtilsInterfaceVersion.Length + 1
             + Constants.SteamUtilsInterfaceVersion.Length + 1
+            + Constants.SteamNetworkingMessagesInterfaceVersion.Length + 1
 
             // + Constants.SteamGameServerInterfaceVersion.Length + 1
             // + Constants.SteamGameServerStatsInterfaceVersion.Length + 1
             // + Constants.SteamHttpInterfaceVersion.Length + 1
             // + Constants.SteamInventoryInterfaceVersion.Length + 1
             // + Constants.SteamNetworkingInterfaceVersion.Length + 1
-            // + Constants.SteamNetworkingMessagesInterfaceVersion.Length + 1
             // + Constants.SteamUgcInterfaceVersion.Length + 1
             + 1;
 
@@ -71,13 +71,13 @@ public static class SteamGameServer
         versions.Append(Constants.SteamNetworkingSocketsInterfaceVersion).Append('\0');
         versions.Append(Constants.SteamNetworkingUtilsInterfaceVersion).Append('\0');
         versions.Append(Constants.SteamUtilsInterfaceVersion).Append('\0');
+        versions.Append(Constants.SteamNetworkingMessagesInterfaceVersion).Append('\0');
 
         // versions.Append(Constants.SteamGameServerInterfaceVersion).Append('\0');
         // versions.Append(Constants.SteamGameServerStatsInterfaceVersion).Append('\0');
         // versions.Append(Constants.SteamHttpInterfaceVersion).Append('\0');
         // versions.Append(Constants.SteamInventoryInterfaceVersion).Append('\0');
         // versions.Append(Constants.SteamNetworkingInterfaceVersion).Append('\0');
-        // versions.Append(Constants.SteamNetworkingMessagesInterfaceVersion).Append('\0');
         // versions.Append(Constants.SteamUgcInterfaceVersion).Append('\0');
         versions.Append('\0');
 

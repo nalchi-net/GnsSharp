@@ -23,7 +23,7 @@
     <Company>nalchi-net</Company>
     <Authors>copyrat90</Authors>
     <Description>Valve's GameNetworkingSockets binding for C#</Description>
-    <Version>0.1.0-alpha.11</Version>
+    <Version>0.1.0-alpha.12</Version>
     <PackageTags>GameNetworkingSockets;Steamworks</PackageTags>
   </PropertyGroup>
 
