@@ -5,6 +5,8 @@ namespace GnsSharp;
 
 using System.Runtime.InteropServices;
 
+#pragma warning disable SA1202 // Elements should be ordered by access
+
 /// <summary>
 /// Result of a request to store the achievements on the server, or an "indicate progress" call.<br/>
 /// If both <see cref="CurProgress"/> and <see cref="MaxProgress"/> are zero, that means the achievement has been fully unlocked.
@@ -24,10 +26,7 @@ public struct UserAchievementStored_t : ICallbackParam
     /// </summary>
     public bool GroupAchievement;
 
-    /// <summary>
-    /// Name of the achievement.
-    /// </summary>
-    public Array128<byte> AchievementName;
+    private Array128<byte> achievementName;
 
     /// <summary>
     /// Current progress towards the achievement.
@@ -40,4 +39,9 @@ public struct UserAchievementStored_t : ICallbackParam
     public uint MaxProgress;
 
     public static int CallbackParamId => CallbackId;
+
+    /// <summary>
+    /// Name of the achievement.
+    /// </summary>
+    public readonly string? AchievementName => Utf8StringHelper.NullTerminatedSpanToString(this.achievementName);
 }

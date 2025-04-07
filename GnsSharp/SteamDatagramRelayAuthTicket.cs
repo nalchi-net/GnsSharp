@@ -5,6 +5,8 @@ namespace GnsSharp;
 
 using System.Runtime.InteropServices;
 
+#pragma warning disable SA1202 // Elements should be ordered by access
+
 /// <summary>
 /// Ticket used to authenticate a client to talk to a specific gameserver.<br/>
 /// Tickets are used for the connection/authentication flow where you want<br/>
@@ -147,7 +149,8 @@ public struct SteamDatagramRelayAuthTicket
     public struct ExtraField
     {
         public EType Type;
-        public Array28<byte> Name;
+
+        private Array28<byte> name;
 
         public ValueUnion Value;
 
@@ -172,17 +175,21 @@ public struct SteamDatagramRelayAuthTicket
             Fixed64,
         }
 
+        public readonly string? Name => Utf8StringHelper.NullTerminatedSpanToString(this.name);
+
         [StructLayout(LayoutKind.Explicit, Pack = Native.PackSize)]
         public struct ValueUnion
         {
             [FieldOffset(0)]
-            public Array128<byte> StringValue;
+            private Array128<byte> stringValue;
 
             [FieldOffset(0)]
             public long IntValue;
 
             [FieldOffset(0)]
             public ulong Fixed64Value;
+
+            public readonly string? StringValue => Utf8StringHelper.NullTerminatedSpanToString(this.stringValue);
         }
     }
 

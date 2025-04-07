@@ -50,11 +50,13 @@ public struct SteamRelayNetworkStatus_t : ICallbackParam
     /// </summary>
     public ESteamNetworkingAvailability AvailAnyRelay;
 
+    private Array256<byte> debugMsg;
+
+    public static int CallbackParamId => CallbackId;
+
     /// <summary>
     /// Non-localized English language status.  For diagnostic/debugging<br/>
     /// purposes only.
     /// </summary>
-    public Array256<byte> DebugMsg;
-
-    public static int CallbackParamId => CallbackId;
+    public readonly string? DebugMsg => Utf8StringHelper.NullTerminatedSpanToString(this.debugMsg);
 }

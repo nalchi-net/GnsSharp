@@ -13,7 +13,9 @@ public struct OverlayBrowserProtocolNavigation_t : ICallbackParam
 {
     public const int CallbackId = Constants.SteamFriendsCallbacks + 49;
 
-    public Array1024<byte> Uri;
+    private Array1024<byte> uri;
 
     public static int CallbackParamId => CallbackId;
+
+    public readonly string? Uri => Utf8StringHelper.NullTerminatedSpanToString(this.uri);
 }

@@ -25,10 +25,12 @@ public struct GameRichPresenceJoinRequested_t : ICallbackParam
     /// </summary>
     public CSteamID SteamIDFriend;
 
+    private Array256<byte> connect;
+
+    public static int CallbackParamId => CallbackId;
+
     /// <summary>
     /// The value associated with the "connect" Rich Presence key.
     /// </summary>
-    public Array256<byte> Connect;
-
-    public static int CallbackParamId => CallbackId;
+    public readonly string? Connect => Utf8StringHelper.NullTerminatedSpanToString(this.connect);
 }

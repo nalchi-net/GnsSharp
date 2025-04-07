@@ -23,11 +23,13 @@ public struct GSClientDeny_t : ICallbackParam
     /// </summary>
     public EDenyReason DenyReason;
 
+    private Array128<byte> optionalText;
+
+    public static int CallbackParamId => CallbackId;
+
     /// <summary>
     /// An optional text message explaining the deny reason.<br/>
     /// Typically unused except for logging.
     /// </summary>
-    public Array128<byte> OptionalText;
-
-    public static int CallbackParamId => CallbackId;
+    public readonly string? OptionalText => Utf8StringHelper.NullTerminatedSpanToString(this.optionalText);
 }
