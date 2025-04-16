@@ -107,7 +107,7 @@ else if (GnsSharpCore.Backend == GnsSharpCore.BackendKind.Steamworks)
     // For test environment, write `480` in `steam_appid.txt`, and put it next to your executable.
     // And you must be running Steam client on your PC.
     //
-    // Alternatively, you can uncomment the two lines below.
+    // Alternatively, on Windows, you can uncomment the two lines below.
 
     // Environment.SetEnvironmentVariable("SteamAppId", "480");
     // Environment.SetEnvironmentVariable("SteamGameId", "480");
@@ -316,7 +316,7 @@ else if (GnsSharpCore.Backend == GnsSharpCore.BackendKind.Steamworks)
     // For test environment, write `480` in `steam_appid.txt`, and put it next to your executable.
     // And you must be running Steam client on your PC.
     //
-    // Alternatively, you can uncomment the two lines below.
+    // Alternatively, on Windows, you can uncomment the two lines below.
 
     // Environment.SetEnvironmentVariable("SteamAppId", "480");
     // Environment.SetEnvironmentVariable("SteamGameId", "480");
@@ -371,7 +371,7 @@ ISteamNetworkingUtils.User!.SetDebugOutputFunction(ESteamNetworkingSocketsDebugO
 SteamNetworkingIPAddr addr = default;
 addr.ParseString("[::]:43000");
 
-int serverClosing = 0;
+bool serverClosing = false;
 
 // Setup listen socket connection status changed callback
 FnSteamNetConnectionStatusChanged listenStatusChanged = (ref SteamNetConnectionStatusChangedCallback_t status) =>
@@ -394,7 +394,7 @@ FnSteamNetConnectionStatusChanged listenStatusChanged = (ref SteamNetConnectionS
             // Server side also need to close the connection to clean up resources
             ISteamNetworkingSockets.User!.CloseConnection(status.Conn, 0, "Server's closing too!", false);
 
-            Interlocked.Exchange(ref serverClosing, 1);
+            Volatile.Write(ref serverClosing, true);
             break;
     }
 };
@@ -435,7 +435,7 @@ if (GnsSharpCore.Backend == GnsSharpCore.BackendKind.Steamworks)
 // Setup connect address: IPv6 loopback address & port 43000
 addr.ParseString("[::1]:43000");
 
-int clientConnected = 0;
+bool clientConnected = false;
 
 // Setup connect client connection status changed callback
 FnSteamNetConnectionStatusChanged clientStatusChanged = (ref SteamNetConnectionStatusChangedCallback_t status) =>
@@ -444,7 +444,7 @@ FnSteamNetConnectionStatusChanged clientStatusChanged = (ref SteamNetConnectionS
     {
         case ESteamNetworkingConnectionState.Connected:
             Console.WriteLine("Client successfully connected to the server!");
-            Interlocked.Exchange(ref clientConnected, 1);
+            Volatile.Write(ref clientConnected, true);
             break;
 
         case ESteamNetworkingConnectionState.ClosedByPeer:
@@ -470,14 +470,14 @@ HSteamNetConnection client = ISteamNetworkingSockets.User.ConnectByIPAddress(add
 clientConfigs[0].Dispose();
 
 // Wait for the connection to complete
-while (clientConnected == 0)
+while (!Volatile.Read(ref clientConnected))
     await Task.Delay(16);
 
 // Close from the client side
 ISteamNetworkingSockets.User.CloseConnection(client, 0, "Client's closing!", false);
 
 // Wait for the server side to close the connection
-while (serverClosing == 0)
+while (!Volatile.Read(ref serverClosing))
     await Task.Delay(16);
 
 // Stop the callback loop task
