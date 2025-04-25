@@ -39,15 +39,19 @@ public class CallTask<T> : ICallTask, INotifyCompletion
         {
             Monitor.Enter(this.taskLock, ref lockTaken);
 
+            // Double-check if we got the result right before locking
             if (this.IsCompleted)
             {
+                // Got the result, no need to lock now
                 Monitor.Exit(this.taskLock);
                 lockTaken = false;
 
+                // Continue execution immediately
                 continuation();
             }
             else
             {
+                // Reserve the continuation so that it can be resumed from the `SetResultFrom()`
                 this.continuation = continuation;
             }
         }
@@ -93,11 +97,13 @@ public class CallTask<T> : ICallTask, INotifyCompletion
 
             this.isCompleted = true;
 
+            // If the continuation has been already reserved, this thread has the responsibility to call it
             if (this.continuation != null)
             {
                 Monitor.Exit(this.taskLock);
                 lockTaken = false;
 
+                // Continue directly within this thread
                 this.continuation();
             }
         }
