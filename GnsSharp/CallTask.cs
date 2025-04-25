@@ -18,6 +18,7 @@ public class CallTask<T> : ICallTask, INotifyCompletion
 
     private T result;
     private Action? continuation;
+    private SynchronizationContext? syncContext = SynchronizationContext.Current;
     private bool isCompleted = false;
     private bool isFailed = true;
 
@@ -103,8 +104,17 @@ public class CallTask<T> : ICallTask, INotifyCompletion
                 Monitor.Exit(this.taskLock);
                 lockTaken = false;
 
-                // Continue directly within this thread
-                this.continuation();
+                // If there existed a synchronization context on the thread that created this `CallTask`
+                if (this.syncContext != null)
+                {
+                    // Post the continuation to that synchronization context
+                    this.syncContext.Post(cont => ((Action)cont!).Invoke(), this.continuation);
+                }
+                else
+                {
+                    // Continue directly within this thread
+                    this.continuation();
+                }
             }
         }
         finally
