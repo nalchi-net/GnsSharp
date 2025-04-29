@@ -204,9 +204,11 @@ public struct SteamNetworkingIPAddr : IEquatable<SteamNetworkingIPAddr>
         [FieldOffset(0)]
         public IPv4MappedAddress Ipv4Mapped;
 
-        public override int GetHashCode()
+        public override readonly int GetHashCode()
         {
-            return this.Ipv6.GetHashCode();
+            HashCode hashCode = default;
+            hashCode.AddBytes(this.Ipv6);
+            return hashCode.GetHashCode();
         }
     }
 }

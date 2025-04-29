@@ -86,7 +86,7 @@ public struct SteamNetworkingIdentity : IEquatable<SteamNetworkingIdentity>
         return obj is SteamNetworkingIdentity identity && this == identity;
     }
 
-    public override int GetHashCode()
+    public override readonly int GetHashCode()
     {
         return HashCode.Combine(this.Type, this.Size, this.Identity);
     }
@@ -355,7 +355,9 @@ public struct SteamNetworkingIdentity : IEquatable<SteamNetworkingIdentity>
 
         public override readonly int GetHashCode()
         {
-            return this.UnknownRawString.GetHashCode();
+            HashCode hashCode = default;
+            hashCode.AddBytes(this.UnknownRawString);
+            return hashCode.ToHashCode();
         }
     }
 }
