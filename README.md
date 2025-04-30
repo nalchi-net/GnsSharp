@@ -125,6 +125,52 @@ You might want to add `NativeLibrary.Load()` too, depending on your environment.
 
 Check out the "Self connect example" below for a runnable example.
 
+### Run callbacks
+
+* On stand-alone GNS:
+    * You should call `ISteamNetworkingSockets.RunCallbacks()` periodically to receive [`SteamNetConnectionStatusChangedCallback_t`](https://partner.steamgames.com/doc/api/ISteamNetworkingSockets#SteamNetConnectionStatusChangedCallback_t).
+* On Steamworks SDK:
+    * You should call `SteamAPI.RunCallbacks()` periodically to receive [Steam Callbacks](https://partner.steamgames.com/doc/sdk/api#callbacks) and [Steam CallResults](https://partner.steamgames.com/doc/sdk/api#callresults).
+
+This method works with both the open source GNS & Steamworks SDK:
+```cs
+// Run callbacks as a seperate task
+CancellationTokenSource cancelTokenSrc = new();
+CancellationToken cancelToken = cancelTokenSrc.Token;
+Task callbackRunner;
+
+if (GnsSharpCore.Backend == GnsSharpCore.BackendKind.OpenSource)
+{
+    callbackRunner = Task.Run(async () =>
+    {
+        while (!cancelToken.IsCancellationRequested)
+        {
+            ISteamNetworkingSockets.User!.RunCallbacks();
+            await Task.Delay(16, cancelToken);
+        }
+    }, cancelToken);
+}
+else if (GnsSharpCore.Backend == GnsSharpCore.BackendKind.Steamworks)
+{
+    callbackRunner = Task.Run(async () =>
+    {
+        while (!cancelToken.IsCancellationRequested)
+        {
+            SteamAPI.RunCallbacks();
+            await Task.Delay(16, cancelToken);
+        }
+    }, cancelToken);
+}
+```
+
+The callbacks will be called in the thread that runs the `RunCallbacks()`.\
+If you want the callbacks to be received on your game engine's main thread, call `RunCallbacks()` on the main thread instead.
+
+When `await`ed async Steam CallResults, by default the continuation is called on the thread that runs the `RunCallbacks()`.\
+But you can change this to post to other synchronization context instead. See [Steam CallResults](#steam-callresults) section.
+
+Check out the "Self connect example" below for a runnable example.
+
 ### Deinitialization
 
 Again, this method works with both the open source GNS & Steamworks SDK:
@@ -191,6 +237,14 @@ if (callTask != null)
         Console.WriteLine($"Number of current players: {result.Value.Players}");
 }
 ```
+
+Also, if the thread which created the `CallTask<T>` had [`SynchronizationContext.Current`](https://learn.microsoft.com/en-us/dotnet/api/system.threading.synchronizationcontext.current?view=net-9.0) set up,\
+when `await`ed this `CallTask<T>` object, the continuation will be posted on this synchronization context.
+
+For example, [Godot engine](https://godotengine.org/) has an [`GodotSynchronizationContext`](https://github.com/godotengine/godot/blob/master/modules/mono/glue/GodotSharp/GodotSharp/Core/GodotSynchronizationContext.cs) which would post the continuation to the Godot's main thread.\
+By default the Godot's main thread itself has `SynchronizationContext.Current` set up to this context.\
+So if you create and await a `CallTask<T>` on the Godot's main thread, after the `await` it's the same Godot's main thread.\
+So you don't need to worry about synchronization and do the follow-up work as you would on the single-threaded environment.
 
 <details>
     <summary>Read spacewar cloud file async example</summary>
