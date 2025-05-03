@@ -18,7 +18,8 @@ public class CallTask<T> : ICallTask, INotifyCompletion
 
     private T result;
     private Action? continuation;
-    private SynchronizationContext? syncContext = SynchronizationContext.Current;
+    private SynchronizationContext? syncContext = null;
+    private volatile bool continueOnCapturedContext = true;
     private bool isCompleted = false;
     private bool isFailed = true;
 
@@ -54,6 +55,9 @@ public class CallTask<T> : ICallTask, INotifyCompletion
             {
                 // Reserve the continuation so that it can be resumed from the `SetResultFrom()`
                 this.continuation = continuation;
+
+                // Capture the synchronization context to resume the continuation
+                this.syncContext = SynchronizationContext.Current;
             }
         }
         finally
@@ -76,6 +80,12 @@ public class CallTask<T> : ICallTask, INotifyCompletion
 
             return this.result;
         }
+    }
+
+    public CallTask<T> ConfigureAwait(bool continueOnCapturedContext)
+    {
+        this.continueOnCapturedContext = continueOnCapturedContext;
+        return this;
     }
 
     public void SetResultFrom(HSteamPipe pipe, ref SteamAPICallCompleted_t callCompleted)
@@ -101,8 +111,8 @@ public class CallTask<T> : ICallTask, INotifyCompletion
                 Monitor.Exit(this.taskLock);
                 lockTaken = false;
 
-                // If there existed a synchronization context on the thread that created this `CallTask`
-                if (this.syncContext != null)
+                // If synchronization required to a captured context whose thread awaited this `CallTask`
+                if (this.continueOnCapturedContext && this.syncContext != null)
                 {
                     // Post the continuation to that synchronization context
                     this.syncContext.Post(cont => ((Action)cont!).Invoke(), this.continuation);
