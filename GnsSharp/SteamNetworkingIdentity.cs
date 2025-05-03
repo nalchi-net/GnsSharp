@@ -4,6 +4,7 @@
 namespace GnsSharp;
 
 using System;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -179,7 +180,7 @@ public struct SteamNetworkingIdentity : IEquatable<SteamNetworkingIdentity>
         {
             if (raw != IntPtr.Zero)
             {
-                result = new ReadOnlySpan<SteamNetworkingIPAddr>((void*)raw, 1);
+                result = new ReadOnlySpan<SteamNetworkingIPAddr>(raw.ToPointer(), 1);
             }
         }
 
@@ -192,10 +193,7 @@ public struct SteamNetworkingIdentity : IEquatable<SteamNetworkingIdentity>
     public void SetIPv4Addr(uint ipv4, ushort port)
     {
         this.Type = ESteamNetworkingIdentityType.IPAddress;
-        unsafe
-        {
-            this.Size = sizeof(SteamNetworkingIPAddr);
-        }
+        this.Size = Unsafe.SizeOf<SteamNetworkingIPAddr>();
 
         this.Identity.Ip.SetIPv4(ipv4, port);
     }
@@ -268,7 +266,7 @@ public struct SteamNetworkingIdentity : IEquatable<SteamNetworkingIdentity>
         {
             if (raw != IntPtr.Zero)
             {
-                result = new ReadOnlySpan<byte>((void*)raw, len);
+                result = new ReadOnlySpan<byte>(raw.ToPointer(), len);
             }
         }
 
@@ -309,10 +307,7 @@ public struct SteamNetworkingIdentity : IEquatable<SteamNetworkingIdentity>
     {
 #if GNS_SHARP_OPENSOURCE_GNS
         SizeT sizeofIdentity;
-        unsafe
-        {
-            sizeofIdentity = (SizeT)sizeof(SteamNetworkingIdentity);
-        }
+        sizeofIdentity = (SizeT)Unsafe.SizeOf<SteamNetworkingIdentity>();
 
         return Native.SteamAPI_SteamNetworkingIdentity_ParseString(ref this, sizeofIdentity, str);
 #elif GNS_SHARP_STEAMWORKS_SDK

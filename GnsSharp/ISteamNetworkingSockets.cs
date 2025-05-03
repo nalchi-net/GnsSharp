@@ -1892,10 +1892,7 @@ public class ISteamNetworkingSockets
 
         // Get the callback function pointer registered for this connection
         SizeT resultSize;
-        unsafe
-        {
-            resultSize = (SizeT)sizeof(IntPtr);
-        }
+        resultSize = (SizeT)Unsafe.SizeOf<IntPtr>();
 
         SizeT prevResultSize = resultSize;
         Span<IntPtr> connChangedCallbackPtr = stackalloc IntPtr[1];

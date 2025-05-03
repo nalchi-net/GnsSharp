@@ -34,11 +34,14 @@ public struct CallbackMsg_t
     /// </summary>
     public int ParamSize;
 
-    public unsafe ref T GetCallbackParamAs<T>()
+    public ref T GetCallbackParamAs<T>()
         where T : unmanaged
     {
-        Debug.Assert(sizeof(T) == this.ParamSize, $"Param size was {this.ParamSize}, yet tried to get as {typeof(T)} whose size is {sizeof(T)}");
+        Debug.Assert(Unsafe.SizeOf<T>() == this.ParamSize, $"Param size was {this.ParamSize}, yet tried to get as {typeof(T)} whose size is {Unsafe.SizeOf<T>()}");
 
-        return ref Unsafe.AsRef<T>((void*)this.Param);
+        unsafe
+        {
+            return ref Unsafe.AsRef<T>(this.Param.ToPointer());
+        }
     }
 }

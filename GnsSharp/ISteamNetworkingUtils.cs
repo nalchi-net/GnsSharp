@@ -974,10 +974,7 @@ public class ISteamNetworkingUtils
     {
 #if GNS_SHARP_OPENSOURCE_GNS
         SizeT sizeofIdentity;
-        unsafe
-        {
-            sizeofIdentity = (SizeT)sizeof(SteamNetworkingIdentity);
-        }
+        sizeofIdentity = (SizeT)Unsafe.SizeOf<SteamNetworkingIdentity>();
 
         return Native.SteamNetworkingIdentity_ParseString(ref identity, sizeofIdentity, str);
 #elif GNS_SHARP_STEAMWORKS_SDK

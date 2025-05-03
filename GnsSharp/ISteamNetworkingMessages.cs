@@ -5,6 +5,7 @@ namespace GnsSharp;
 
 using System;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 /// <summary>
@@ -372,10 +373,7 @@ public class ISteamNetworkingMessages
 
         // Get the callback function pointer registered for this connection
         SizeT resultSize;
-        unsafe
-        {
-            resultSize = (SizeT)sizeof(IntPtr);
-        }
+        resultSize = (SizeT)Unsafe.SizeOf<IntPtr>();
 
         SizeT prevResultSize = resultSize;
         Span<IntPtr> sessionReqCallbackPtr = stackalloc IntPtr[1];
@@ -413,10 +411,7 @@ public class ISteamNetworkingMessages
 
         // Get the callback function pointer registered for this connection
         SizeT resultSize;
-        unsafe
-        {
-            resultSize = (SizeT)sizeof(IntPtr);
-        }
+        resultSize = (SizeT)Unsafe.SizeOf<IntPtr>();
 
         SizeT prevResultSize = resultSize;
         Span<IntPtr> sessionFailedCallbackPtr = stackalloc IntPtr[1];

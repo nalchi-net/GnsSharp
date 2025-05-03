@@ -28,7 +28,7 @@ internal static class Utf8StringHelper
         Span<byte> unmanagedSpan;
         unsafe
         {
-            unmanagedSpan = new Span<byte>((void*)unmanagedPtr, utf8BytesCount + 1);
+            unmanagedSpan = new Span<byte>(unmanagedPtr.ToPointer(), utf8BytesCount + 1);
         }
 
         // Marshal to this unmanaged span directly.
@@ -50,7 +50,7 @@ internal static class Utf8StringHelper
         Span<byte> unmanagedSpan;
         unsafe
         {
-            unmanagedSpan = new Span<byte>((void*)unmanagedPtr, utf8BytesCount + 1);
+            unmanagedSpan = new Span<byte>(unmanagedPtr.ToPointer(), utf8BytesCount + 1);
         }
 
         // Marshal to this unmanaged span directly.
